@@ -3,6 +3,7 @@ import path from 'path';
 import cors from 'cors';
 import userRouter from './routes/User-route.js';
 import 'dotenv/config';
+import Authenticate from './middlewares/authentication-middleware.js';
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.use(cors(corsOptions));
 
 //Middleware
 app.use(express.json());
+app.use(Authenticate);
 
 app.use(`${api}/user`, userRouter);
 
