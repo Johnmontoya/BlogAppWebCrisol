@@ -1,8 +1,12 @@
 import express from 'express';
 import path from 'path';
 import cors from 'cors';
+import userRouter from './routes/User-route.js';
+import 'dotenv/config';
 
 const app = express();
+
+const api = process.env.API_URL;
 
 const corsOptions = {
     origin: 'http://localhost:5173', // Reemplaza con el origen de tu frontend
@@ -16,6 +20,8 @@ app.use(cors(corsOptions));
 
 //Middleware
 app.use(express.json());
+
+app.use(`${api}/user`, userRouter);
 
 
 export default app;
