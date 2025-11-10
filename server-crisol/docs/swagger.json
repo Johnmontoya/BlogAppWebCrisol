@@ -1,0 +1,486 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Crisol de ideas",
+    "description": "Blog App con IA integrada",
+    "contact": {
+      "name": "Blog App Crisol de ideas",
+      "email": "johnmontoya777@hotmail.com",
+      "url": "https://github.com/Johnmontoya"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8000",
+      "description": "Development Server"
+    }
+  ],
+  "paths": {
+    "/api/v1/user/users": {
+      "get": {
+        "summary": "Obtiene todos los usuarios",
+        "tags": ["usuarios"],
+        "description": "Retorna todos los usuarios de la base de datos",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista todos los usuarios",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/user/register": {
+      "post": {
+        "summary": "Registra el usuario",
+        "tags": ["usuarios"],
+        "description": "Ingresa las credenciales para registrarse a la plataforma",
+        "operationId": "registerCUser",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewUser"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Usuario registrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Ocurrió un error en el servidor al crear el usuario.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/user/user/{id}": {
+      "get": {
+        "summary": "Obtiene un usuario por ID",
+        "tags": ["usuarios"],
+        "description": "Retorna un usuario por su ID",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID del usuario a buscar",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Recupera un usuario",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Users"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No hay usuario registrado en la base de datos."
+          },
+          "500": {
+            "description": "Error al obtener el usuario",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Elimina un usuario por su ID",
+        "tags": ["usuarios"],
+        "description": "Borra de la base de la base de datos un usuario por su ID",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID del usuario a buscar",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Elimina el usuario",
+            "content": {
+              "application/json": {
+                "properties": {
+                    "valid": {
+                        "type": "string",
+                        "example": "success"
+                    },
+                    "message": {
+                        "type": "string",
+                        "example": "Cuenta eliminada"
+                    }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error al borrar al usuario",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/user/login": {
+      "post": {
+        "summary": "Login usuario",
+        "tags": ["usuarios"],
+        "description": "Ingresa las credenciales para ingresar al blog",
+        "operationId": "loginCUser",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "JohnDoe@gmail.com"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Datos retornados al ser logueado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "valid": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "userId": {
+                      "type": "string",
+                      "example": "1234567889"
+                    },
+                    "token": {
+                      "type": "string",
+                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ..."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Correo o contraseña incorrecta"
+          },
+          "500": {
+            "description": "Ocurrió un error en el servidor.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/user/forgot": {
+      "post": {
+        "summary": "Recuperacion de cuenta",
+        "tags": ["usuarios"],
+        "description": "Se envia el email para recibir el mensaje con los datos del usuario y el token",
+        "operationId": "ResetUser",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "JohnDoe@gmail.com"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "valid": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Email enviado"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error el enviar el correo",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/user/reset": {
+      "put": {
+        "summary": "Cambio de contraseña",
+        "tags": ["usuarios"],
+        "description": "Ingresa la contraseña nueva",
+        "operationId": "ResetUser",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "userId": {
+                    "type": "string"
+                  },
+                  "token": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "*********"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Contraseña cambiada"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error al cambiar la contraseña",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "Ingrese un token despues de registrarse, pero procure que el usuario sea de role: Admin, por lo que deberá editarlo ese campo en la base de datos"
+      }
+    },
+    "schemas": {
+      "Users": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "users": {
+                "properties": {
+                  "_id": {
+                    "type": "string",
+                    "description": "Id del usuario",
+                    "example": "123456789"
+                  },
+                  "username": {
+                    "type": "string",
+                    "description": "Nombre de usuario",
+                    "example": "John Doe"
+                  },
+                  "email": {
+                    "type": "string",
+                    "description": "Email del usuario",
+                    "example": "JohnDoe@gmail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "Contraseña del usuario",
+                    "example": "********"
+                  },
+                  "role": {
+                    "type": "string",
+                    "description": "Role de usuario",
+                    "example": "User"
+                  },
+                  "createdAt": {
+                    "type": "string",
+                    "description": "Fecha de creacion del usuario",
+                    "example": "2025-11-10"
+                  },
+                  "updatedAt": {
+                    "type": "string",
+                    "description": "Fecha de la ultima actualizacion del usuario",
+                    "example": "2025-11-10"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "User": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "users": {
+                "type": "array",
+                "$ref": "#/components/schemas/NewUser"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "required": ["id"]
+          }
+        ]
+      },
+      "NewUser": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "description": "Nombre de usuario",
+            "nullable": false,
+            "example": "John Doe"
+          },
+          "email": {
+            "type": "string",
+            "description": "Email del usuario",
+            "nullable": false,
+            "example": "JohnDoe@gmail.com"
+          },
+          "password": {
+            "type": "string",
+            "description": "Contraseña del usuario",
+            "nullable": false,
+            "example": "********"
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "required": ["code", "message", "success"],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          },
+          "success": {
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }
+}

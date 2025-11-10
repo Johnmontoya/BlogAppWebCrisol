@@ -20,6 +20,6 @@ router.post("/login", login);
 router.post("/forgot", forgotPassword);
 router.put("/reset", resetPassword);
 router.put("/change-pass", LogUser, changePassword);
-router.delete('/:id', LogUser, deleteUser);
+router.delete('/user/:id', LogUser, deleteUser);
 
 export default router;

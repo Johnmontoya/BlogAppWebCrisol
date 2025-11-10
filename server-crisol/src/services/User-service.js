@@ -16,7 +16,7 @@ const getUsers = async() => {
 }
 
 const getUserById = async(userId) => {
-    const user = await User.findById(userId).select('-password');
+    const user = await User.findById(userId).select('-password -otp -resetPasswordToken -accountVerified');
     return user;
 }
 

@@ -57,10 +57,10 @@ export const createUser = async (req, res) => {
       message: "Usuario registrado",
     });
   } catch (error) {
-    console.error("Error al obtener usuarios:", error);
+    console.error("Error al crear el usuario:", error);
     return res.status(500).json({
       valid: "error",
-      message: "Ocurrió un error en el servidor al obtener los usuarios.",
+      message: "Ocurrió un error en el servidor al crear el usuario.",
       details: error.message,
     });
   }
@@ -184,7 +184,7 @@ export const forgotPassword = async (req, res) => {
       message: "Email enviado",
     });
   } catch (error) {
-    console.error("Error al cambiar la contraseña:", error);
+    console.error("Error el enviar el correo:", error);
     return res.status(500).json({
       valid: "error",
       message: "Ocurrió un error en el servidor.",
