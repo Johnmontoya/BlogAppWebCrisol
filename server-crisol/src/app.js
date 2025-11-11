@@ -4,6 +4,7 @@ import cors from 'cors';
 import swaggerUI from "swagger-ui-express";
 import swaggerSpec from "../docs/swagger.json" with { type: 'json' };
 import userRouter from './routes/User-route.js';
+import blogRouter from './routes/Blog-route.js';
 import Authenticate from './middlewares/authentication-middleware.js';
 import 'dotenv/config';
 
@@ -27,6 +28,7 @@ app.use(Authenticate);
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 
 app.use(`${api}/user`, userRouter);
+app.use(`${api}/blog`, blogRouter);
 
 
 export default app;
