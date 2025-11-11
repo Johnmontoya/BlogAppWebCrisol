@@ -11,9 +11,9 @@ blogRouter.get('/all', getAllBlogs);
 blogRouter.delete('/delete', LogUser, deleteBlog);
 
 blogRouter.put('/toggle-publish', LogUser, togglePublish);
-blogRouter.get('/all-admin', getAllBlogsAdmin);
+blogRouter.get('/all-admin', LogUser, getAllBlogsAdmin);
 
-blogRouter.get('/dashboard', getDashboard);
+blogRouter.get('/dashboard', LogUser, getDashboard);
 
 /*
 

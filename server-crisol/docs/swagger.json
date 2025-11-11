@@ -161,14 +161,14 @@
             "content": {
               "application/json": {
                 "properties": {
-                    "valid": {
-                        "type": "string",
-                        "example": "success"
-                    },
-                    "message": {
-                        "type": "string",
-                        "example": "Cuenta eliminada"
-                    }
+                  "valid": {
+                    "type": "string",
+                    "example": "success"
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "Cuenta eliminada"
+                  }
                 }
               }
             }
@@ -365,6 +365,481 @@
           }
         }
       }
+    },
+    "/api/v1/blog/add": {
+      "post": {
+        "summary": "Guardar blog",
+        "tags": ["blogs"],
+        "description": "Ingresa los datos para guardar el nuevo blog",
+        "operationId": "registerCBlog",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Blog"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Blog agregado en la base de datos",
+            "content": {
+              "application/json": {
+                "properties": {
+                  "valid": {
+                    "type": "string",
+                    "example": "success"
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "Blog agregado!"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Ocurrió un error en el servidor al crear el blog.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/blog/all": {
+      "get": {
+        "summary": "Obtiene todos los blogs",
+        "tags": ["blogs"],
+        "description": "Retorna todos los blogs de la base de datos",
+        "responses": {
+          "200": {
+            "description": "Lista todos los usuarios",
+            "content": {
+              "application/json": {
+                "properties": {
+                  "valid": {
+                    "type": "string",
+                    "example": "success"
+                  },
+                  "results": {
+                    "type": "integer",
+                    "example": "1"
+                  },
+                  "blogs": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Blog"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No hay datos",
+            "content": {
+              "application/json": {
+                "properties": {
+                  "valid": {
+                    "type": "string",
+                    "example": "success"
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "No hay blogs registrados en la base de datos."
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error en el servidor",
+            "content": {
+              "application/json": {
+                "properties": {
+                  "valid": {
+                    "type": "string",
+                    "example": "error"
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "Ocurrió un error en el servidor al obtener los blogs."
+                  },
+                  "details": {
+                    "type": "string",
+                    "items": {
+                      "$ref": "#/components/schemas/Error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/blog/delete": {
+      "delete": {
+        "summary": "Borrar el blog por ID",
+        "tags": ["blogs"],
+        "description": "Borra un blog de la base de datos",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "blogId": {
+                    "type": "string",
+                    "example": "ID del blog"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Eliminacion de blog",
+            "content": {
+              "application/json": {
+                "properties": {
+                  "valid": {
+                    "type": "string",
+                    "example": "success"
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "Blog eliminado"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No hay registros",
+            "content": {
+              "application/json": {
+                "properties": {
+                  "valid": {
+                    "type": "string",
+                    "example": "fail"
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "No hay blog registrado en la base de datos."
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Ocurrió un error en el servidor al borrar el blog.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/blog/toggle-publish": {
+      "put": {
+        "summary": "cambia el estado de un blog por ID",
+        "tags": ["blogs"],
+        "description": "Cambia el estado de un blog de la base de datos",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "example": "ID del blog"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Actualizar el blog",
+            "content": {
+              "application/json": {
+                "properties": {
+                  "valid": {
+                    "type": "string",
+                    "example": "success"
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "Blog actualizado"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Ocurrió un error en el servidor al actualizar el blog.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/blog/all-admin": {
+      "get": {
+        "summary": "Obitne todos los blogs",
+        "tags": ["blogs"],
+        "description": "Muestra todos los blogs registrados en la base de datos",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Todos los blogs",
+            "content": {
+              "application/json": {
+                "properties": {
+                  "valid": {
+                    "type": "string",
+                    "example": "success"
+                  },
+                  "blogs": {
+                    "items": {
+                      "$ref": "#/components/schemas/Blog"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No hay blogs registrados",
+            "content": {
+              "application/json": {
+                "properties": {
+                  "valid": {
+                    "type": "string",
+                    "example": "fail"
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "No hay blog registrados en la base de datos."
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Ocurrió un error en el servidor al obtener los blogs.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/blog/dashboard": {
+      "get": {
+        "summary": "Obtiene los datos del blog",
+        "tags": ["blogs"],
+        "description": "Muestra los datos de los blogs registrados en la base de datps",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Todos los datos del blog",
+            "content": {
+              "application/json": {
+                "properties": {
+                  "valid": {
+                    "type": "string",
+                    "example": "success"
+                  },
+                  "blogs": {
+                    "items": {
+                      "$ref": "#/components/schemas/Blog"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Ocurrió un error en el servidor al los datos de los blogs.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/blog/generate": {
+      "post": {
+        "summary": "cambia el estado de un blog por ID",
+        "tags": ["blogs"],
+        "description": "Cambia el estado de un blog de la base de datos",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "prompt": {
+                    "type": "string",
+                    "example": "Texto breve para generar con la IA"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Generacion de breve descripcion con IA",
+            "content": {
+              "application/json": {
+                "properties": {
+                  "valid": {
+                    "type": "string",
+                    "example": "success"
+                  },
+                  "content": {
+                    "type": "string",
+                    "example": "Texto generado con IA"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Ocurrió un error en el servidor al borrar el blog.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/blog/{blogId}": {
+      "get": {
+        "summary": "Obtiene un blog por ID",
+        "tags": ["blogs"],
+        "description": "Obtiene un blog por un ID enviado por parametro",
+        "parameters": [
+          {
+            "name": "blogId",
+            "in": "path",
+            "description": "ID del blog a buscar",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Todos los datos del blog",
+            "content": {
+              "application/json": {
+                "properties": {
+                  "valid": {
+                    "type": "string",
+                    "example": "success"
+                  },
+                  "blogs": {
+                    "items": {
+                      "$ref": "#/components/schemas/Blog"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No hay blogs registrados",
+            "content": {
+              "application/json": {
+                "properties": {
+                  "valid": {
+                    "type": "string",
+                    "example": "fail"
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "No hay blog registrados en la base de datos."
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Ocurrió un error en el servidor al obtener el blog.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -462,6 +937,48 @@
             "description": "Contraseña del usuario",
             "nullable": false,
             "example": "********"
+          }
+        }
+      },
+      "Blog": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Titulo del blog",
+            "nullable": false,
+            "example": "Titulo de Blog"
+          },
+          "subTitle": {
+            "type": "string",
+            "description": "Subtitulo del blog",
+            "nullable": false,
+            "example": "Subtitulo del Blog"
+          },
+          "description": {
+            "type": "string",
+            "description": "Descripcion del blog",
+            "nullable": false,
+            "example": "Breve descripcion del Blog manual o con IA"
+          },
+          "category": {
+            "type": "string",
+            "description": "Categorias",
+            "nullable": false,
+            "example": "Tecnologia | Estilo de vida"
+          },
+          "image": {
+            "type": "string",
+            "format": "binary",
+            "description": "Ruta de la imagen alojada en la plataforma ImageKit",
+            "nullable": false,
+            "example": "http://imagekit.io/1234567890"
+          },
+          "isPublished": {
+            "type": "boolean",
+            "description": "Publicacion del blog",
+            "nullable": false,
+            "example": "True | false"
           }
         }
       },

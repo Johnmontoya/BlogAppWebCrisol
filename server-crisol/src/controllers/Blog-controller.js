@@ -2,7 +2,6 @@ import fs from "fs";
 import imageKit from "../../config/imageKit.js";
 import main from "../../config/gemini.js";
 import BlogService from "../services/Blog-service.js";
-import Blog from "../models/Blog-model.js";
 
 export const addBlog = async (req, res) => {
   try {
