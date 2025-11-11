@@ -2,7 +2,7 @@ import express from 'express';
 import path from 'path';
 import cors from 'cors';
 import swaggerUI from "swagger-ui-express";
-import swaggerSpec from "../docs/swagger.json" assert { type: 'json' };
+import swaggerSpec from "../docs/swagger.json" with { type: 'json' };
 import userRouter from './routes/User-route.js';
 import Authenticate from './middlewares/authentication-middleware.js';
 import 'dotenv/config';
