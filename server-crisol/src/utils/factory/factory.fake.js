@@ -2,6 +2,7 @@ import { factory } from "factory-girl";
 import { faker } from '@faker-js/faker';
 import User from "../../models/User-model.js"; // Agregar .js
 import Blog from "../../models/Blog-model.js";
+import Comment from "../../models/Comment-model.js";
 
 factory.define("user", User, {
   username: factory.seq((n) => `${faker.person.firstName()}${n}`),
@@ -22,5 +23,12 @@ factory.define("blog", Blog, {
   image: () => faker.image.avatar(),
   isPublished: () => faker.datatype.boolean()
 });
+
+factory.define("comment", Comment, {
+  blog: () => faker.database.mongodbObjectId(),
+  name: () => faker.person.firstName(),
+  content: () => faker.lorem.paragraphs(),
+  isApproved: () => faker.datatype.boolean()
+})
 
 export default factory;
