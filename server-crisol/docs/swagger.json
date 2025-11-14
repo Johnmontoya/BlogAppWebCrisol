@@ -840,6 +840,310 @@
           }
         }
       }
+    },
+    "/api/v1/comment/add-comment": {
+      "post": {
+        "summary": "Guardar Comentario",
+        "tags": ["comentarios"],
+        "description": "Ingresa los datos para guardar el nuevo comentario",
+        "operationId": "registerCComment",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Comentario"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Comentario agregado en la base de datos",
+            "content": {
+              "application/json": {
+                "properties": {
+                  "valid": {
+                    "type": "string",
+                    "example": "success"
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "Comentario agregado!"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Ocurrió un error en el servidor al agregar el comentario.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/comment/blog": {
+      "get": {
+        "summary": "Obtiene los comentarios",
+        "tags": ["comentarios"],
+        "description": "Muestra los comentarios del blog publicados",
+        "operationId": "allCComment",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "ID del blog a buscar",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Todos los comentarios del blog",
+            "content": {
+              "application/json": {
+                "properties": {
+                  "valid": {
+                    "type": "string",
+                    "example": "success"
+                  },
+                  "blogs": {
+                    "items": {
+                      "$ref": "#/components/schemas/Comentarios"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Id del blog",
+            "content": {
+              "application/json": {
+                "properties": {
+                  "valid": {
+                    "type": "string",
+                    "example": "fail"
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "ID del blog es requerido"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Ocurrió un error en el servidor al obtener el blog.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/comment/comments/all": {
+      "get": {
+        "summary": "Obtiene todos los comentarios",
+        "tags": ["comentarios"],
+        "description": "Muestra los comentarios de la base de datos",
+        "operationId": "allCComments",
+        "responses": {
+          "200": {
+            "description": "Todos los comentarios",
+            "content": {
+              "application/json": {
+                "properties": {
+                  "valid": {
+                    "type": "string",
+                    "example": "success"
+                  },
+                  "blogs": {
+                    "items": {
+                      "$ref": "#/components/schemas/Comentarios"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Ocurrió un error en el servidor al obtener los comentarios.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/comment/delete-comment": {
+      "delete": {
+        "summary": "Borrar el Comentario",
+        "tags": ["comentarios"],
+        "description": "Borra el comentario de un blog por su ID",
+        "operationId": "deleteCComment",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "example": "1234567889"
+                  } 
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Comentario eliminado",
+            "content": {
+              "application/json": {
+                "properties": {
+                  "valid": {
+                    "type": "string",
+                    "example": "success"
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "Comentario eliminado!"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "El comentario no existe",
+            "content": {
+              "application/json": {
+                "properties": {
+                  "valid": {
+                    "type": "string",
+                    "example": "fail"
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "El comentario no existe"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Ocurrió un error al eliminar el comentario.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/comment/approve-comment": {
+      "put": {
+        "summary": "Actualiza el Comentario",
+        "tags": ["comentarios"],
+        "description": "Actualiza el estado de publicacion del comentario de un blog por su ID",
+        "operationId": "updateCComment",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "example": "1234567889"
+                  } 
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Comentario actualizado",
+            "content": {
+              "application/json": {
+                "properties": {
+                  "valid": {
+                    "type": "string",
+                    "example": "success"
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "Comentario actualizado!"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "El comentario no existe",
+            "content": {
+              "application/json": {
+                "properties": {
+                  "valid": {
+                    "type": "string",
+                    "example": "fail"
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "El comentario no existe"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Ocurrió un error al cambiar el estado del comentario.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -977,6 +1281,56 @@
           "isPublished": {
             "type": "boolean",
             "description": "Publicacion del blog",
+            "nullable": false,
+            "example": "True | false"
+          }
+        }
+      },
+      "Comentario": {
+        "type": "object",
+        "properties": {
+          "blog": {
+            "type": "object",
+            "description": "Ingresa el id del blog al cual se le agrega el comentario",
+            "nullable": false,
+            "example": "123456789"
+          },
+          "name": {
+            "type": "string",
+            "description": "Ingresa el nombre del usuario",
+            "nullable": false,
+            "example": "123456789"
+          },
+          "content": {
+            "type": "string",
+            "description": "Ingresa el contenido del comentario",
+            "nullable": false
+          }
+        }
+      },
+      "Comentarios": {
+        "type": "object",
+        "properties": {
+          "blog": {
+            "type": "object",
+            "description": "Ingresa el id del blog al cual se le agrega el comentario",
+            "nullable": false,
+            "example": "123456789"
+          },
+          "name": {
+            "type": "string",
+            "description": "Ingresa el nombre del usuario",
+            "nullable": false,
+            "example": "123456789"
+          },
+          "content": {
+            "type": "string",
+            "description": "Ingresa el contenido del comentario",
+            "nullable": false
+          },
+          "isApproved": {
+            "type": "boolean",
+            "description": "Muestra si se publica o se desactiva ese comentario",
             "nullable": false,
             "example": "True | false"
           }

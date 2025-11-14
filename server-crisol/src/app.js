@@ -1,13 +1,17 @@
 import express from 'express';
 import path from 'path';
 import cors from 'cors';
+import { fileURLToPath } from 'url';
 import swaggerUI from "swagger-ui-express";
 import swaggerSpec from "../docs/swagger.json" with { type: 'json' };
 import userRouter from './routes/User-route.js';
 import blogRouter from './routes/Blog-route.js';
+import commentRouter from './routes/Comment-route.js';
 import Authenticate from './middlewares/authentication-middleware.js';
 import 'dotenv/config';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const app = express();
 
 const api = process.env.API_URL;
@@ -27,8 +31,12 @@ app.use(express.json());
 app.use(Authenticate);
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 
+app.get(`/`, (req, res) => {
+    res.sendFile(path.join(__dirname, 'assets', 'index.html'));
+});
 app.use(`${api}/user`, userRouter);
 app.use(`${api}/blog`, blogRouter);
+app.use(`${api}/comment`, commentRouter);
 
 
 export default app;

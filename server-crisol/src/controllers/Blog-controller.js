@@ -187,19 +187,6 @@ export const getAllBlogsAdmin = async (req, res) => {
   }
 };
 
-export const addComment = async (req, res) => {
-  try {
-    const { blog, name, content } = req.body;
-  } catch (error) {
-    console.error("Error al agregar el comentario", error);
-    return res.status(500).json({
-      valid: "error",
-      message: "Ocurrió un error al agregar el comentario.",
-      details: error.message,
-    });
-  }
-};
-
 export const getDashboard = async (req, res) => {
   try {
     const Blogs = await BlogService.dashboardService();
