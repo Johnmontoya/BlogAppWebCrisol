@@ -15,6 +15,6 @@ blogRouter.get("/blog", getBlogComments);
 blogRouter.get("/comments/all", getAllComments);
 
 blogRouter.put("/approve-comment", LogUser, approveCommentById);
-blogRouter.delete("/delete-comment", LogUser, deleteCommentById);
+blogRouter.delete("/delete-comment/:id", LogUser, deleteCommentById);
 
 export default blogRouter;

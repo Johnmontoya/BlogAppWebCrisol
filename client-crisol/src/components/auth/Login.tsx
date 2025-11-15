@@ -1,354 +1,144 @@
-import { useState, useContext, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import toast from "react-hot-toast";
+import axios from "axios";
+import { assets } from "../../assets/assets";
 import { AuthContext, type AuthContextType } from "./AuthProvider";
 
-// Interfaz para la respuesta del API
-interface LoginResponse {
-  token: string;
-  refreshToken: string;
-  message?: string;
-}
+const Login: React.FC = () => {
+  const { token, setToken, axios: axiosInstance, navigate } = useContext(AuthContext) as AuthContextType;
 
-interface RefreshResponse {
-  token: string;
-  message?: string;
-}
-
-const Login = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
-  const { login, isAuthenticated } = useContext(AuthContext) as AuthContextType;
-  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  // Redirigir si ya está autenticado
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate("/");
-    }
-  }, [isAuthenticated, navigate]);
-
-  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setLoading(true);
     setError("");
+    setIsLoading(true);
 
     try {
-      const response = await fetch(
-        "https://backendcrisolideas.onrender.com/api/v1/user/login",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email, password }),
-        }
-      );
-
-      const data: LoginResponse = await response.json();
-
-      if (response.ok) {
-        // Guardar tokens
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("refreshToken", data.refreshToken);
-
-        // Actualizar contexto de autenticación
-        login();
-
-        // Limpiar formulario
-        setEmail("");
-        setPassword("");
-
-        // Redirigir a blogs
-        navigate("/blogs");
-      } else {
-        setError(data.message || "Invalid username or password");
-      }
-    } catch (error) {
-      console.error("Login error:", error);
-      setError("Network error. Please check your connection and try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Función para refrescar el token
-  const refreshToken = async (): Promise<string | null> => {
-    const storedRefreshToken = localStorage.getItem("refreshToken");
-
-    if (!storedRefreshToken) {
-      console.error("No refresh token available");
-      return null;
-    }
-
-    try {
-      const response = await fetch("http://localhost:3000/auth/refresh", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ refreshToken: storedRefreshToken }),
+      const { data } = await axios.post("https://backendcrisolideas.onrender.com/api/v1/user/login", {
+        email,
+        password,
       });
 
-      const data: RefreshResponse = await response.json();
-
-      if (response.ok) {
+      if (data.valid === "success") {
+        setToken(data.token);
         localStorage.setItem("token", data.token);
-        return data.token;
+        axiosInstance.defaults.headers.common["Authorization"] = data.token;
       } else {
-        console.error("Failed to refresh token");
-        // Limpiar tokens inválidos
-        localStorage.removeItem("token");
-        localStorage.removeItem("refreshToken");
-        return null;
+        toast.error(data.message);
       }
-    } catch (error) {
-      console.error("Error refreshing token:", error);
-      return null;
-    }
-  };
+    } catch (err: unknown) {
+      let errorMessage = "An unexpected error occurred.";
 
-  // Función helper para hacer peticiones autenticadas
-  async (url: string, options: RequestInit = {}): Promise<Response | null> => {
-    let token = localStorage.getItem("token");
-
-    // Si no hay token, intentar refrescar
-    if (!token) {
-      token = await refreshToken();
-      if (!token) {
-        console.error("Could not obtain valid token");
-        navigate("/login");
-        return null;
+      if (axios.isAxiosError(err)) {
+        // Si hay una respuesta del servidor (código 4xx, 5xx)
+        if (err.response && err.response.data && err.response.data.message) {
+          // El error más específico del backend
+          errorMessage = err.response.data.message;
+        } else if (err.message) {
+          // Error de red (ej: desconexión) o timeout
+          errorMessage = err.message;
+        }
+      } else if (err instanceof Error) {
+        // Si es un error de JavaScript estándar (no de Axios)
+        errorMessage = err.message;
       }
+
+      toast.error(errorMessage);
+    } finally {
+      setIsLoading(false);
     }
-
-    // Agregar el token a los headers
-    const headers = {
-      ...options.headers,
-      Authorization: `Bearer ${token}`,
-    };
-
-    const response = await fetch(url, { ...options, headers });
-
-    // Si el token expiró (401), intentar refrescar y reintentar
-    if (response.status === 401) {
-      token = await refreshToken();
-
-      if (token) {
-        const retryHeaders = {
-          ...options.headers,
-          Authorization: `Bearer ${token}`,
-        };
-        return fetch(url, { ...options, headers: retryHeaders });
-      } else {
-        // Si no se puede refrescar, redirigir a login
-        navigate("/login");
-        return null;
-      }
-    }
-
-    return response;
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-20">
-      <div className="w-full max-w-md">
-        <form
-          onSubmit={handleLogin}
-          className="bg-[#001313] shadow-lg shadow-green-300/20 p-8 rounded-xl"
-        >
-          {/* Header */}
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-gray-100 mb-2">
-              Welcome Back
-            </h2>
-            <p className="text-gray-400">Log in to your FEWV Learns account</p>
+    <div className="flex items-center justify-center min-h-screen bg-slate-900">
+      <div className="w-full max-w-sm p-6 max-md:m-6 border border-primary/30 shadow-xl shadow-primary/15 rounded-lg bg-white">
+        <div className="flex flex-col items-center justify-center">
+          <div className="w-full py-6 text-center">
+            <div className="flex justify-center">
+              <img
+                src={assets.Logo}
+                alt="Logo"
+                onClick={() => navigate("/")}
+                className="w-12 sm:w-12 cursor-pointer"
+              />
+            </div>
+            <h1 className="text-3xl font-bold">
+              <span className="text-rose-600">Crisol</span> Login
+            </h1>
+            <p className="font-light text-gray-600 mt-2">
+              Ingresa tus credenciales para ingresar al panel de administración
+            </p>
           </div>
 
-          {/* Error message */}
+          {/* Mensaje de error */}
           {error && (
-            <div className="mb-6 p-4 bg-red-500/10 border border-red-500/50 rounded-lg">
-              <p className="text-red-400 text-sm text-center">{error}</p>
+            <div className="w-full mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded text-sm">
+              {error}
             </div>
           )}
 
-          {/* Email field */}
-          <div className="mb-5">
-            <label
-              className="block text-gray-200 mb-2 font-medium"
-              htmlFor="email"
+          <form onSubmit={handleSubmit} className="mt-6 w-full text-gray-600">
+            <div className="flex flex-col mb-6">
+              <label htmlFor="email" className="mb-2 font-medium">
+                Correo Electrónico
+              </label>
+              <input
+                id="email"
+                type="email"
+                onChange={(e) => setEmail(e.target.value)}
+                value={email}
+                required
+                placeholder="ingresa tu email"
+                className="border-b-2 border-gray-300 p-2 outline-none focus:border-rose-600 transition-colors"
+                disabled={isLoading}
+              />
+            </div>
+
+            <div className="flex flex-col mb-6">
+              <label htmlFor="password" className="mb-2 font-medium">
+                Contraseña
+              </label>
+              <input
+                id="password"
+                type="password"
+                onChange={(e) => setPassword(e.target.value)}
+                value={password}
+                required
+                placeholder="ingresa tu contraseña"
+                className="border-b-2 border-gray-300 p-2 outline-none focus:border-rose-600 transition-colors"
+                disabled={isLoading}
+              />
+            </div>
+
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="w-full py-3 font-medium bg-rose-600 text-white rounded cursor-pointer hover:bg-rose-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Email
-            </label>
-            <input
-              type="text"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              disabled={loading}
-              placeholder="Enter your email"
-              className="w-full px-4 py-3 text-gray-800 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-300 focus:border-transparent transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-            />
+              {isLoading ? "Logging in..." : "Login"}
+            </button>
+          </form>
+
+          <div className="mt-4 text-center">
+            <a href="#" onClick={() => navigate("/register")} className="text-sm text-rose-600 hover:underline">
+              Registrar usuario
+            </a>
           </div>
 
-          {/* Password field */}
-          <div className="mb-6">
-            <label
-              className="block text-gray-200 mb-2 font-medium"
-              htmlFor="password"
-            >
-              Password
-            </label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              disabled={loading}
-              placeholder="Enter your password"
-              className="w-full px-4 py-3 text-gray-800 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-300 focus:border-transparent transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-            />
+          {/* Link opcional para recuperar contraseña */}
+          <div className="w-full mt-4 text-right">
+            <a href="#" className="text-sm text-rose-600 hover:underline">
+              Olvidaste tu contraseña?
+            </a>
           </div>
-
-          {/* Submit button */}
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-green-300 hover:bg-green-400 text-black font-semibold py-3 rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-green-300 focus:ring-offset-2 focus:ring-offset-[#001313] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
-          >
-            {loading ? (
-              <>
-                <svg
-                  className="animate-spin -ml-1 mr-3 h-5 w-5 text-black"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  />
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                  />
-                </svg>
-                Logging in...
-              </>
-            ) : (
-              "Log In"
-            )}
-          </button>
-
-          {/* Register link */}
-          <div className="mt-6 text-center">
-            <p className="text-gray-400 text-sm">
-              Don't have an account?{" "}
-              <Link
-                to="/register"
-                className="text-green-300 hover:text-green-400 font-medium transition-colors"
-              >
-                Register here
-              </Link>
-            </p>
-          </div>
-        </form>
+        </div>
       </div>
     </div>
   );
 };
 
-// Exportar también las funciones helper para usar en otros componentes
-export { Login as default };
-
-// Hook personalizado para usar makeAuthenticatedRequest en otros componentes
-export const useAuthenticatedRequest = () => {
-  const navigate = useNavigate();
-  const { logout } = useContext(AuthContext) as AuthContextType;
-
-  const refreshToken = async (): Promise<string | null> => {
-    const storedRefreshToken = localStorage.getItem("refreshToken");
-
-    if (!storedRefreshToken) {
-      return null;
-    }
-
-    try {
-      const response = await fetch(
-        "https://fewvlearns-kimy.onrender.com/auth/refresh",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ refreshToken: storedRefreshToken }),
-        }
-      );
-
-      const data: RefreshResponse = await response.json();
-
-      if (response.ok) {
-        localStorage.setItem("token", data.token);
-        return data.token;
-      } else {
-        localStorage.removeItem("token");
-        localStorage.removeItem("refreshToken");
-        logout();
-        return null;
-      }
-    } catch (error) {
-      console.error("Error refreshing token:", error);
-      return null;
-    }
-  };
-
-  const makeAuthenticatedRequest = async (
-    url: string,
-    options: RequestInit = {}
-  ): Promise<Response | null> => {
-    let token = localStorage.getItem("token");
-
-    if (!token) {
-      token = await refreshToken();
-      if (!token) {
-        navigate("/login");
-        return null;
-      }
-    }
-
-    const headers = {
-      ...options.headers,
-      Authorization: `Bearer ${token}`,
-    };
-
-    const response = await fetch(url, { ...options, headers });
-
-    if (response.status === 401) {
-      token = await refreshToken();
-
-      if (token) {
-        const retryHeaders = {
-          ...options.headers,
-          Authorization: `Bearer ${token}`,
-        };
-        return fetch(url, { ...options, headers: retryHeaders });
-      } else {
-        logout();
-        navigate("/login");
-        return null;
-      }
-    }
-
-    return response;
-  };
-
-  return { makeAuthenticatedRequest };
-};
+export default Login;

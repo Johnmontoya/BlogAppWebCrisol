@@ -23,7 +23,7 @@ interface Blog {
 }
 
 // Interfaz para el valor del contexto
-export interface AuthContextType {
+interface AuthContextType {
   axios: AxiosInstance;
   navigate: NavigateFunction;
   isAuthenticated: boolean;
@@ -50,7 +50,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   const fetchBlogs = async () => {
     try {
       const { data } = await axios.get('https://backendcrisolideas.onrender.com/api/v1/blog/all');
-      data.valid == "success" ? setBlogs(data.blogs) : toast.error(data.message);
+      data.valid === "success" ? setBlogs(data.blogs) : toast.error(data.message);
     } catch (error) {
       const errorMessage = axios.isAxiosError(error) 
         ? error.message 
@@ -59,15 +59,23 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   }
 
+  // Estado de carga inicial
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
   // Verificar autenticación al cargar
   useEffect(() => {
-    fetchBlogs();
-    const storedToken = localStorage.getItem('token');
-    if (storedToken) {
-      setToken(storedToken);
-      setIsAuthenticated(true);
-      axios.defaults.headers.common['Authorization'] = `${storedToken}`;
-    }
+    const initAuth = async () => {
+      const storedToken = localStorage.getItem('token');
+      if (storedToken) {
+        setToken(storedToken);
+        setIsAuthenticated(true);
+        axios.defaults.headers.common['Authorization'] = `${storedToken}`;
+      }
+      await fetchBlogs();
+      setIsLoading(false);
+    };
+    
+    initAuth();
   }, []);
 
   // Sincronizar token con axios headers
