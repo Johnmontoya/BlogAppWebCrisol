@@ -1,4 +1,5 @@
 import Blog from "../models/Blog-model.js";
+import Comment from "../models/Comment-model.js";
 
 const addBlogService = async(dataBlog) => {
     const blog = new Blog({
@@ -35,10 +36,11 @@ const getBlogAdmin = async() => {
 const dashboardService = async() => {
     const recentblogs = await Blog.find({}).sort({ createdAt: -1 }).limit(5);
     const blogs = await Blog.countDocuments();
+    const comments = await Comment.countDocuments();
     const drafts = await Blog.countDocuments();
 
     return {
-        recentblogs, blogs, drafts
+        recentblogs, blogs, comments, drafts
     }
 //    const comments = await Comment.coun
 }

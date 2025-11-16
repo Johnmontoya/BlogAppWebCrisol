@@ -1,11 +1,11 @@
 import { useContext } from "react";
 import { Outlet } from "react-router-dom";
-import { AuthContext, type AuthContextType } from '../../components/auth/AuthProvider';
+import { useAuthContext } from '../../components/auth/AuthProvider';
 import { assets } from "../../assets/assets";
 import Sidebar from "../../components/Sidebar";
 
 const Layout = () => {
-    const { axios, setToken, navigate} = useContext(AuthContext) as AuthContextType;
+    const { axios, setToken, navigate} = useAuthContext();
 
     const logout = () => {
     localStorage.removeItem('token')

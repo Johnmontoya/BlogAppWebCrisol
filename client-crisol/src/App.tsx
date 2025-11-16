@@ -10,6 +10,7 @@ import Dashboard from './pages/admin/Dashboard';
 import BlogList from './components/blog/BlogList';
 import Comments from './pages/admin/Comment';
 import './App.css';
+import AddBlog from './pages/admin/AddBlog';
 
 function App() {
   const { isAuthenticated } = useAuthContext();
@@ -27,6 +28,7 @@ function App() {
           element={isAuthenticated ? <Layout /> : <Navigate to="/login" />}
         >
           <Route index element={<Dashboard />} />
+          <Route path="addBlog" element={<AddBlog />} />
           <Route path='listBlog' element={<BlogList />} />
           <Route path="comments" element={<Comments />} />
         </Route>
