@@ -36,9 +36,12 @@ const AddBlog = () => {
 
     try {
       setLoading(true);
-      const { data } = await axiosInstance.post("https://backendcrisolideas.onrender.com/api/v1/blog/generate", {
-        prompt: title,
-      });
+      const { data } = await axiosInstance.post(
+        "https://backendcrisolideas.onrender.com/api/v1/blog/generate",
+        {
+          prompt: title,
+        }
+      );
 
       if (data.valid === "success" && quillRef.current) {
         quillRef.current.root.innerHTML = data.content;
@@ -85,7 +88,10 @@ const AddBlog = () => {
       formData.append("blog", JSON.stringify(blogData));
       formData.append("image", image!);
 
-      const { data } = await axiosInstance.post(`http://localhost:8000/api/v1/blog/add`, formData);
+      const { data } = await axiosInstance.post(
+        `https://backendcrisolideas.onrender.com/api/v1/blog/add`,
+        formData
+      );
 
       if (data.valid === "success") {
         toast.success(data.message);
@@ -138,17 +144,19 @@ const AddBlog = () => {
   return (
     <form
       onSubmit={onSubmitHandler}
-      className="flex-1 bg-blue-50/50 text-gray-600 min-h-screen overflow-auto"
+      className="w-full flex justify-center m-auto text-gray-600 mb-6"
     >
-      <div className="bg-white w-full max-w-3xl p-4 md:p-10 sm:m-10 shadow rounded">
-        <h1 className="text-2xl font-bold text-gray-800 mb-6">Agregar nuevo blog</h1>
+      <div className="flex flex-col gap-1 justify-center max-w-7xl shadow rounded">
+        <h1 className="w-full justify-center text-center text-2xl font-bold text-gray-600 mb-4">
+          Agregar nuevo blog
+        </h1>
 
         <p className="font-medium mb-2">Subir imagen</p>
         <label htmlFor="image" className="cursor-pointer">
           <img
             src={!image ? assets.Upload_area : URL.createObjectURL(image)}
             alt="Upload preview"
-            className="mt-2 h-32 w-32 object-cover rounded border-2 border-dashed border-gray-300 hover:border-rose-600 transition-colors"
+            className="mt-2 h-18 w-18 object-cover rounded border-2 border-dashed border-gray-300 hover:border-indigo-600 transition-colors"
           />
         </label>
         <input
@@ -160,25 +168,31 @@ const AddBlog = () => {
           required
         />
 
-        <p className="mt-6 font-medium mb-2">Titulo del blog</p>
-        <input
-          type="text"
-          placeholder="Ingresar el titulo"
-          required
-          className="w-full max-w-lg mt-2 p-3 border border-gray-300 outline-none rounded focus:border-rose-600 transition-colors"
-          onChange={(e) => setTitle(e.target.value)}
-          value={title}
-        />
+        <div className="flex flex-row gap-4">
+          <div className="flex flex-col gap-1">
+            <p className="mt-6 font-medium">Titulo del blog</p>
+            <input
+              type="text"
+              placeholder="Ingresar el titulo"
+              required
+              className="w-full max-w-lg mt-1 p-3 border border-gray-300 outline-none rounded focus:border-indigo-600 transition-colors"
+              onChange={(e) => setTitle(e.target.value)}
+              value={title}
+            />
+          </div>
 
-        <p className="mt-6 font-medium mb-2">Subtitulo</p>
-        <input
-          type="text"
-          placeholder="Ingresa el subtitulo del blog"
-          required
-          className="w-full max-w-lg mt-2 p-3 border border-gray-300 outline-none rounded focus:border-rose-600 transition-colors"
-          onChange={(e) => setSubTitle(e.target.value)}
-          value={subTitle}
-        />
+          <div className="flex flex-col gap-1">
+            <p className="mt-6 font-medium">Subtitulo</p>
+            <input
+              type="text"
+              placeholder="Ingresa el subtitulo del blog"
+              required
+              className="w-full max-w-lg mt-1 p-3 border border-gray-300 outline-none rounded focus:border-indigo-600 transition-colors"
+              onChange={(e) => setSubTitle(e.target.value)}
+              value={subTitle}
+            />
+          </div>
+        </div>
 
         <p className="mt-6 font-medium mb-2">Descripcion del blog</p>
         <div className="max-w-lg pb-16 sm:pb-10 relative">
@@ -187,13 +201,13 @@ const AddBlog = () => {
             ref={editorRef}
             className="min-h-[250px] border border-gray-300 rounded overflow-hidden"
           />
-          
+
           {loading && (
             <div className="absolute inset-0 flex items-center justify-center bg-black/10 rounded">
               <div className="w-8 h-8 rounded-full border-2 border-t-white animate-spin"></div>
             </div>
           )}
-          
+
           <button
             type="button"
             onClick={generateContent}
@@ -210,7 +224,7 @@ const AddBlog = () => {
             )}
           </button>
         </div>
-        
+
         {!title && (
           <p className="text-xs text-gray-500 mt-1">
             * Agrega un titulo para habilitar la IA
@@ -225,8 +239,8 @@ const AddBlog = () => {
           className="mt-2 px-4 py-2.5 text-gray-700 border border-gray-300 outline-none rounded focus:border-rose-600 transition-colors cursor-pointer"
         >
           {blogCategories.map((item, index) => (
-            <option key={index} value={item}>
-              {item}
+            <option key={index} value={item.name}>
+              {item.name}
             </option>
           ))}
         </select>
@@ -247,7 +261,7 @@ const AddBlog = () => {
         <button
           type="submit"
           disabled={isAdding}
-          className="mt-8 w-40 h-11 bg-rose-600 text-white rounded cursor-pointer text-sm font-medium hover:bg-rose-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="mt-8 w-40 h-11 bg-indigo-600 text-white rounded cursor-pointer text-sm font-medium hover:bg-rose-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isAdding ? "Agregando..." : "Agregar blog"}
         </button>

@@ -1,38 +1,67 @@
-import { assets, footer_data } from "../assets/assets";
+import { BsInstagram, BsLinkedin, BsTwitter } from 'react-icons/bs';
+import { FaFacebook } from 'react-icons/fa6';
+import { useAuthContext } from './auth/AuthProvider';
 
 const Footer = () => {
+  const { darkMode } = useAuthContext();
+  
   return (
-    <div className="px-6 md:px-16 lg:px-24 xl:px-32 bg-slate-900">
-      <div className="flex flex-col md:flex-row items-start justify-between gap-10 py-10 bordr-b border-gray-500/30 text-gray-500">
-        <div>
-          <img src={assets.Logo} alt="logo" className="w-12 sm:w-20" />
-          <p className="max-w-[410px] mt-6 text-gray-400 justify-start">
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Harum
-            debitis assumenda recusandae consectetur, est aliquid perspiciatis
-            incidunt sit suscipit magni consequuntur reiciendis itaque placeat
-            velit, minima voluptatum ducimus et eius?
-          </p>
-        </div>
-
-        <div className="flex flex-wrap justify-between w-full md:w-[45%] gap-5">
-            {footer_data.map((section, index) => (
-                <div key={index}>
-                    <h3 className="font-semibold text-base text-gray-300 md:mb-5 mb-2">{section.title}</h3>
-                    <ul className="text-sm space-y-1">
-                        {section.links.map((link, i) => (
-                            <li key={i}>
-                                <a href="#" className="hover:underline transition">{link}</a>
-                            </li>
-                        ))}
-                    </ul>
+    <footer className={`border-t ${darkMode ? 'border-gray-700' : 'border-gray-200'} py-12`}>
+            <div className="max-w-7xl mx-auto px-4">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div>
+                  <div className="flex items-center space-x-2 mb-4">
+                    <div className="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold">
+                      R
+                    </div>
+                    <span className="font-bold text-xl">CI</span>
+                  </div>
+                  <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                    Bienvenidos a uno de los pocos recursos web para refrescar el conocimiento. Explora todo tipo de contenido, entretenimiento y más.
+                  </p>
+                  <div className="flex space-x-3 mt-4">
+                    <a href="#" className="text-gray-600 hover:text-indigo-600"><FaFacebook size={20} /></a>
+                    <a href="#" className="text-gray-600 hover:text-indigo-600"><BsTwitter size={20} /></a>
+                    <a href="#" className="text-gray-600 hover:text-indigo-600"><BsInstagram size={20} /></a>
+                    <a href="#" className="text-gray-600 hover:text-indigo-600"><BsLinkedin size={20} /></a>
+                  </div>
                 </div>
-            ))}
-        </div>
-      </div>
-      <p className="py-4 text-center text-xs md:text-sm text-gray-400">
-        Copyright 2025 johnMontoya - All Right Reserved.
-      </p>
-    </div>
+    
+                <div>
+                  <h4 className="font-bold mb-4">HOME</h4>
+                  <ul className="space-y-2 text-sm">
+                    <li><a href="#" className="text-gray-600 hover:text-indigo-600">Lista Clasica</a></li>
+                    <li><a href="#" className="text-gray-600 hover:text-indigo-600">Mis Cuentas</a></li>
+                    <li><a href="#" className="text-gray-600 hover:text-indigo-600">Inversiones</a></li>
+                    <li><a href="#" className="text-gray-600 hover:text-indigo-600">Información</a></li>
+                  </ul>
+                </div>
+    
+                <div>
+                  <h4 className="font-bold mb-4">CATEGORIAS</h4>
+                  <ul className="space-y-2 text-sm">
+                    <li><a href="#" className="text-gray-600 hover:text-indigo-600">Tecnologias</a></li>
+                    <li><a href="#" className="text-gray-600 hover:text-indigo-600">Viajes</a></li>
+                    <li><a href="#" className="text-gray-600 hover:text-indigo-600">Deportes</a></li>
+                    <li><a href="#" className="text-gray-600 hover:text-indigo-600">Negocios</a></li>
+                  </ul>
+                </div>
+    
+                <div>
+                  <h4 className="font-bold mb-4">PAGINAS</h4>
+                  <ul className="space-y-2 text-sm">
+                    <li><a href="#" className="text-gray-600 hover:text-indigo-600">Nosotros</a></li>
+                    <li><a href="#" className="text-gray-600 hover:text-indigo-600">Categorias</a></li>
+                    <li><a href="#" className="text-gray-600 hover:text-indigo-600">Contactos</a></li>
+                  </ul>
+                </div>
+              </div>
+    
+              <div className={`border-t ${darkMode ? 'border-gray-700' : 'border-gray-200'} pt-8 text-center text-sm text-gray-500`}>
+                © 2025 — Revision. All Rights Reserved.
+              </div>
+            </div>
+          </footer>
   );
 };
 

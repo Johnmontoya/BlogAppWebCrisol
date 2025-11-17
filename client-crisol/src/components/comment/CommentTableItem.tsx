@@ -85,17 +85,17 @@ const CommenTableItem: React.FC<CommentTableItemProps> = ({
         <div className="space-y-2">
           <p>
             <span className="font-medium text-gray-600">Blog:</span>{" "}
-            <span className="text-gray-800">
+            <span className="text-gray-500">
               {comment.blog?.title || "Unknown Blog"}
             </span>
           </p>
           <p>
             <span className="font-medium text-gray-600">Nombre:</span>{" "}
-            <span className="text-gray-800">{name}</span>
+            <span className="text-gray-500">{name}</span>
           </p>
           <p>
             <span className="font-medium text-gray-600">Comentario:</span>{" "}
-            <span className="text-gray-800">{content}</span>
+            <span className="text-gray-500">{content}</span>
           </p>
         </div>
       </td>
@@ -129,7 +129,7 @@ const CommenTableItem: React.FC<CommentTableItemProps> = ({
               </span>
               <button
                 onClick={handleDeleteComment}
-                className="text-xs text-gray-500 hover:text-red-600 transition-colors"
+                className="w-full bg-red-500/70 border-red-900 p-1.5 px-4 rounded-full text-xs text-gray-500 hover:text-white transition-colors cursor-pointer"
                 title="Click to unapprove"
               >
                 ✕

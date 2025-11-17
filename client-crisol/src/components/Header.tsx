@@ -1,9 +1,10 @@
-import { useContext, useRef } from "react";
-import { AuthContext, type AuthContextType } from "../components/auth/AuthProvider";
+import { useRef } from "react";
 import { IoIosCloseCircleOutline } from "react-icons/io";
+import { useAuthContext } from "./auth/AuthProvider";
+import { BiSearch } from "react-icons/bi";
 
 const Header = () => {
-  const { input, setInput } = useContext(AuthContext) as AuthContextType;
+  const { input, setInput } = useAuthContext();
   const inputRef = useRef<HTMLInputElement>(null);
 
   const onSubmitHandler = async(e: React.FormEvent<HTMLFormElement>) => {
@@ -21,31 +22,31 @@ const Header = () => {
   }
 
   return (
-    <div className="mx-8 sm:mx-16 xl:mx-24 relative">
+    <div className="">
 
       <div className="text-center">        
 
-        <form onSubmit={onSubmitHandler} className="flex justify-between max-w-lg max-sm:scale-75 mx-auto border border-gray-300 bg-stone-100 rounded overglow-hidden">
+        <form onSubmit={onSubmitHandler} className="flex justify-between max-w-lg max-sm:scale-100 mx-auto border border-indigo-600 rounded-full overglow-hidden">
           <input
             type="text"
             ref={inputRef}
             placeholder="Buscar blog"
             required
-            className="w-full pl-4 outline-none"
+            className="w-40 pl-4 outline-none border-none"
           />
           <button
             type="submit"
-            className="bg-rose-600 text-stone-100 px-8 py-2 m-1.5 rounded hover:scale105 transform-all cursor-pointer"
+            className="p-2 rounded-full hover:scale105 transform-all cursor-pointer hover:text-white hover:bg-indigo-600"
           >
-            Search
+            <BiSearch size={20} />
           </button>
         </form>
       </div>
       
       <div className="text-center">
         {
-          input && <button onClick={onClear} className="absolute border font-light mt-6 text-xs py-1 px-3 rounded-sm shadow-custom-sm cursor-pointer bg-white">
-          <IoIosCloseCircleOutline size={18} />
+          input && <button onClick={onClear} className="absolute border font-light mt-6 text-xs py-1 px-3 rounded-sm shadow-custom-sm cursor-pointer bg-indigo-600">
+          <IoIosCloseCircleOutline size={18} className="text-white"/>
         </button>
         }
       </div>

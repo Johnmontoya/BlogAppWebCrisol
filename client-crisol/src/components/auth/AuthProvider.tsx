@@ -35,6 +35,8 @@ interface AuthContextType {
   setBlogs: React.Dispatch<React.SetStateAction<Blog[]>>;
   input: string;
   setInput: React.Dispatch<React.SetStateAction<string>>;
+  darkMode: boolean;
+  setDarkMode: React.Dispatch<React.SetStateAction<boolean>>;
   fetchBlogs: () => Promise<void>;
 }
 
@@ -46,6 +48,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   const [token, setToken] = useState<string | null>(null);
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [input, setInput] = useState<string>("");
+  const [darkMode, setDarkMode] = useState<boolean>(false);
 
   const fetchBlogs = async () => {
     try {
@@ -113,6 +116,8 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     setBlogs,
     input,
     setInput,
+    darkMode,
+    setDarkMode,
     fetchBlogs
   };
 

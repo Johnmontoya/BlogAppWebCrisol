@@ -26,7 +26,7 @@ interface CommentData {
 
 const Blog = () => {
   const { id } = useParams<{ id: string }>();
-  const { axios: axiosInstance } = useAuthContext();
+  const { axios: axiosInstance, darkMode } = useAuthContext();
 
   const [data, setData] = useState<BlogData | null>(null);
   const [comments, setComments] = useState<CommentData[]>([]);
@@ -129,19 +129,19 @@ const Blog = () => {
   }
 
   return (
-    <div>
+    <div className={`${darkMode ? 'bg-gray-900 text-white border-gray-700' : 'bg-white text-gray-900 border-gray-200'}`}>
       <Navbar />
       <div className="text-center mt-20 text-gray-600">
-        <p className="text-rose-600 py-4 font-medium">
+        <p className="text-indigo-600 py-4 font-medium">
           Publicado en {moment(data.createdAt).format("MMMM Do YYYY")}
         </p>
-        <h1 className="text-2xl sm:text-5xl font-semibold max-w-2xl mx-auto text-gray-800">
+        <h1 className="text-2xl sm:text-5xl font-semibold max-w-2xl mx-auto text-gray-600">
           {data.title}
         </h1>
         <h2 className="my-5 max-w-lg mx-auto text-gray-600">
           {data.subTitle}
         </h2>
-        <p className="inline-block py-1 px-4 rounded-full mb-6 border text-sm border-rose-600/35 bg-rose-600/5 font-medium text-primary">
+        <p className="inline-block py-1 px-4 rounded-full mb-6 border text-sm border-indigo-600/35 bg-indigo-600/5 font-medium text-primary">
           {data.title}
         </p>
       </div>
@@ -161,11 +161,11 @@ const Blog = () => {
               {comments.map((item, index) => (
                 <div
                   key={index}
-                  className="relative bg-rose-600/5 border border-rose-600/10 max-w-xl p-4 rounded-lg text-gray-600"
+                  className="relative bg-indigo-600/5 border border-indigo-600/10 max-w-xl p-4 rounded-lg text-gray-600"
                 >
                   <div className="flex items-center gap-2">
-                    <FaUserTie className="w-6 h-6 text-rose-600" />
-                    <p className="font-medium text-gray-800">{item.name}</p>
+                    <FaUserTie className="w-6 h-6 text-indigo-600" />
+                    <p className="font-medium text-gray-600">{item.name}</p>
                   </div>
                   <p className="text-sm max-w-md ml-8 mt-2">{item.content}</p>
                   <div className="absolute right-4 bottom-3 flex items-center gap-2 text-xs text-gray-500">
@@ -194,18 +194,18 @@ const Blog = () => {
               value={name}
               placeholder="Tu nombre"
               required
-              className="w-full p-3 border border-gray-300 rounded outline-none focus:border-rose-600 transition-colors"
+              className="w-full p-3 border border-gray-300 rounded outline-none focus:border-indigo-600 transition-colors"
             />
             <textarea
               placeholder="Tu comentario"
               onChange={(e) => setContent(e.target.value)}
               value={content}
-              className="w-full p-3 border border-gray-300 rounded outline-none h-32 focus:border-rose-600 transition-colors resize-none"
+              className="w-full p-3 border border-gray-300 rounded outline-none h-32 focus:border-indigo-600 transition-colors resize-none"
               required
             ></textarea>
             <button
               type="submit"
-              className="bg-rose-600 text-white px-6 py-2.5 rounded hover:bg-rose-700 transition-colors font-medium"
+              className="bg-indigo-600 text-white px-6 py-2.5 rounded hover:bg-indigo-700 transition-colors font-medium"
             >
               Enviar comentario
             </button>
@@ -213,19 +213,19 @@ const Blog = () => {
         </div>
 
         {/* Share Buttons */}
-        <div className="my-24 max-w-3xl mx-auto">
+        <div className="my-24 max-w-3xl mx-auto pb-10">
           <p className="font-semibold my-4 text-lg">
             Comparte este artículo en las redes sociales
           </p>
           <div className="flex gap-4">
             <button className="hover:scale-110 transition-transform">
-              <CiFacebook className="w-8 h-8 cursor-pointer hover:text-rose-600 transition-colors" />
+              <CiFacebook className="w-8 h-8 cursor-pointer hover:text-indigo-600 transition-colors" />
             </button>
             <button className="hover:scale-110 transition-transform">
-              <CiTwitter className="w-8 h-8 cursor-pointer hover:text-rose-600 transition-colors" />
+              <CiTwitter className="w-8 h-8 cursor-pointer hover:text-indigo-600 transition-colors" />
             </button>
             <button className="hover:scale-110 transition-transform">
-              <SlSocialGoogle className="w-8 h-8 cursor-pointer hover:text-rose-600 transition-colors" />
+              <SlSocialGoogle className="w-8 h-8 cursor-pointer hover:text-indigo-600 transition-colors" />
             </button>
           </div>
         </div>

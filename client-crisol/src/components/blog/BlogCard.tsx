@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "../auth/AuthProvider";
 
 interface Blog {
   _id: string | number;
@@ -13,21 +14,28 @@ interface BlogCardProps {
 }
 
 const BlogCard = ({ blog }: BlogCardProps) => {
+  const { darkMode } = useAuthContext();
   const { title, description, category, image } = blog;
   const navigate = useNavigate();
 
   return (
     <div
       onClick={() => navigate(`/blog/${blog._id}`)}
-      className="w-full rounded-lg overflow-hidden shadow hover:scale-102 hover:shadow-primary/25 duration-300 cursor-pointer"
+      className={`rounded-xl overflow-hidden shadow-lg ${
+        darkMode ? "bg-gray-800" : "bg-white"
+      }`}
     >
-      <img src={image} alt="" className="aspect-video" />
-      <span className="ml-5 mt-4 px-3 py-1 inline-block bg-rose-600/20 rounded-full text-stone-100 text-xs">
-        {category}
-      </span>
-      <div className="p-5">
-        <h5 className="mb-2 font-medium text-gray-900">{title}</h5>
-        <p className="mb-3 text-xs text-gray-600" dangerouslySetInnerHTML={{"__html": description.slice(0, 80)}}></p>
+      <div className="h-48">
+        <img src={image} className="w-full h-full" />
+      </div>
+      <div className="p-6">
+        <div className="flex gap-2 mb-3">{category}</div>
+        <p className="text-sm text-gray-500 mb-2">{title}</p>
+        <h3 className="text-xl font-bold mb-3">{title}</h3>
+        <p
+          className={darkMode ? "text-gray-400" : "text-gray-600"}
+          dangerouslySetInnerHTML={{ __html: description.slice(0, 80) }}
+        ></p>
       </div>
     </div>
   );

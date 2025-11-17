@@ -115,7 +115,7 @@ export const getBlogById = async (req, res) => {
 
 export const deleteBlog = async (req, res) => {
   try {
-    const { blogId } = req.body;
+    const { blogId } = req.params;
     const blog = await BlogService.deleteBlogIdService(blogId);
 
     if (!blog) {

@@ -1,23 +1,26 @@
-import { FaRegStar } from "react-icons/fa6";
+import { useAuthContext } from "./auth/AuthProvider";
 
 const Banner = () => {
+  const { darkMode } = useAuthContext();
+
   return (
-    <div className="w-full m-auto h-[460px] bg-slate-900">
-      <div className="max-w-7xl h-full p-10 m-auto">
-        <div className="inline-flex items-center justify-center gap-4 px-6 py-1.5 mb-4 border border-stone-200/40 bg-stone-20/10 rounded-full text-sm text-stone-200">
-        <p> Nueva funcion de IA integrada </p>
-        <FaRegStar className="w-2.5" />
-      </div>
-      <h1 className="text-3xl sm:text-6xl font-semibold sm:leading-16 text-gray-300">
-        Un blog <span className="text-rose-700"> especial </span> <br />{" "}
-        para tí
+    <section className="max-w-7xl mx-auto px-4 py-16 text-center">
+      <h1 className="text-5xl font-bold mb-4">
+        Reflexiones <span className="text-indigo-600">sinceras:</span> Historias
+        de amor,
+        <br />
+        Perdida y Crecimiento.
       </h1>
-      <p className="my-6 sm:my-8 max-w-2xl max-sm:text-xs text-gray-400 justify-start">
-        Un punto de encuentro para mentes curiosas. Información valiosa, análisis profundos e ideas que transforman. 
-        La conversación empieza ahora.
+      <p
+        className={`text-lg ${
+          darkMode ? "text-gray-400" : "text-gray-600"
+        } max-w-3xl mx-auto`}
+      >
+        Revisión: ¡Bienvenido a la fuente definitiva de nuevas perspectivas!
+        Explora contenido seleccionado para inspirar, entretener y conectar con
+        lectores de todo el mundo.
       </p>
-      </div>
-    </div>
+    </section>
   );
 };
 

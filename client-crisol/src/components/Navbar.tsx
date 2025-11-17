@@ -1,39 +1,56 @@
-import { useContext } from "react";
-import { FaArrowRightLong } from "react-icons/fa6";
-import { AuthContext, type AuthContextType } from "../components/auth/AuthProvider";
-import { assets } from "../assets/assets";
+import { useAuthContext } from "../components/auth/AuthProvider";
+import { BiMenu, BiMoon } from "react-icons/bi";
+import { GiSun } from "react-icons/gi";
 import Header from "./Header";
 
 const Navbar = () => {
-  const { token, navigate } = useContext(AuthContext) as AuthContextType;
+  const { token, navigate, darkMode, setDarkMode } = useAuthContext();
 
   return (
-    <div className="flex justify-between items-center py-5 mx-8 sm:mx-29 xl:mx-32 cursor-pointer">
-      <div className="flex items-center justify-start gap-10">
-        <img
-          src={assets.Logo}
-          alt="Logo"
-          onClick={() => navigate("/")}
-          className="w-12 sm:w-12"
-        />
-        <div className="lg:flex hidden gap-2 text-2xl font-light">
-          <h2>
-          El Crisol de las {" "}
-        </h2>
-        <span className="text-rose-600"> Ideas</span>
+    <header
+      className={`border-b ${darkMode ? "border-gray-700" : "border-gray-200"}`}
+    >
+      <div className="max-w-7xl mx-auto px-4 py-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <div className="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold cursor-pointer">
+              CI
+            </div>
+            <span className="font-bold text-xl">CRISOL DE IDEAS</span>
           </div>
+          <nav className="hidden md:flex space-x-8">
+            <a href="#" className="hover:text-indigo-600">
+              Home
+            </a>
+            <a href="#" className="hover:text-indigo-600">
+              Features
+            </a>
+            <a href="#" className="hover:text-indigo-600">
+              Nosotros
+            </a>
+            <a href="#" className="hover:text-indigo-600">
+              Contactos
+            </a>
+          </nav>          
+
+          <div className="flex items-center space-x-4">
+            <Header />       
+            <button onClick={() => setDarkMode(!darkMode)} className="p-2">
+              {darkMode ? <GiSun size={20} /> : <BiMoon size={20} />}
+            </button>
+            <button
+              onClick={() => navigate("/admin")}
+              className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700"
+            >
+              {token ? "Dashboard" : "Login"}
+            </button>
+            <button className="md:hidden p-2">
+              <BiMenu size={20} />
+            </button>
+          </div>
+        </div>
       </div>
-
-      <Header />
-
-      <button
-        className="flex items-center gap-2 rounded-full bg-rose-600 text-sm cursor-pointer text-stone-50 px-10 py-2.5"
-        onClick={() => navigate("/admin")}
-      >
-        {token ? "Dashboard" : "Login"}
-        <FaArrowRightLong className="w-3" />
-      </button>
-    </div>
+    </header>
   );
 };
 

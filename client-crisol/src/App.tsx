@@ -11,15 +11,17 @@ import BlogList from './components/blog/BlogList';
 import Comments from './pages/admin/Comment';
 import './App.css';
 import AddBlog from './pages/admin/AddBlog';
+import BlogWebsite from './pages/blog-design-react';
 
 function App() {
-  const { isAuthenticated } = useAuthContext();
+  const { isAuthenticated, darkMode } = useAuthContext();
   
   return (
-    <div>
+    <div className={`h-lh ${darkMode ? 'bg-gray-900 text-white border-gray-700' : 'bg-white text-gray-900 border-gray-200'}`}>
       <Toaster />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/test" element={<BlogWebsite />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={isAuthenticated ? <Navigate to="/admin" /> : <Login />} />
         <Route path="/blog/:id" element={<BlogId />} />

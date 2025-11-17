@@ -1,25 +1,32 @@
+import { useAuthContext } from "./auth/AuthProvider";
+
 const Newsletter = () => {
+  const { darkMode } = useAuthContext();
+  
   return (
-    <div className="flex flex-col items-center justify-center text-center space-y-2 my-32">
-      <h1 className="md:text-4xl text-2xl font-semibold">Dejanos tu email.</h1>
-      <p className="md:text-lg text-gray-500/70 pb-8">
-        Suscribete para que no te pierdas los ultimos blogs y noticias exclusivas.
-      </p>
-      <form className="flex items-center justify-between max-w-2xl w-full md:h-13 h-12 px-4">
-        <input
-          className="border border-gray-300 rounded-md h-full border-r-0 outline-none w-full rounded-r-none px-3 text-gray-500"
-          type="text"
-          placeholder="Ingresa tu email"
-          required
-        />
-        <button
-          type="submit"
-          className="md:px-12 px-8 h-full text-white bg-rose-600 hover:bg-rose-600 transition-all cursor-pointer rounded-md rounded-l-none"
-        >
-          Suscribete
-        </button>
-      </form>
-    </div>
+    <section className={`border-t ${darkMode ? 'border-gray-700' : 'border-gray-200'} py-16`}>
+        <div className="max-w-2xl mx-auto px-4 text-center">
+          <h2 className="text-3xl font-bold mb-4">Suscríbete a nuestro boletín</h2>
+          <p className={`mb-6 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+            Suscríbete a nuestro boletín por correo electrónico para recibir las últimas publicaciones directamente en tu bandeja de entrada.
+          </p>
+          <div className="flex gap-3 max-w-md mx-auto">
+            <input
+              type="email"
+              placeholder="Ingresa tu email"
+              className={`flex-1 px-4 py-3 rounded-lg border ${
+                darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-300'
+              }`}
+            />
+            <button className="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700">
+              Suscribete
+            </button>
+          </div>
+          <p className="text-xs text-gray-500 mt-4">
+            * No spam, desuscribete a cualquier hora
+          </p>
+        </div>
+      </section>
   );
 };
 

@@ -28,7 +28,7 @@ const Comments = () => {
   const [comments, setComments] = useState<Comment[]>([]);
   const [filter, setFilter] = useState<FilterType>("No aprobado");
 
-  const {axios: axiosInstance} = useAuthContext();
+  const {axios: axiosInstance, darkMode} = useAuthContext();
 
   // Función de utilidad para manejar errores de Axios
     const getErrorMessage = (err: unknown): string => {
@@ -59,7 +59,7 @@ const Comments = () => {
   );
 
   return (
-    <div className="flex-1 pt-5 px-5 sm:pt-12 sm:pl-16 bg-blue-50/50 min-h-screen">
+    <div className={`flex-1 pt-5 px-5 mb-6 sm:pt-12 sm:pl-16 ${darkMode ? 'bg-gray-900 text-white border-gray-700' : 'bg-white text-gray-900 border-gray-200'}`}>
       <div className="flex justify-between items-center max-w-6xl mb-6">
         <h1 className="text-2xl font-bold text-gray-800">Comentarios</h1>
 
@@ -68,7 +68,7 @@ const Comments = () => {
             onClick={() => setFilter("Aprobado")}
             className={`shadow-sm border rounded-full px-4 py-1.5 cursor-pointer text-xs transition-colors font-medium ${
               filter === "Aprobado" 
-                ? "text-rose-600 border-rose-600 bg-rose-50" 
+                ? "text-indigo-600 border-indigo-600 bg-indigo-50" 
                 : "text-gray-700 border-gray-300 hover:border-gray-400"
             }`}
           >
@@ -79,7 +79,7 @@ const Comments = () => {
             onClick={() => setFilter("No aprobado")}
             className={`shadow-sm border rounded-full px-4 py-1.5 cursor-pointer text-xs transition-colors font-medium ${
               filter === "No aprobado" 
-                ? "text-rose-600 border-rose-600 bg-rose-50" 
+                ? "text-indigo-600 border-indigo-600 bg-indigo-50" 
                 : "text-gray-700 border-gray-300 hover:border-gray-400"
             }`}
           >
@@ -88,9 +88,9 @@ const Comments = () => {
         </div>
       </div>
 
-      <div className="relative max-w-6xl overflow-x-auto bg-white shadow rounded-lg">
+      <div className="relative max-w-6xl overflow-x-auto shadow rounded-lg cursor-pointer">
         <table className="w-full text-sm text-gray-500">
-          <thead className="text-xs text-gray-700 text-left uppercase bg-gray-50 border-b">
+          <thead className="text-xs text-gray-700 text-left uppercase border-b">
             <tr>
               <th scope="col" className="px-6 py-3">
                 Titulo del blog y Comentarios

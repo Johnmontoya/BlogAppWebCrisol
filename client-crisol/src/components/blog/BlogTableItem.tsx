@@ -1,8 +1,9 @@
-import React, { useContext } from "react";
+import React from "react";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { AiOutlineDelete } from "react-icons/ai";
 import { useAuthContext } from "../../components/auth/AuthProvider";
+import Swal from "sweetalert2";
 
 export interface Blog {
   _id: string;
@@ -22,47 +23,66 @@ interface BlogTableItemProps {
   index: number;
 }
 
-const BlogTableItem: React.FC<BlogTableItemProps> = ({ blog, fetchBlogs, index }) => {
+const BlogTableItem: React.FC<BlogTableItemProps> = ({
+  blog,
+  fetchBlogs,
+  index,
+}) => {
   const { title, createdAt, isPublished } = blog;
   const BlogDate = new Date(createdAt);
 
   const { axios: axiosInstance } = useAuthContext();
 
   // Función de utilidad para manejar errores de Axios
-    const getErrorMessage = (err: unknown): string => {
-      if (axios.isAxiosError(err)) {
-        if (err.response?.data?.message) {
-          return err.response.data.message;
-        }
-        return err.message;
+  const getErrorMessage = (err: unknown): string => {
+    if (axios.isAxiosError(err)) {
+      if (err.response?.data?.message) {
+        return err.response.data.message;
       }
-      return "An unexpected error occurred.";
-    };
-
-  const deleteBlog = async() => {
-    const confirm = window.confirm('Estás seguro de querer eliminar este blog?')
-    if(!confirm) return
-    try {
-      const { data } = await axiosInstance.post('https://backendcrisolideas.onrender.com/api/v1/blog/delete', { blogId: blog._id})
-      if(data.valid === "success") {
-        toast.success(data.message)
-        await fetchBlogs()
-      } else {
-        toast.error(data.message)
-      }
-    } catch (error) {
-      toast.error(getErrorMessage(error));
+      return err.message;
     }
-  }
+    return "An unexpected error occurred.";
+  };
+
+  const deleteBlog = async () => {
+    Swal.fire({
+      title: "Estas seguro de eliminar ese blog?",
+      text: "La acción no se podrá revertír",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si, borralo!",
+    })
+      .then(async (result) => {
+        if (result.isConfirmed) {
+          await axiosInstance.delete(
+            `https://backendcrisolideas.onrender.com/api/v1/blog/delete/${blog._id}`
+          );
+          await fetchBlogs();
+          Swal.fire({
+            title: "Borrado!",
+            text: "Tu archivo ha sido borrado.",
+            icon: "success",
+          });
+        }
+      })
+      .catch((error) => {
+        toast.error(getErrorMessage(error));
+      });
+  };
 
   const handleTogglePublish = async () => {
     try {
-      const {data} = await axiosInstance.put('https://backendcrisolideas.onrender.com/api/v1/blog/toggle-publish', {id: blog._id})
-      if(data.valid === "success") {
-        toast.success(data.message)
-        await fetchBlogs()
+      const { data } = await axiosInstance.put(
+        "https://backendcrisolideas.onrender.com/api/v1/blog/toggle-publish",
+        { id: blog._id }
+      );
+      if (data.valid === "success") {
+        toast.success(data.message);
+        await fetchBlogs();
       } else {
-        toast.error(data.message)
+        toast.error(data.message);
       }
     } catch (error) {
       toast.error(getErrorMessage(error));
@@ -70,7 +90,7 @@ const BlogTableItem: React.FC<BlogTableItemProps> = ({ blog, fetchBlogs, index }
   };
 
   return (
-    <tr className="border-y border-gray-300 hover:bg-gray-50 transition-colors">
+    <tr className="border-y border-gray-300 hover:bg-gray-300 transition-colors">
       <th scope="row" className="px-2 py-4 font-medium text-gray-900">
         {index}
       </th>
@@ -85,8 +105,8 @@ const BlogTableItem: React.FC<BlogTableItemProps> = ({ blog, fetchBlogs, index }
           {isPublished ? "Publicado" : "No publicado"}
         </p>
       </td>
-      <td className="px-2 py-4">
-        <div className="flex text-xs gap-3">
+      <td className="px-4 py-4">
+        <div className="flex justify-between text-xs gap-3">
           <button
             onClick={handleTogglePublish}
             className={`border px-3 py-1.5 rounded cursor-pointer transition-colors hover:shadow-md ${
@@ -97,7 +117,11 @@ const BlogTableItem: React.FC<BlogTableItemProps> = ({ blog, fetchBlogs, index }
           >
             {isPublished ? "No publicado" : "Publicado"}
           </button>
-          <AiOutlineDelete size={28} onClick={deleteBlog} className="hover:scale-110 transition-all cursor-pointer" />
+          <AiOutlineDelete
+            size={28}
+            onClick={deleteBlog}
+            className="hover:scale-110 text-red-600 transition-all cursor-pointer"
+          />
         </div>
       </td>
     </tr>

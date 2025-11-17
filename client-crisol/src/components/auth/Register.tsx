@@ -1,11 +1,11 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { assets } from "../../assets/assets";
-import { AuthContext, type AuthContextType } from "./AuthProvider";
+import { useAuthContext } from "./AuthProvider";
 
 const Login: React.FC = () => {
-  const { setToken, axios: axiosInstance, navigate } = useContext(AuthContext) as AuthContextType;
+  const { setToken, axios: axiosInstance, navigate } = useAuthContext();
 
   const [username, setUsername] = useState<string>("");
   const [email, setEmail] = useState<string>("");
@@ -60,20 +60,15 @@ const Login: React.FC = () => {
     <div className="flex items-center justify-center min-h-screen bg-slate-900">
       <div className="w-full max-w-sm p-6 max-md:m-6 border border-primary/30 shadow-xl shadow-primary/15 rounded-lg bg-white">
         <div className="flex flex-col items-center justify-center">
-          <div className="w-full py-6 text-center">
-            <div className="flex justify-center">
-              <img
-                src={assets.Logo}
-                alt="Logo"
-                onClick={() => navigate("/")}
-                className="w-12 sm:w-12 cursor-pointer"
-              />
+          <div className="w-full py-6 text-center flex flex-col justify-center items-center m-auto">
+           <div onClick={() => navigate("/")} className="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold cursor-pointer">
+              CI
             </div>
-            <h1 className="text-3xl font-bold">
-              <span className="text-rose-600">Crisol</span> Login
+            <h1 className="text-3xl font-bold text-gray-700">
+              <span className="text-indigo-600">Crisol</span> Register
             </h1>
             <p className="font-light text-gray-600 mt-2">
-              Ingresa tus credenciales para ingresar al panel de administración
+              Ingresa tus credenciales para crear una cuenta en crisol de ideas
             </p>
           </div>
 
@@ -96,7 +91,7 @@ const Login: React.FC = () => {
                 value={username}
                 required
                 placeholder="ingresa tu nombre de usuario"
-                className="border-b-2 border-gray-300 p-2 outline-none focus:border-rose-600 transition-colors"
+                className="border-b-2 border-gray-300 p-2 outline-none focus:border-indigo-600 transition-colors"
                 disabled={isLoading}
               />
             </div>
@@ -112,7 +107,7 @@ const Login: React.FC = () => {
                 value={email}
                 required
                 placeholder="ingresa tu email"
-                className="border-b-2 border-gray-300 p-2 outline-none focus:border-rose-600 transition-colors"
+                className="border-b-2 border-gray-300 p-2 outline-none focus:border-indigo-600 transition-colors"
                 disabled={isLoading}
               />
             </div>
@@ -128,7 +123,7 @@ const Login: React.FC = () => {
                 value={password}
                 required
                 placeholder="ingresa tu contraseña"
-                className="border-b-2 border-gray-300 p-2 outline-none focus:border-rose-600 transition-colors"
+                className="border-b-2 border-gray-300 p-2 outline-none focus:border-indigo-600 transition-colors"
                 disabled={isLoading}
               />
             </div>
@@ -136,21 +131,21 @@ const Login: React.FC = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-3 font-medium bg-rose-600 text-white rounded cursor-pointer hover:bg-rose-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full py-3 font-medium bg-indigo-600 text-white rounded cursor-pointer hover:bg-indigo-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isLoading ? "Registrando..." : "Register"}
             </button>
           </form>
 
           <div className="mt-4 text-center">
-            <a href="#" onClick={() => navigate("/login")} className="text-sm text-rose-600 hover:underline">
+            <a href="#" onClick={() => navigate("/login")} className="text-sm text-indigo-600 hover:underline">
               Iniciar sesion
             </a>
           </div>
 
           {/* Link opcional para recuperar contraseña */}
           <div className="w-full mt-4 text-right">
-            <a href="#" className="text-sm text-rose-600 hover:underline">
+            <a href="#" className="text-sm text-indigo-600 hover:underline">
               Olvidaste tu contraseña?
             </a>
           </div>
