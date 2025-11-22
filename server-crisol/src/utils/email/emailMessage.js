@@ -23,7 +23,7 @@ export const emailRecovery = (user, uri, token) => ({
       button: {
         color: "#DC4D2F",
         text: "Cambiar contraseña",
-        link: `${uri}/user/reset-password?userId=${user.id}&token=${token}`,
+        link: `${uri}/reset-password?userId=${user.id}&token=${token}`,
       },
     },
     outro:

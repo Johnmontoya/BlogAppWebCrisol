@@ -1,61 +1,40 @@
 import React, { useContext, useState } from "react";
 import { UserContext } from "../contexts/UserContextProvider";
-import { useAuthStore } from "../store/auth";
-import token from "../lib/token";
-import { ACCESS_TOKEN_KEY } from "../config/config";
 import useInputs from "../hooks/useInputs";
-import { jwtDecode } from "jwt-decode";
-import { useLoginMutation } from "../queries/user.query";
+import { useForgotMutation } from "../queries/user.query";
 import SweetAlertas from "../components/alerts/SweetAlertas";
 
-const LoginPage = () => {
-  const { setIsLogin, setRole, navigate } = useContext(UserContext);
-  const auth = useAuthStore((state) => state.setUserData);
-  const loginUserMutation = useLoginMutation();
+const ForgotPage = () => {
+  const { navigate } = useContext(UserContext);
+  const forgotUser = useForgotMutation();
   const [error, setError] = useState({ errorInfo: "", passwordInfo: "" });
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [signInData, onChangeSignInData, setsignInData] = useInputs({
     email: "",
-    password: "",
   });
 
-  const onLogin = (event: React.FormEvent<HTMLFormElement>) => {
+  const onForgot = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
-    loginUserMutation.mutateAsync(
+    forgotUser.mutateAsync(
       {
         email: signInData.email,
-        password: signInData.password,
       },
       {
-        onSuccess: async (response: any) => {
-          token.setToken(ACCESS_TOKEN_KEY, response.data.token);
-          const decoded: any = jwtDecode(response.data.token);
-          const { role, userId } = decoded;
-
-          auth(userId, role);
-          setRole(role);
-          setIsLogin(true);
-
-          if (role === "Admin") {
-            navigate("/admin", { replace: true });
-          } else {
-            navigate("/user", { replace: true });
-          }
+        onSuccess: (response: any) => {
+          SweetAlertas.OnDialogSuccess({
+            message: response.data.message,
+          });
           setsignInData({
             email: "",
-            password: "",
           });
           setError({
             errorInfo: "",
             passwordInfo: "",
           });
           setIsLoading(false);
-          SweetAlertas.OnDialogSuccess({
-            message: "Bienvenido",
-          });
         },
-        onError: async (error: any) => {
+        onError: (error: any) => {
           setIsLoading(false);
           setError({
             errorInfo: error.response.data.error,
@@ -78,10 +57,10 @@ const LoginPage = () => {
               CI
             </div>
             <h1 className="text-3xl font-bold text-gray-700">
-              <span className="text-indigo-600">Crisol</span> Login
+              <span className="text-indigo-600">Crisol</span> Recuperar
             </h1>
             <p className="font-light text-gray-600 mt-2">
-              Ingresa tus credenciales para ingresar al panel de administración
+              Ingresa el correo electrónico con el cuál registraste tu cuenta
             </p>
           </div>
 
@@ -92,7 +71,7 @@ const LoginPage = () => {
             </div>
           )}
 
-          <form onSubmit={onLogin} className="mt-6 w-full text-gray-600">
+          <form onSubmit={onForgot} className="mt-6 w-full text-gray-600">
             <div className="flex flex-col mb-6">
               <label htmlFor="email" className="mb-2 font-medium">
                 Correo Electrónico
@@ -110,50 +89,22 @@ const LoginPage = () => {
               />
             </div>
 
-            <div className="flex flex-col mb-6">
-              <label htmlFor="password" className="mb-2 font-medium">
-                Contraseña
-              </label>
-              <input
-                id="password"
-                type="password"
-                name="password"
-                onChange={onChangeSignInData}
-                value={signInData.password}
-                required
-                placeholder="ingresa tu contraseña"
-                className="border-b-2 border-gray-300 p-2 outline-none focus:border-indigo-600 transition-colors"
-                disabled={isLoading}
-              />
-            </div>
-
             <button
               type="submit"
               disabled={isLoading}
               className="w-full py-3 font-medium bg-indigo-600 text-white rounded cursor-pointer hover:bg-indigo-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isLoading ? "Iniciando sesion..." : "Iniciar"}
+              {isLoading ? "Enviando..." : "Enviar"}
             </button>
           </form>
 
           <div className="mt-4 text-center">
             <a
               href="#"
-              onClick={() => navigate("/register")}
+              onClick={() => navigate("/login")}
               className="text-sm text-indigo-600 hover:underline"
             >
-              Registrar usuario
-            </a>
-          </div>
-
-          {/* Link opcional para recuperar contraseña */}
-          <div className="w-full mt-4 text-right">
-            <a
-              href="#"
-              onClick={() => navigate("/forgot-password")}
-              className="text-sm text-indigo-600 hover:underline"
-            >
-              Olvidaste tu contraseña?
+              Loguear usuario
             </a>
           </div>
         </div>
@@ -162,4 +113,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default ForgotPage;

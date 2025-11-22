@@ -1,9 +1,19 @@
 import type { AxiosResponse } from "axios";
-import type { IAuthResponse, ILogin, IRegister, IUserResponse } from "../../interfaces/auth";
+import type {
+  IAuthResponse,
+  IForgot,
+  ILogin,
+  IRegister,
+  IResetPassword,
+  IUserResponse,
+  IUsersResponse,
+} from "../../interfaces/auth";
 import apiClient from "../apiClient";
 import type { IResponse } from "../../interfaces/blog";
 
-export const postLogin = async (data: ILogin): Promise<AxiosResponse<IAuthResponse>> => {
+export const postLogin = async (
+  data: ILogin
+): Promise<AxiosResponse<IAuthResponse>> => {
   return await apiClient<IAuthResponse>({
     method: "post",
     url: `/api/v1/user/login`,
@@ -11,17 +21,53 @@ export const postLogin = async (data: ILogin): Promise<AxiosResponse<IAuthRespon
   });
 };
 
-export const registerUser = async(data: IRegister): Promise<AxiosResponse<IResponse>> => {
+export const registerUser = async (
+  data: IRegister
+): Promise<AxiosResponse<IResponse>> => {
   return await apiClient<IResponse>({
-    method: 'post',
+    method: "post",
     url: `/api/v1/user/register`,
-    data: data
-  })
-}
+    data: data,
+  });
+};
 
-export const getUserId = async(id: string): Promise<AxiosResponse<IUserResponse>> => {
+export const getUsers = async (): Promise<AxiosResponse<IUsersResponse>> => {
+  return await apiClient<IUsersResponse>({
+    method: "get",
+    url: `/api/v1/user/user`,
+  });
+};
+
+export const getUserId = async (
+  id: string
+): Promise<AxiosResponse<IUserResponse>> => {
   return await apiClient<IUserResponse>({
-    method: 'get',
-    url: `/api/v1/user/user/${id}`
-  })
-}
+    method: "get",
+    url: `/api/v1/user/user/${id}`,
+  });
+};
+
+export const forgotPassword = async (email: IForgot): Promise<AxiosResponse<IResponse>> => {  
+  return await apiClient<IResponse>({
+    method: "post",
+    url: `/api/v1/user/forgot`,
+    data: email,
+  });
+};
+
+export const resetPassword = async (data: IResetPassword): Promise<AxiosResponse<IResponse>> => {
+  return await apiClient<IResponse>({
+    method: "put",
+    url: `/api/v1/user/reset`,
+    data: data,
+  });
+};
+
+export const deleteUserId = async (
+  id: string
+): Promise<AxiosResponse<IResponse>> => {
+  return await apiClient<IResponse>({
+    method: "delete",
+    url: `/api/v1/user/user/${id}`,
+  });
+};

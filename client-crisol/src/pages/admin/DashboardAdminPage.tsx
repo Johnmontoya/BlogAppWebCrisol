@@ -22,7 +22,7 @@ const DashboardAdminPage = () => {
       <div
         className={`flex-1 p-4 md:p-10`}
       >
-        <div className="max-w-7xl grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <div className="max-w-7xl grid grid-cols-1 md:grid-cols-3 m-auto gap-4 mb-6">
           <div
             className={`flex items-center gap-4 ${
               darkMode ? "bg-gray-700" : "bg-white"

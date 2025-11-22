@@ -10,7 +10,7 @@ import {
   emailRecovery,
 } from "../utils/email/emailMessage.js";
 
-const uri = `${process.env.CLIENT_URL + process.env.API_URL}`;
+const uri = `${process.env.CLIENT_URL}`;
 
 export const createUser = async (req, res) => {
   try {

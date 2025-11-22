@@ -36,12 +36,14 @@ const routerMeta: RouterMetaType = {
     path: "/forgot-password",
     isShow: true,
     isAuth: false,
+    file: 'ForgotPage'
   },
   ResetPassPage: {
     name: "ResetPass",
-    path: "/reset-password",
+    path: "/reset-password?",
     isShow: true,
     isAuth: false,
+    file: "ResetPage"
   },
   ProfilePage: {
     name: "Profile",

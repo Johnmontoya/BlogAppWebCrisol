@@ -20,7 +20,23 @@ export interface IUserResponse {
   user: IUser
 }
 
+export interface IUsersResponse {
+  valid: string;
+  results: string;
+  users: IUser
+}
+
+export interface IForgot {
+  email: string;
+}
+
 export interface IUser {
   username: string;
   email: string;
+}
+
+export interface IResetPassword {
+  userId: string;
+  password: string;  
+  token: string;
 }

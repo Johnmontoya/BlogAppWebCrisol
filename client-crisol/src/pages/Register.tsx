@@ -31,12 +31,17 @@ const Register = () => {
             email: "",
             password: "",
           });
+          setError({
+            errorInfo: "",
+            passwordInfo: "",
+          });
           setIsLoading(false);
           SweetAlertas.OnDialogSuccess({
             message: response.data.message,
           });
         },
         onError: async (error: any) => {
+          setIsLoading(false);
           setError({
             errorInfo: error.response.data.error,
             passwordInfo: error.response.data.message,
