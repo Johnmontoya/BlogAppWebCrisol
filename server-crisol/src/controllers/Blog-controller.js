@@ -5,7 +5,7 @@ import BlogService from "../services/Blog-service.js";
 
 export const addBlog = async (req, res) => {
   try {
-    const { title, subTitle, description, category, isPublished } = JSON.parse(req.body.blog);
+    const { userId, title, subTitle, description, category, isPublished } = JSON.parse(req.body.blog);
     const imageFile = req.file;
 
     if (!title || !description || !category || !imageFile) {
@@ -37,6 +37,7 @@ export const addBlog = async (req, res) => {
     const image = optimizedImageUrl;
 
     let dataBlog = {
+      author: userId,
       title,
       subTitle,
       description,
@@ -72,11 +73,7 @@ export const getAllBlogs = async (req, res) => {
       });
     }
 
-    return res.status(200).json({
-      valid: "success",
-      results: blogs.length,
-      blogs,
-    });
+    return res.status(200).json(blogs);
   } catch (error) {
     console.error("Error al obtener los blogs", error);
     return res.status(500).json({
@@ -164,7 +161,8 @@ export const togglePublish = async (req, res) => {
 
 export const getAllBlogsAdmin = async (req, res) => {
   try {
-    const blogs = await BlogService.getBlogAdmin();
+    const { userId } = req.params;
+    const blogs = await BlogService.getBlogAdmin(userId);
 
     if (!blogs) {
       return res.status(404).json({

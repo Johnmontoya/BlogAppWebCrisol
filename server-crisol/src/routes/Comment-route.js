@@ -12,7 +12,7 @@ const blogRouter = express.Router();
 
 blogRouter.post("/add-comment", LogUser, addComment);
 blogRouter.get("/blog", getBlogComments);
-blogRouter.get("/comments/all", getAllComments);
+blogRouter.get("/comments/all/:userId", getAllComments);
 
 blogRouter.put("/approve-comment", LogUser, approveCommentById);
 blogRouter.delete("/delete-comment/:id", LogUser, deleteCommentById);

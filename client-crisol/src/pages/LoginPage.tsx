@@ -1,57 +1,65 @@
-import React, { useState } from "react";
-import toast from "react-hot-toast";
-import axios from "axios";
-import { assets } from "../../assets/assets";
-import { useAuthContext } from "./AuthProvider";
+import React, { useContext, useState } from "react";
+import { UserContext } from "../contexts/UserContextProvider";
+import { useAuthStore } from "../store/auth";
+import token from "../lib/token";
+import { ACCESS_TOKEN_KEY } from "../config/config";
+import useInputs from "../hooks/useInputs";
+import { jwtDecode } from "jwt-decode";
+import { useLoginMutation } from "../queries/user.query";
+import SweetAlertas from "../components/alerts/SweetAlertas";
 
-const Login: React.FC = () => {
-  const { setToken, axios: axiosInstance, navigate } = useAuthContext();
-
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [error, setError] = useState<string>("");
+const LoginPage = () => {
+  const { setIsLogin, setRole, navigate } = useContext(UserContext);
+  const auth = useAuthStore((state) => state.setUserData);
+  const loginUserMutation = useLoginMutation();
+  const [error, setError] = useState({ errorInfo: "", passwordInfo: "" });
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [signInData, onChangeSignInData, setsignInData] = useInputs({
+    email: "",
+    password: "",
+  });
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setError("");
+  const onLogin = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     setIsLoading(true);
+    loginUserMutation.mutateAsync(
+      {
+        email: signInData.email,
+        password: signInData.password,
+      },
+      {
+        onSuccess: async (response: any) => {
+          token.setToken(ACCESS_TOKEN_KEY, response.data.token);
+          const decoded: any = jwtDecode(response.data.token);
+        const { role, userId } = decoded;
 
-    try {
-      const { data } = await axios.post("https://backendcrisolideas.onrender.com/api/v1/user/login", {
-        email,
-        password,
-      });
+        auth(userId, role);
+        setRole(role);
+        setIsLogin(true);
 
-      if (data.valid === "success") {
-        setToken(data.token);
-        localStorage.setItem("token", data.token);
-        axiosInstance.defaults.headers.common["Authorization"] = data.token;
-      } else {
-        toast.error(data.message);
-      }
-    } catch (err: unknown) {
-      let errorMessage = "An unexpected error occurred.";
-
-      if (axios.isAxiosError(err)) {
-        // Si hay una respuesta del servidor (código 4xx, 5xx)
-        if (err.response && err.response.data && err.response.data.message) {
-          // El error más específico del backend
-          errorMessage = err.response.data.message;
-        } else if (err.message) {
-          // Error de red (ej: desconexión) o timeout
-          errorMessage = err.message;
+        if (role === "Admin") {
+          navigate("/admin", { replace: true });
+        } else {
+          navigate("/user", { replace: true });
         }
-      } else if (err instanceof Error) {
-        // Si es un error de JavaScript estándar (no de Axios)
-        errorMessage = err.message;
+          setsignInData({
+            email: "",
+            password: "",
+          });
+          setIsLoading(false);
+          SweetAlertas.OnDialogSuccess({
+            message: "Bienvenido",
+          });
+        },
+        onError: async (error: any) => {
+          setError({
+            errorInfo: error.response.data.error,
+            passwordInfo: error.response.data.message,
+          });
+        },
       }
-
-      toast.error(errorMessage);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    );
+  }
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-slate-900">
@@ -70,13 +78,13 @@ const Login: React.FC = () => {
           </div>
 
           {/* Mensaje de error */}
-          {error && (
+          {error.passwordInfo && (
             <div className="w-full mb-4 p-3 bg-indigo-100 border border-indigo-400 text-indigo-700 rounded text-sm">
-              {error}
+              {error.passwordInfo}
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="mt-6 w-full text-gray-600">
+          <form onSubmit={onLogin} className="mt-6 w-full text-gray-600">
             <div className="flex flex-col mb-6">
               <label htmlFor="email" className="mb-2 font-medium">
                 Correo Electrónico
@@ -84,8 +92,9 @@ const Login: React.FC = () => {
               <input
                 id="email"
                 type="email"
-                onChange={(e) => setEmail(e.target.value)}
-                value={email}
+                name="email"
+                onChange={onChangeSignInData}
+                value={signInData.email}
                 required
                 placeholder="ingresa tu email"
                 className="border-b-2 border-gray-300 p-2 outline-none focus:border-indigo-600 transition-colors"
@@ -100,8 +109,9 @@ const Login: React.FC = () => {
               <input
                 id="password"
                 type="password"
-                onChange={(e) => setPassword(e.target.value)}
-                value={password}
+                name="password"
+                onChange={onChangeSignInData}
+                value={signInData.password}
                 required
                 placeholder="ingresa tu contraseña"
                 className="border-b-2 border-gray-300 p-2 outline-none focus:border-indigo-600 transition-colors"
@@ -114,7 +124,7 @@ const Login: React.FC = () => {
               disabled={isLoading}
               className="w-full py-3 font-medium bg-indigo-600 text-white rounded cursor-pointer hover:bg-indigo-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isLoading ? "Logging in..." : "Login"}
+              {isLoading ? "Iniciando sesion..." : "Iniciar"}
             </button>
           </form>
 
@@ -136,4 +146,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+export default LoginPage;

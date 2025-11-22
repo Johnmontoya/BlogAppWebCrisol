@@ -1,3 +1,4 @@
+import Blog from "../models/Blog-model.js";
 import Comment from "../models/Comment-model.js";
 
 const addCommentService = async ({ blog, name, content }) => {
@@ -17,9 +18,12 @@ const getBlogComments = async (id) => {
   return comments;
 };
 
-const getCommentAll = async () => {
-  const comments = await Comment.find()
-    .populate("blog")
+const getCommentAll = async (userId) => {
+  const blogs = await Blog.find({ author: userId }).sort({ createdAt: -1 });
+  const blogIds = blogs.map(blog => blog._id);
+
+  const comments = await Comment.find({ blog: { $in: blogIds } })
+    .populate("blog") // Incluye la información completa del blog asociado
     .sort({ createdAt: -1 });
   return comments;
 };

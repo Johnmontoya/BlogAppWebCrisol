@@ -1,7 +1,10 @@
-import axios from "axios";
 import { CiStickyNote } from "react-icons/ci";
-import toast from "react-hot-toast";
-import { useAuthContext } from "../auth/AuthProvider";
+import {
+  useDeleteCommentMutation,
+  useStateCommentMutation,
+} from "../../queries/comment.query";
+import { useQueryClient } from "@tanstack/react-query";
+import SweetAlertas from "../alerts/SweetAlertas";
 
 // Interfaz actualizada según la estructura real de datos
 interface BlogInfo {
@@ -20,64 +23,65 @@ interface Comment {
 
 interface CommentTableItemProps {
   comment: Comment;
-  fetchComments: () => void | Promise<void>;
   index?: number; // Opcional, si quieres mostrar números
 }
 
-const CommenTableItem: React.FC<CommentTableItemProps> = ({
-  comment,
-  fetchComments,  
-}) => {
+const CommenTableItem: React.FC<CommentTableItemProps> = ({ comment }) => {
+  const queryClient = useQueryClient();
   const { createdAt, _id, name, content } = comment;
   const BlogDate = new Date(createdAt);
-
-  const {axios: axiosInstance} = useAuthContext();
-
-  // Función de utilidad para manejar errores de Axios
-  const getErrorMessage = (err: unknown): string => {
-    if (axios.isAxiosError(err)) {
-      if (err.response?.data?.message) {
-        return err.response.data.message;
-      }
-      return err.message;
-    }
-    return "An unexpected error occurred.";
-  };
+  const approveCommentMutation = useStateCommentMutation();
+  const deleteCommentMutation = useDeleteCommentMutation();
 
   const handleApproveComment = async () => {
-    try {
-      const { data } = await axiosInstance.put('https://backendcrisolideas.onrender.com/api/v1/comment/approve-comment', {id: _id})
-
-      if(data.valid === "success") {
-        toast.success(data.message)
-        await fetchComments();
-      } else {
-        toast.error(data.message)
+    approveCommentMutation.mutateAsync(
+      {
+        id: _id,
+      },
+      {
+        onSuccess: async (response: any) => {
+          await queryClient.invalidateQueries();
+          SweetAlertas.OnDialogSuccess({
+            message: response.data.message,
+          });
+        },
+        onError(error: any) {
+          console.log(error);
+        },
       }
-      
-    } catch (error) {
-      toast.error(getErrorMessage(error))
-    }
+    );
   };
 
-  const handleDeleteComment = async () => {
-    try {
-      const confirm = window.confirm('Estas seguro de querer eliminar este comentario?')
-      if(!confirm) return;
-
-      const { data } = await axiosInstance.delete(`https://backendcrisolideas.onrender.com/api/v1/comment/delete-comment/${_id}`)
-
-      if(data.valid === "success") {
-        toast.success(data.message)
-        await fetchComments();
-      } else {
-        toast.error(data.message)
+  const ConfirmDeleteBlog = () => {
+    deleteCommentMutation.mutateAsync(
+      {
+        id: _id,
+      },
+      {
+        onSuccess: async (response: any) => {
+          await queryClient.invalidateQueries();
+          SweetAlertas.OnDialogSuccess({
+            message: response.data.message,
+          });
+        },
+        onError(error: any) {
+          SweetAlertas.OnDialogFail({
+            message: error.response.data.message
+          })
+        },
       }
-      
-    } catch (error) {
-      toast.error(getErrorMessage(error))
-    }
+    );
   };
+
+  function deleteOneComment() {
+    SweetAlertas.OnDialogChoose({
+      message: `Estas seguro de eliminar el comentario ${name}`,
+      onConfirm: ConfirmDeleteBlog,
+      onCancel: Cancel,
+    });
+  }
+
+  const Cancel = () => {};
 
   return (
     <tr className="border-b border-gray-200 hover:bg-gray-50 transition-colors">
@@ -115,21 +119,21 @@ const CommenTableItem: React.FC<CommentTableItemProps> = ({
           {!comment.isApproved ? (
             <button
               onClick={handleApproveComment}
-              className="group flex items-center gap-2 px-3 py-1.5 border border-green-600 text-green-600 rounded hover:bg-green-50 transition-colors"
+              className="group flex items-center gap-2 px-3 py-1.5 border border-red-600 text-red-600 rounded hover:bg-green-50 transition-colors cursor-pointer"
               aria-label="Approve comment"
               title="Click to approve"
             >
               <CiStickyNote className="w-4 h-4" />
-              <span className="text-xs font-medium">Aprobado</span>
+              <span className="text-xs font-medium">No aprobado</span>
             </button>
           ) : (
             <div className="flex items-center gap-2">
-              <span className="inline-block text-xs border border-green-600 bg-green-100 text-green-700 rounded-full px-3 py-1 font-medium">
+              <span className="group flex items-center gap-2 px-3 py-1.5 border border-green-600 text-green-600 rounded hover:bg-green-50 transition-colors cursor-pointer">
                 Aprobados
               </span>
               <button
-                onClick={handleDeleteComment}
-                className="w-full bg-red-500/70 border-red-900 p-1.5 px-4 rounded-full text-xs text-gray-500 hover:text-white transition-colors cursor-pointer"
+                onClick={deleteOneComment}
+                className="group flex items-center gap-2 px-3 py-1.5 border border-red-600 text-red-600 rounded hover:bg-green-50 transition-colors cursor-pointer"
                 title="Click to unapprove"
               >
                 ✕

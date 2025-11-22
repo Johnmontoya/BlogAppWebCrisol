@@ -1,3 +1,4 @@
+import BlogService from "../services/Blog-service.js";
 import CommentService from "../services/Comment-service.js";
 
 export const addComment = async (req, res) => {
@@ -48,7 +49,8 @@ export const getBlogComments = async (req, res) => {
 
 export const getAllComments = async (req, res) => {
   try {
-    const comments = await CommentService.getCommentAll();
+    const { userId } = req.params;
+    const comments = await CommentService.getCommentAll(userId);
 
     return res.status(200).json({
       valid: "success",

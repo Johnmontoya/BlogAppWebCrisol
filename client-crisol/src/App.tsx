@@ -1,40 +1,72 @@
-import Register from './components/auth/Register';
-import { Route, Routes, Navigate } from 'react-router-dom';
-import Login from './components/auth/Login';
-import { Toaster } from 'react-hot-toast';
-import Home from './pages/Home';
-import BlogId from './pages/Blog';
-import { useAuthContext } from './components/auth/AuthProvider';
-import Layout from './pages/admin/Layout';
-import Dashboard from './pages/admin/Dashboard';
-import BlogList from './components/blog/BlogList';
-import Comments from './pages/admin/Comment';
-import './App.css';
-import AddBlog from './pages/admin/AddBlog';
-import BlogWebsite from './pages/blog-design-react';
+import { Route, Routes } from "react-router-dom";
+import "./App.css";
+import {
+  QueryClientProvider,
+  QueryClient,
+  useQueryErrorResetBoundary,
+} from "@tanstack/react-query";
+import UserContextProvider from "./contexts/UserContextProvider";
+import type { IRouterMeta } from "./interfaces/routerMeta";
+import routerMeta from "./interfaces/routerMeta";
+import { lazy, Suspense } from "react";
+import ProtectedRoute from "./components/protected/ProtectedRoute";
+import LoadingFallback from "./components/fallbacks/LoadingFallback";
+import { ErrorBoundary } from "react-error-boundary";
+import ErrorFallback from "./components/fallbacks/ErrorFallback";
+import Layout from "./components/Layout";
+
+const queryClient = new QueryClient();
+
+const pages = import.meta.glob("./pages/**/*.tsx");
+
+const lazyImport = (file: string) =>
+  lazy(pages[`./pages/${file}.tsx`] as () => Promise<any>);
+
+const assignRouter = Object.keys(routerMeta).map((key) => {
+  const meta = routerMeta[key];
+  const filePath = meta.file ?? key; // si no tiene "file", usa el nombre de la página
+
+  return {
+    Component: lazyImport(filePath),
+    props: meta,
+  };
+});
 
 function App() {
-  const { isAuthenticated, darkMode } = useAuthContext();
-  
+  const { reset } = useQueryErrorResetBoundary();
+
   return (
-    <div className={`h-lh ${darkMode ? 'bg-gray-900 text-white border-gray-700' : 'bg-white text-gray-900 border-gray-200'}`}>
-      <Toaster />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/test" element={<BlogWebsite />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={isAuthenticated ? <Navigate to="/admin" /> : <Login />} />
-        <Route path="/blog/:id" element={<BlogId />} />
-        <Route 
-          path="/admin" 
-          element={isAuthenticated ? <Layout /> : <Navigate to="/login" />}
-        >
-          <Route index element={<Dashboard />} />
-          <Route path="addBlog" element={<AddBlog />} />
-          <Route path='listBlog' element={<BlogList />} />
-          <Route path="comments" element={<Comments />} />
-        </Route>
-      </Routes>
+    <div>
+      <QueryClientProvider client={queryClient}>
+        <UserContextProvider>
+          <Routes>
+            <Route element={<Layout />}>
+              {assignRouter.map(({ Component, props }) => (
+                <Route
+                  key={props.path}
+                  path={props.path}
+                  element={
+                    <ProtectedRoute path={props.path}>
+                      <Suspense fallback={<LoadingFallback />}>
+                        <ErrorBoundary
+                          onReset={reset}
+                          fallbackRender={({ resetErrorBoundary }) => (
+                            <ErrorFallback
+                              resetErrorBoundary={resetErrorBoundary}
+                            />
+                          )}
+                        >
+                          <Component />
+                        </ErrorBoundary>
+                      </Suspense>
+                    </ProtectedRoute>
+                  }
+                />
+              ))}
+            </Route>
+          </Routes>
+        </UserContextProvider>
+      </QueryClientProvider>
     </div>
   );
 }

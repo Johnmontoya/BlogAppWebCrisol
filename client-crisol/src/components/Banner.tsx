@@ -1,7 +1,8 @@
-import { useAuthContext } from "./auth/AuthProvider";
+import { useContext } from "react";
+import { UserContext } from "../contexts/UserContextProvider";
 
 const Banner = () => {
-  const { darkMode } = useAuthContext();
+  const { darkMode } = useContext(UserContext);
 
   return (
     <section className="max-w-7xl mx-auto px-4 py-16 text-center">
@@ -16,9 +17,9 @@ const Banner = () => {
           darkMode ? "text-gray-400" : "text-gray-600"
         } max-w-3xl mx-auto`}
       >
-        Revisión: ¡Bienvenido a la fuente definitiva de nuevas perspectivas!
-        Explora contenido seleccionado para inspirar, entretener y conectar con
-        lectores de todo el mundo.
+        ¡Bienvenido a la fuente definitiva de perspectivas innovadoras! Explora
+        contenido seleccionado para informar, entretener e involucrar a lectores
+        de todo el mundo.
       </p>
     </section>
   );

@@ -1,20 +1,19 @@
+import { useContext } from "react";
+import Banner from "../components/Banner";
 import Blog from "../components/blog/Blog";
-import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Newsletter from "../components/Newsletter";
-import Banner from "../components/Banner";
-import { useAuthContext } from "../components/auth/AuthProvider";
+import { UserContext } from "../contexts/UserContextProvider";
 
-const Home = () => {
-  const { darkMode } = useAuthContext();
+const HomePage = () => {
+  const { darkMode } = useContext(UserContext);
 
   return (
     <div
-      className={`min-h-screen ${
+      className={`${
         darkMode ? "bg-gray-900 text-white" : "bg-white text-gray-900"
       }`}
     >
-      <Navbar />
       <Banner />
       <Blog />
       <Newsletter />
@@ -23,4 +22,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default HomePage;

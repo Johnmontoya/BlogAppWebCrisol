@@ -7,6 +7,7 @@ import swaggerSpec from "../docs/swagger.json" with { type: 'json' };
 import userRouter from './routes/User-route.js';
 import blogRouter from './routes/Blog-route.js';
 import commentRouter from './routes/Comment-route.js';
+import newsRouter from './routes/News-route.js';
 import Authenticate from './middlewares/authentication-middleware.js';
 import 'dotenv/config';
 
@@ -37,6 +38,7 @@ app.get(`/`, (req, res) => {
 app.use(`${api}/user`, userRouter);
 app.use(`${api}/blog`, blogRouter);
 app.use(`${api}/comment`, commentRouter);
+app.use(`${api}/news`, newsRouter);
 
 
 export default app;

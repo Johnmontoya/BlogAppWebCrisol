@@ -1,7 +1,7 @@
 import express from 'express'
 import { addBlog, deleteBlog, generateContent, getAllBlogs, getAllBlogsAdmin, getBlogById, getDashboard, togglePublish } from '../controllers/Blog-controller.js'; 
 import upload from '../middlewares/multer-middleware.js'
-import { LogUser } from '../middlewares/auth-middleware.js';
+import { LogAdmin, LogUser } from '../middlewares/auth-middleware.js';
 
 const blogRouter = express.Router();
 
@@ -11,20 +11,9 @@ blogRouter.get('/all', getAllBlogs);
 blogRouter.delete('/delete/:blogId', LogUser, deleteBlog);
 
 blogRouter.put('/toggle-publish', LogUser, togglePublish);
-blogRouter.get('/all-admin', LogUser, getAllBlogsAdmin);
+blogRouter.get('/all-admin/:userId', LogUser, getAllBlogsAdmin);
 
-blogRouter.get('/dashboard', LogUser, getDashboard);
-
-/*
-
-
-blogRouter.post('/add-comment', addComment);
-blogRouter.get('/comments', getBlogComments);
-blogRouter.get('/comments/all', getAllComments);
-
-blogRouter.put('/approve-comment', approceCommentById);
-blogRouter.delete('/delete-comment', deleteCommentById);
-*/
+blogRouter.get('/dashboard', LogAdmin, LogUser, getDashboard);
 
 blogRouter.post('/generate', LogUser, generateContent);
 

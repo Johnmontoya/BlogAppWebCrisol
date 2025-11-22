@@ -135,7 +135,7 @@ export const login = async (req, res) => {
         { expiresIn: "24h" }
       );
 
-      return res.status(200).header("authToken", token).json({
+      return res.status(200).header("token", token).json({
         valid: "success",
         userId: user.id,
         token: token,

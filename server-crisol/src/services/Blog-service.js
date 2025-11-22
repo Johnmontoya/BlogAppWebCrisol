@@ -3,6 +3,7 @@ import Comment from "../models/Comment-model.js";
 
 const addBlogService = async(dataBlog) => {
     const blog = new Blog({
+        author: dataBlog.author,
         title: dataBlog.title,
         subTitle: dataBlog.subTitle,
         description: dataBlog.description,
@@ -14,7 +15,7 @@ const addBlogService = async(dataBlog) => {
 }
 
 const getBlogsAll = async() => {
-    const blogs = await Blog.find();
+    const blogs = await Blog.find({isPublished: true});
     return blogs;
 }
 
@@ -28,8 +29,8 @@ const deleteBlogIdService = async(blogId) => {
     return blog;
 }
 
-const getBlogAdmin = async() => {
-    const blog = await Blog.find({}).sort({ createdAt: -1 });
+const getBlogAdmin = async(userId) => {
+    const blog = await Blog.find({author: userId}).sort({ createdAt: -1 });
     return blog;
 }
 
