@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, redirect } from "react-router-dom";
 import { UserContext } from "../contexts/UserContextProvider";
 import { BiMenu, BiMoon } from "react-icons/bi";
 import { GiSun } from "react-icons/gi";
@@ -16,9 +16,7 @@ const Layout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("auth");
     queryClient.clear();
-    setTimeout(() => {
-      window.location.reload();
-    }, 100);
+    window.location.href = "https://blog-app-web-crisol.vercel.app"
   };
 
   return (
