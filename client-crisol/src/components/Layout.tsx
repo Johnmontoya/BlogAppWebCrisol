@@ -13,10 +13,12 @@ const Layout = () => {
 
   const handleLOgout = () => {
     logout();
-    localStorage.removeItem('token');
-    localStorage.removeItem('auth');
+    localStorage.removeItem("token");
+    localStorage.removeItem("auth");
     queryClient.clear();
-    window.location.href = "/login";
+    setTimeout(() => {
+      window.location.reload();
+    }, 100);
   };
 
   return (
@@ -40,7 +42,7 @@ const Layout = () => {
               <span className="font-bold text-xl">CRISOL DE IDEAS</span>
             </div>
             <nav className="hidden md:flex space-x-8">
-              <Link to={'/verify'} className="hover:text-indigo-600">
+              <Link to={"/verify"} className="hover:text-indigo-600">
                 Home
               </Link>
               <a href="#" className="hover:text-indigo-600">
