@@ -21,15 +21,19 @@ const pages = import.meta.glob("./pages/**/*.tsx");
 const lazyImport = (file: string) =>
   lazy(pages[`./pages/${file}.tsx`] as () => Promise<any>);
 
-const assignRouter = Object.keys(routerMeta).map((key) => {
-  const meta = routerMeta[key];
-  const filePath = meta.file ?? key; // si no tiene "file", usa el nombre de la página
+// Rutas que NO necesitan Layout (auth pages)
+const authRoutes = [
+  routerMeta.LoginPage,
+  routerMeta.RegisterPage,
+  routerMeta.ForgotPage,
+  routerMeta.UserVerifyPage,
+  routerMeta.ResetPassPage,
+];
 
-  return {
-    Component: lazyImport(filePath),
-    props: meta,
-  };
-});
+// Rutas que SÍ necesitan Layout
+const layoutRoutes = Object.keys(routerMeta)
+  .map((key) => routerMeta[key])
+  .filter((route) => !authRoutes.includes(route));
 
 function App() {
   const { reset } = useQueryErrorResetBoundary();
@@ -39,13 +43,17 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <UserContextProvider>
           <Routes>
-            <Route element={<Layout />}>
-              {assignRouter.map(({ Component, props }) => (
+            {/* Rutas SIN Layout (Auth) */}
+            {authRoutes.map((meta) => {
+              const filePath = meta.file ?? meta.name;
+              const Component = lazyImport(filePath!);
+
+              return (
                 <Route
-                  key={props.path}
-                  path={props.path}
+                  key={meta.path}
+                  path={meta.path}
                   element={
-                    <ProtectedRoute path={props.path}>
+                    <ProtectedRoute path={meta.path}>
                       <Suspense fallback={<LoadingFallback />}>
                         <ErrorBoundary
                           onReset={reset}
@@ -61,7 +69,38 @@ function App() {
                     </ProtectedRoute>
                   }
                 />
-              ))}
+              );
+            })}
+
+            {/* Rutas CON Layout */}
+            <Route element={<Layout />}>
+              {layoutRoutes.map((meta) => {
+                const filePath = meta.file ?? meta.name;
+                const Component = lazyImport(filePath!);
+
+                return (
+                  <Route
+                    key={meta.path}
+                    path={meta.path}
+                    element={
+                      <ProtectedRoute path={meta.path}>
+                        <Suspense fallback={<LoadingFallback />}>
+                          <ErrorBoundary
+                            onReset={reset}
+                            fallbackRender={({ resetErrorBoundary }) => (
+                              <ErrorFallback
+                                resetErrorBoundary={resetErrorBoundary}
+                              />
+                            )}
+                          >
+                            <Component />
+                          </ErrorBoundary>
+                        </Suspense>
+                      </ProtectedRoute>
+                    }
+                  />
+                );
+              })}
             </Route>
           </Routes>
         </UserContextProvider>

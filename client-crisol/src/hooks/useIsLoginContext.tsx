@@ -10,7 +10,10 @@ const useIsLoginContext = () => {
   const [isLogin, setIsLogin] = useState(
     !!token.getToken(ACCESS_TOKEN_KEY)
   );
-  
+
+  const authToken = token.getToken(ACCESS_TOKEN_KEY);
+  const hasValidToken = authToken !== null && authToken !== undefined
+
   const [darkMode, setDarkMode] = useState<boolean>(false);
   const [input, setInput] = useState<string>("");
 
@@ -27,6 +30,8 @@ const useIsLoginContext = () => {
     navigate,
     isLogin,
     setIsLogin,
+    authToken,
+    hasValidToken,
     role,
     setRole,
     input,
@@ -37,3 +42,5 @@ const useIsLoginContext = () => {
 };
 
 export default useIsLoginContext;
+  
+  

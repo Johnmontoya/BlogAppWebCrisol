@@ -9,7 +9,7 @@ interface IProtectedRoute {
 }
 
 const ProtectedRoute = ({ children, path }: IProtectedRoute) => {
-  const { isLogin, role } = useContext(UserContext);
+  const { isLogin, role, hasValidToken } = useContext(UserContext);
 
   // -------------------------
   // 1. Buscar la ruta en routerMeta
@@ -35,7 +35,7 @@ const ProtectedRoute = ({ children, path }: IProtectedRoute) => {
   // -------------------------
   // 3. Proteger si no está logueado
   // -------------------------
-  if (!isLogin) {
+  if (!isLogin || !hasValidToken) {
     return <Navigate to={routerMeta.LoginPage.path} replace />;
   }
 

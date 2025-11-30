@@ -4,7 +4,7 @@ import { UserContext } from "../contexts/UserContextProvider";
 import useInputs from "../hooks/useInputs";
 import SweetAlertas from "../components/alerts/SweetAlertas";
 
-const Register = () => {
+const RegisterPage = () => {
   const { navigate } = useContext(UserContext);
   const createUserMutation = useRegisterUserMutation();
   const [error, setError] = useState({ errorInfo: "", passwordInfo: "" });
@@ -150,7 +150,7 @@ const Register = () => {
 
           {/* Link opcional para recuperar contraseña */}
           <div className="w-full mt-4 text-right">
-            <a href="#" className="text-sm text-indigo-600 hover:underline">
+            <a href="#" onClick={() => navigate('/forgot-password')} className="text-sm text-indigo-600 hover:underline">
               Olvidaste tu contraseña?
             </a>
           </div>
@@ -160,4 +160,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default RegisterPage;

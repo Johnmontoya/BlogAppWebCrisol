@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Link, Outlet, redirect } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { UserContext } from "../contexts/UserContextProvider";
 import { BiMenu, BiMoon } from "react-icons/bi";
 import { GiSun } from "react-icons/gi";
@@ -7,16 +7,16 @@ import { useAuthStore } from "../store/auth";
 import { useQueryClient } from "@tanstack/react-query";
 
 const Layout = () => {
-  const { navigate, darkMode, setDarkMode, isLogin } = useContext(UserContext);
+  const { navigate, darkMode, setDarkMode, hasValidToken } = useContext(UserContext);
   const logout = useAuthStore((state) => state.logout);
-  const queryClient = useQueryClient();
+  const queryClient = useQueryClient();  
 
   const handleLOgout = () => {
     logout();
     localStorage.removeItem("token");
     localStorage.removeItem("auth");
     queryClient.clear();
-    window.location.href = "https://blog-app-web-crisol.vercel.app"
+    navigate('/login')
   };
 
   return (
@@ -40,9 +40,9 @@ const Layout = () => {
               <span className="font-bold text-xl">CRISOL DE IDEAS</span>
             </div>
             <nav className="hidden md:flex space-x-8">
-              <Link to={"/verify"} className="hover:text-indigo-600">
+              <a href="#" className="hover:text-indigo-600">
                 Home
-              </Link>
+              </a>
               <a href="#" className="hover:text-indigo-600">
                 Features
               </a>
@@ -58,7 +58,7 @@ const Layout = () => {
               <button onClick={() => setDarkMode(!darkMode)} className="p-2">
                 {darkMode ? <GiSun size={20} /> : <BiMoon size={20} />}
               </button>
-              {isLogin ? (
+              {hasValidToken ? (
                 <>
                   <button
                     onClick={() => navigate("/user")}

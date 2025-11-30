@@ -1,5 +1,14 @@
 import { useContext } from "react";
-import { FcDocument, FcInspection, FcList, FcPortraitMode, FcSms, FcTemplate, FcTodoList, FcViewDetails } from "react-icons/fc";
+import {
+  FcDocument,
+  FcInspection,
+  FcList,
+  FcPortraitMode,
+  FcSms,
+  FcTemplate,
+  FcTodoList,
+  FcViewDetails,
+} from "react-icons/fc";
 import { NavLink, Outlet } from "react-router-dom";
 import { UserContext } from "../contexts/UserContextProvider";
 
