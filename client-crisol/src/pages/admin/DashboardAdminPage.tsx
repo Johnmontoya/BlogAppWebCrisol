@@ -1,4 +1,4 @@
-import { FcAbout, FcAnswers, FcFullTrash } from "react-icons/fc";
+import { FcAbout, FcAnswers, FcBusinessman, FcFullTrash } from "react-icons/fc";
 import Sidebar from "../../components/Sidebar";
 import { useContext } from "react";
 import { UserContext } from "../../contexts/UserContextProvider";
@@ -70,6 +70,23 @@ const DashboardAdminPage = () => {
               </div>
             </div>
           </div>
+
+          <div
+            className={`flex items-center gap-4 ${
+              darkMode ? "bg-gray-700" : "bg-white"
+            } p-4 rounded shadow cursor-pointer hover:scale-105 transition-all`}
+          >
+            <div>
+              <FcBusinessman size={52} />
+              <div className="flex flex-row gap-2 items-center">
+                <p className="text-xl font-semibold text-gray-900">
+                  {dashboardData?.users}
+                </p>
+                <p className="text-gray-400 font-light">Usuarios</p>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>

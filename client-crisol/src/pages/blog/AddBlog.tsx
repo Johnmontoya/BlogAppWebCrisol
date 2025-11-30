@@ -95,7 +95,7 @@ const AddBlog = () => {
     setIsAdding(true);
     generateAIMutation.mutateAsync(blogData.title, {
       onSuccess: async (response: any) => {
-         setIsAdding(false);
+        setIsAdding(false);
         if (quillRef.current) {
           quillRef.current.root.innerHTML = response.data.content;
         } else {
@@ -148,17 +148,15 @@ const AddBlog = () => {
       }`}
     >
       <Sidebar />
-      <form
-        onSubmit={CreateBlog}
-        className={`w-full pt-4 flex justify-center m-auto text-gray-600 mb-6 ${
-          darkMode ? "text-slate-100" : "text-slate-900"
-        }`}
-      >
-        <div className="flex flex-col gap-1 justify-center max-w-7xl shadow rounded">
-          <h1 className="w-full justify-center text-center text-2xl font-bold mb-4">
-            Agregar nuevo blog
-          </h1>
 
+      <div className="max-w-7xl flex flex-col m-auto my-10 px-10">
+        <h1 className="w-full justify-center text-center text-2xl font-bold mb-4">
+          Agregar nuevo blog
+        </h1>
+        <form
+          onSubmit={CreateBlog}
+          className="flex flex-col gap-1"
+        >
           <p className="font-medium mb-2">Subir imagen</p>
           <label htmlFor="image" className="cursor-pointer">
             <img
@@ -176,27 +174,27 @@ const AddBlog = () => {
             required
           />
 
-          <div className="flex flex-row gap-4">
-            <div className="flex flex-col gap-1">
+          <div className="w-full flex flex-row gap-4">
+            <div className="w-full flex flex-col gap-1">
               <p className="mt-6 font-medium">Titulo del blog</p>
               <input
                 type="text"
                 placeholder="Ingresar el titulo"
                 required
-                className="w-full max-w-lg mt-1 p-3 border border-gray-300 outline-none rounded focus:border-indigo-600 transition-colors"
+                className="w-full mt-1 p-3 border border-gray-300 outline-none rounded focus:border-indigo-600 transition-colors"
                 onChange={onChangeblogData}
                 value={blogData.title}
                 name="title"
               />
             </div>
 
-            <div className="flex flex-col gap-1">
-              <p className="mt-6 font-medium">Subtitulo</p>
+            <div className="w-full flex flex-col gap-1">
+              <p className="w-full mt-6 font-medium">Subtitulo</p>
               <input
                 type="text"
                 placeholder="Ingresa el subtitulo del blog"
                 required
-                className="w-full max-w-lg mt-1 p-3 border border-gray-300 outline-none rounded focus:border-indigo-600 transition-colors"
+                className="w-full mt-1 p-3 border border-gray-300 outline-none rounded focus:border-indigo-600 transition-colors"
                 onChange={onChangeblogData}
                 value={blogData.subTitle}
                 name="subTitle"
@@ -205,7 +203,7 @@ const AddBlog = () => {
           </div>
 
           <p className="mt-6 font-medium mb-2">Descripcion del blog</p>
-          <div className="max-w-lg pb-16 sm:pb-10 relative">
+          <div className="w-full pb-16 sm:pb-10 relative">
             {/* Contenedor del editor - Quill agregará su propia estructura */}
             <div
               ref={editorRef}
@@ -276,8 +274,8 @@ const AddBlog = () => {
           >
             {isAdding ? "Agregando..." : "Agregar blog"}
           </button>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   );
 };

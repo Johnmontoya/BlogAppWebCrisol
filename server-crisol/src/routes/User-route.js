@@ -1,6 +1,7 @@
 import express from "express";
 import {
   changePassword,
+  ChangeStateUser,
   createUser,
   deleteUser,
   forgotPassword,
@@ -8,8 +9,9 @@ import {
   getUsers,
   login,
   resetPassword,
+  VerifyUser,
 } from "../controllers/User-controller.js";
-import { LogUser } from "../middlewares/auth-middleware.js";
+import { LogAdmin, LogUser } from "../middlewares/auth-middleware.js";
 
 const router = express.Router();
 
@@ -20,6 +22,8 @@ router.post("/login", login);
 router.post("/forgot", forgotPassword);
 router.put("/reset", resetPassword);
 router.put("/change-pass", LogUser, changePassword);
+router.put("/change-state", LogAdmin, ChangeStateUser);
 router.delete('/user/:id', LogUser, deleteUser);
+router.put('/verifyuser', VerifyUser);
 
 export default router;

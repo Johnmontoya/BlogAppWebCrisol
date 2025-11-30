@@ -7,9 +7,10 @@ import type {
   IResetPassword,
   IUserResponse,
   IUsersResponse,
+  IVerify,
 } from "../../interfaces/auth";
 import apiClient from "../apiClient";
-import type { IResponse } from "../../interfaces/blog";
+import type { IResponse, IVerified } from "../../interfaces/blog";
 
 export const postLogin = async (
   data: ILogin
@@ -34,7 +35,7 @@ export const registerUser = async (
 export const getUsers = async (): Promise<AxiosResponse<IUsersResponse>> => {
   return await apiClient<IUsersResponse>({
     method: "get",
-    url: `/api/v1/user/user`,
+    url: `/api/v1/user/users`,
   });
 };
 
@@ -63,6 +64,17 @@ export const resetPassword = async (data: IResetPassword): Promise<AxiosResponse
   });
 };
 
+export const userState = async ({userId, verified}: IVerified): Promise<AxiosResponse<IResponse>> => {
+  return await apiClient<IResponse>({
+    method: "put",
+    url: `/api/v1/user/change-state`,
+    data: {
+      userId,
+      verified
+    }
+  });
+}
+
 export const deleteUserId = async (
   id: string
 ): Promise<AxiosResponse<IResponse>> => {
@@ -71,3 +83,13 @@ export const deleteUserId = async (
     url: `/api/v1/user/user/${id}`,
   });
 };
+
+export const verifyuser = async (
+  data: IVerify
+): Promise<AxiosResponse<IResponse>> => {
+  return await apiClient<IResponse>({
+    method: "put",
+    url: `/api/v1/user/verifyuser`,
+    data: data
+  });
+}

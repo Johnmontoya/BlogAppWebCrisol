@@ -6,7 +6,6 @@ import {
   useQueryErrorResetBoundary,
 } from "@tanstack/react-query";
 import UserContextProvider from "./contexts/UserContextProvider";
-import type { IRouterMeta } from "./interfaces/routerMeta";
 import routerMeta from "./interfaces/routerMeta";
 import { lazy, Suspense } from "react";
 import ProtectedRoute from "./components/protected/ProtectedRoute";

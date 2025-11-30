@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { FcDocument, FcInspection, FcList, FcPortraitMode, FcSms, FcTemplate, FcTodoList } from "react-icons/fc";
+import { FcDocument, FcInspection, FcList, FcPortraitMode, FcSms, FcTemplate, FcTodoList, FcViewDetails } from "react-icons/fc";
 import { NavLink, Outlet } from "react-router-dom";
 import { UserContext } from "../contexts/UserContextProvider";
 
@@ -8,7 +8,7 @@ const Sidebar = () => {
 
   return (
     <>
-      <div className="w-full justify-center flex flex-row pt-4 gap-2 text-gray-900">
+      <div className="m-auto max-w-7xl justify-center grid grid-cols-4 pt-4 gap-2 text-gray-900 px-4">
         {role === "Admin" ? (
           <>
             <NavLink
@@ -43,7 +43,7 @@ const Sidebar = () => {
 
             <NavLink
               end={true}
-              to={"/admin/userlist"}
+              to={"/news/add"}
               className={(isActive) =>
                 `flex justify-center items-center py-1 rounded-2xl gap-3 px-3 md:px-9 md:min-w-48 cursor-pointer ${
                   isActive && "bg-slate-300 hover:bg-slate-200"
@@ -52,7 +52,22 @@ const Sidebar = () => {
             >
               <div className="flex flex-row gap-1 justify-center items-center">
                 <FcInspection size={28} />
-                <p className="hidden md:inline-block">Noticias</p>
+                <p className="hidden md:inline-block"> Agregar Noticias</p>
+              </div>
+            </NavLink>
+
+            <NavLink
+              end={true}
+              to={"/news/list"}
+              className={(isActive) =>
+                `flex justify-center items-center py-1 rounded-2xl gap-3 px-3 md:px-9 md:min-w-48 cursor-pointer ${
+                  isActive && "bg-slate-300 hover:bg-slate-200"
+                }`
+              }
+            >
+              <div className="flex flex-row gap-1 justify-center items-center">
+                <FcViewDetails size={28} />
+                <p className="hidden md:inline-block">Lista de Noticias</p>
               </div>
             </NavLink>
           </>
@@ -62,7 +77,7 @@ const Sidebar = () => {
 
         <NavLink
           end={true}
-          to={"/blog/addblog"}
+          to={"/profile"}
           className={(isActive) =>
             `flex justify-center items-center py-1 rounded-2xl  gap-3 px-3 md:px-9 md:min-w-48 cursor-pointer ${
               isActive && "bg-slate-300 hover:bg-slate-200"

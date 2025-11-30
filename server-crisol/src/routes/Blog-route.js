@@ -15,7 +15,7 @@ blogRouter.get('/all-admin/:userId', LogUser, getAllBlogsAdmin);
 
 blogRouter.get('/dashboard', LogAdmin, LogUser, getDashboard);
 
-blogRouter.post('/generate', LogUser, generateContent);
+blogRouter.post('/generate', LogUser, LogAdmin, generateContent);
 
 blogRouter.get('/:blogId', getBlogById);
 

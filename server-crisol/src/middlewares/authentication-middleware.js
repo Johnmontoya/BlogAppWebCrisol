@@ -26,7 +26,7 @@ const Authenticate = async (req, res, next) => {
     if (!token) return next();
 
     const { decoded, expired, valid } = verify(token);
-    console.log(decoded)
+    
     if (valid && !expired) {
       req.token = decoded;
       return next();

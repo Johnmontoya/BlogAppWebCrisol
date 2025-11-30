@@ -38,9 +38,16 @@ const routerMeta: RouterMetaType = {
     isAuth: false,
     file: 'ForgotPage'
   },
+  UserVerifyPage: {
+    name: "UserVerify",
+    path: "/verify", // ← Removido el "?"
+    isShow: true,
+    isAuth: false,
+    file: 'UserVerifyPage'
+  },
   ResetPassPage: {
     name: "ResetPass",
-    path: "/reset-password?",
+    path: "/reset-password", // ← Removido el "?"
     isShow: true,
     isAuth: false,
     file: "ResetPage"
@@ -50,6 +57,7 @@ const routerMeta: RouterMetaType = {
     path: "/profile",
     isShow: true,
     isAuth: true,
+    file: 'ProfilePage'
   },
   BlogPage: {
     name: "BlogPage",
@@ -57,6 +65,13 @@ const routerMeta: RouterMetaType = {
     isShow: true,
     isCommon: true,
     file: "BlogPage",
+  },
+  UserList: {
+    name: "UserListPage",
+    path: "/admin/userlist",
+    isShow: true,
+    isCommon: true,
+    file: "UserListPage"
   },
   DashboardAdminPage: {
     name: "Admin",
@@ -74,25 +89,39 @@ const routerMeta: RouterMetaType = {
   },
   List: {
     name: "ListBlog",
-    path: "blog/listblog",
+    path: "/blog/listblog",
     isShow: true,
     isAuth: true,
     file: "blog/ListBlog",
   },
   Comments: {
     name: "Comments",
-    path: "blog/comments",
+    path: "/blog/comments",
     isShow: true,
     isAuth: true,
     file: "blog/Comments",
   },
   AddBlog: {
     name: "AddBlog",
-    path: "blog/addblog",
+    path: "/blog/addblog",
     isShow: true,
     isAuth: true,
     file: "blog/AddBlog",
   },
+  AddNews: {
+    name: "AddNews",
+    path: "/news/add",
+    isShow: true,
+    isAuth: true,
+    file: "news/AddNews",
+  },
+  ListNews: {
+    name: "ListNews",
+    path: "/news/list",
+    isShow: true,
+    isAuth: true,
+    file: "ListNewsPage"
+  }
 };
 
 export default routerMeta;

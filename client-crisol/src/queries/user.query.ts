@@ -1,6 +1,6 @@
 import { useMutation, useQueries } from "@tanstack/react-query";
-import { forgotPassword, getUserId, postLogin, registerUser, resetPassword } from "../repositories/auth/auth_repository";
-import { USER_DATA } from "../constants";
+import { deleteUserId, forgotPassword, getUserId, getUsers, postLogin, registerUser, resetPassword, userState, verifyuser } from "../repositories/auth/auth_repository";
+import { USER_DATA, USERS_DATA } from "../constants";
 
 export const useGetUserIdQueries = (userId: string) => {
   return useQueries({
@@ -13,6 +13,18 @@ export const useGetUserIdQueries = (userId: string) => {
     ],
   });
 };
+
+export const useGetUsersQueries = () => {
+  return useQueries({
+    queries: [
+      {
+        queryKey: [USERS_DATA],
+        queryFn: () => getUsers().then((response) => response.data),
+        staleTime: 20000,
+      }
+    ]
+  })
+}
 
 export const useLoginMutation = () =>
   useMutation({
@@ -32,4 +44,19 @@ export const useForgotMutation = () =>
 export const useResetMutation = () =>
   useMutation({
     mutationFn: resetPassword
+  })
+
+export const useVerifiedMutation = () =>
+  useMutation({
+    mutationFn: userState
+  })
+
+export const useDeleteMutation = () =>
+  useMutation({
+    mutationFn: deleteUserId
+  })
+
+export const useVerifyMutation = () =>
+  useMutation({
+    mutationFn: verifyuser
   })

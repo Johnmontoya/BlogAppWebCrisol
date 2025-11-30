@@ -84,7 +84,7 @@ const CommenTableItem: React.FC<CommentTableItemProps> = ({ comment }) => {
   const Cancel = () => {};
 
   return (
-    <tr className="border-b border-gray-200 hover:bg-gray-50 transition-colors">
+    <tr className="border-b border-gray-200 hover:bg-gray-200 transition-colors">
       <td className="px-6 py-4">
         <div className="space-y-2">
           <p>

@@ -16,7 +16,7 @@ const getUsers = async() => {
 }
 
 const getUserById = async(userId) => {
-    const user = await User.findById(userId).select('-password -otp -resetPasswordToken -accountVerified');
+    const user = await User.findById(userId).select('-password -resetPasswordToken -accountVerified');
     return user;
 }
 
@@ -58,6 +58,11 @@ const deleteUser = async(userId) => {
     return user;
 }
 
+const changeUser = async(userId, verified) => {
+    const user = await User.findByIdAndUpdate(userId, { accountVerified: verified }, { new: true });    
+    return user;
+}
+
 export default {
     registerUserService,
     getIsEmailExists,
@@ -67,5 +72,6 @@ export default {
     updateUser,
     updatePass,
     changePass,
-    deleteUser
+    deleteUser,
+    changeUser
 }

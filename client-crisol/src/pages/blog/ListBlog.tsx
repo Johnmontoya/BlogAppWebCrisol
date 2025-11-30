@@ -22,7 +22,7 @@ const ListBlog = () => {
       }`}
     >
       <Sidebar />
-      <div className={`flex-1 p-4 md:p-10 `}>
+      <div className={`flex-1 max-w-7xl p-4 md:p-10 m-auto`}>
         <div>
           <div className="flex items-center gap-3 m-4 mt-6 text-gray-500">
             <p>Todos tus blogs</p>

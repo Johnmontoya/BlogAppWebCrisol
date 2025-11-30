@@ -12,31 +12,35 @@ const ProtectedRoute = ({ children, path }: IProtectedRoute) => {
   const { isLogin, role } = useContext(UserContext);
 
   // -------------------------
-  // 1. Rutas públicas
+  // 1. Buscar la ruta en routerMeta
   // -------------------------
-  const publicPaths = [
-    routerMeta.LoginPage.path,
-    routerMeta.RegisterPage.path,
-    routerMeta.ForgotPage.path,
-    routerMeta.ResetPassPage.path,
-    routerMeta.HomePage.path,
-    routerMeta.BlogPage.path
-  ];
+  const currentRoute = Object.values(routerMeta).find(
+    (route) => route.path === path
+  );
+
+  // -------------------------
+  // 2. Determinar si es ruta pública
+  // -------------------------
+  // Una ruta es pública si:
+  // - isAuth === false (explícitamente no requiere auth)
+  // - isCommon === true (ruta común para todos)
+  const isPublicRoute =
+    currentRoute?.isAuth === false || currentRoute?.isCommon === true;
 
   // Si es pública → dejar pasar
-  if (publicPaths.includes(path)) {
+  if (isPublicRoute) {
     return children;
   }
 
   // -------------------------
-  // 2. Proteger si no está logueado
+  // 3. Proteger si no está logueado
   // -------------------------
   if (!isLogin) {
     return <Navigate to={routerMeta.LoginPage.path} replace />;
   }
 
   // -------------------------
-  // 3. Rutas administrativas
+  // 4. Rutas administrativas
   // -------------------------
   const isAdminRoute =
     path === routerMeta.DashboardAdminPage.path ||
@@ -47,7 +51,7 @@ const ProtectedRoute = ({ children, path }: IProtectedRoute) => {
   }
 
   // -------------------------
-  // 4. Rutas del usuario normal
+  // 5. Rutas del usuario normal
   // -------------------------
   const isUserRoute =
     path === routerMeta.DashboardUsersPage.path ||
@@ -58,7 +62,7 @@ const ProtectedRoute = ({ children, path }: IProtectedRoute) => {
   }
 
   // -------------------------
-  // 5. Si ya está logueado y quiere ir al login
+  // 6. Si ya está logueado y quiere ir al login
   // -------------------------
   if (isLogin && path === routerMeta.LoginPage.path) {
     return <Navigate to={routerMeta.HomePage.path} replace />;
@@ -68,4 +72,3 @@ const ProtectedRoute = ({ children, path }: IProtectedRoute) => {
 };
 
 export default ProtectedRoute;
-

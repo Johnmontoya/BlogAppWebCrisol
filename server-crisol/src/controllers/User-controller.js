@@ -125,6 +125,13 @@ export const login = async (req, res) => {
     const user = await UserService.getIsEmailExists(email);
     const secret = process.env.SECRET;
 
+    if(user.accountVerified === false) {
+      return res.status(400).json({
+        valid: "fail",
+        message: "Tu cuenta no ha sido verificada",
+      });
+    }
+
     if (user && bcrypt.compareSync(password, user.password)) {
       const token = jwt.sign(
         {
@@ -253,6 +260,56 @@ export const deleteUser = async(req, res) => {
 
   } catch (error) {
     console.error("Error al borrar al usuario:", error);
+    return res.status(500).json({
+      valid: "error",
+      message: "Ocurrió un error en el servidor.",
+      details: error.message,
+    });
+  }
+}
+
+export const ChangeStateUser = async(req, res) => {
+  try {
+    const { userId, verified } = req.body;
+    await UserService.changeUser(userId, verified);
+
+    return res.status(200).json({
+      valid: "success",
+      message: "Cuenta verificada",
+    });
+  } catch (error) {
+    console.error("Error al cambiar el estado:", error);
+    return res.status(500).json({
+      valid: "error",
+      message: "Ocurrió un error en el servidor.",
+      details: error.message,
+    });
+  }
+}
+
+export const VerifyUser = async(req, res) => {
+  try {
+    const { userId, otp } = req.body;
+    const user = await UserService.getUserById(userId);
+    
+    if(user.otp.toString() !== otp) {
+      return res.status(404).json({
+      valid: "fail",
+      message: "El codigo OTP no es valido",
+    });
+    }
+
+    const accountVerified = !user.accountVerified;
+
+    await UserService.changeUser(userId, accountVerified);
+
+    return res.status(200).json({
+      valid: "success",
+      message: "Cuenta verificada",
+    });
+
+  } catch (error) {
+    console.error("Error al verificar la cuenta", error);
     return res.status(500).json({
       valid: "error",
       message: "Ocurrió un error en el servidor.",

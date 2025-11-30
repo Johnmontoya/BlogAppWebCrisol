@@ -1,5 +1,6 @@
 import Blog from "../models/Blog-model.js";
 import Comment from "../models/Comment-model.js";
+import User from "../models/User-model.js";
 
 const addBlogService = async(dataBlog) => {
     const blog = new Blog({
@@ -15,7 +16,7 @@ const addBlogService = async(dataBlog) => {
 }
 
 const getBlogsAll = async() => {
-    const blogs = await Blog.find({isPublished: true});
+    const blogs = await Blog.find({isPublished: true}).populate('author', 'username');
     return blogs;
 }
 
@@ -39,11 +40,11 @@ const dashboardService = async() => {
     const blogs = await Blog.countDocuments();
     const comments = await Comment.countDocuments();
     const drafts = await Blog.countDocuments();
+    const users = await User.countDocuments();
 
     return {
-        recentblogs, blogs, comments, drafts
+        recentblogs, blogs, comments, drafts, users
     }
-//    const comments = await Comment.coun
 }
 
 export default {

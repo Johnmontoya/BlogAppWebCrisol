@@ -116,3 +116,47 @@ export const comments_data = [
     __v: 0,
   },
 ];
+
+// src/data/newsData.js
+export const newsItems = [
+  {
+    id: 'n1',
+    type: 'hero-image', // Plantilla 1: Noticia con imagen grande
+    category: 'ACTUALIDAD',
+    title: 'Descubrimiento Asombroso en Marte: Nueva Evidencia de Agua Subterránea',
+    imageUrl: 'https://via.placeholder.com/600x400/FF5733/FFFFFF?text=Marte', // Reemplaza con URL real
+    description: 'Científicos de la NASA confirman un hallazgo sin precedentes que podría cambiar nuestra comprensión de la vida extraterrestre.',
+    date: '24 Octubre 2023',
+  },
+  {
+    id: 'n2',
+    type: 'bullet-list', // Plantilla 2: Noticia con lista de puntos
+    category: 'TECNOLOGIA',
+    title: '5 Tendencias Clave en Desarrollo Web para 2024',
+    points: [
+      'IA en interfaces de usuario',
+      'Más énfasis en WebAssembly',
+      'Rise de Full-Stack Serverless',
+      'Componentes interactivos de Svelte',
+      'Realidad Aumentada en el navegador',
+    ],
+    author: 'Tech Insights',
+  },
+  {
+    id: 'n3',
+    type: 'quote-block', // Plantilla 3: Noticia con cita
+    category: 'OPINION',
+    quote: '"La sostenibilidad no es una opción, es la única estrategia de negocio viable a largo plazo."',
+    author: 'Dra. Elena Ramírez',
+    context: 'CEO de Green Solutions Corp.',
+  },
+  {
+    id: 'n4',
+    type: 'icon-card', // Plantilla 4: Tarjeta con icono
+    category: 'PRODUCTIVIDAD',
+    icon: '💡', // Puedes usar emojis o iconos de bibliotecas (FontAwesome, Heroicons)
+    title: 'Tip del Día: Técnica Pomodoro',
+    description: 'Divide tu trabajo en bloques de 25 minutos, seguidos de un breve descanso. Mejora el enfoque y reduce la fatiga.',
+  },
+  // Puedes añadir más noticias con diferentes 'types'
+];

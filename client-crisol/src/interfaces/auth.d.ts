@@ -23,7 +23,7 @@ export interface IUserResponse {
 export interface IUsersResponse {
   valid: string;
   results: string;
-  users: IUser
+  users: IUser[];
 }
 
 export interface IForgot {
@@ -31,12 +31,26 @@ export interface IForgot {
 }
 
 export interface IUser {
+  _id: string;
   username: string;
   email: string;
+  role: string;
+  accountVerified: boolean;
+  createdAt: string;
 }
 
 export interface IResetPassword {
   userId: string;
   password: string;  
   token: string;
+}
+
+export interface IUserItemProps {
+  users: IUser;
+  index: number;
+}
+
+export interface IVerify {
+  userId: String;
+  otp: String;
 }

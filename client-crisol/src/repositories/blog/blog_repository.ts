@@ -66,6 +66,6 @@ export const generateAI = async(prompt: string): Promise<AxiosResponse<IResponse
   return await apiClient<IResponse>({
     method: 'post',
     url: `/api/v1/blog/generate`,
-    data: prompt
+    data: { prompt: prompt }
   })
 }

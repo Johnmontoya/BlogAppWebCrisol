@@ -204,7 +204,8 @@ export const getDashboard = async (req, res) => {
 
 export const generateContent = async (req, res) => {
   try {
-    const { prompt } = req.body;
+    const {prompt} = req.body;
+    
     const content = await main(
       prompt +
         "Genera el contenido de una blog para este tema en un formato de texto simple"

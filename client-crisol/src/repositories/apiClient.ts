@@ -7,7 +7,7 @@ const apiClient = axios.create({
 })
 
 const logOnDev = (message: string, log?: AxiosResponse | InternalAxiosRequestConfig | AxiosError) => {
-    if(process.env.NODE_ENV === 'development'){
+    if(import.meta.env.DEV){
         console.log(message, log)
     }
 }

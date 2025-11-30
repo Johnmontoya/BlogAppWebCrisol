@@ -1,7 +1,6 @@
 export const LogUser = async (req, res, next) => {
   try {
     const user = req.token;
-    console.log(user)
     
     // Si NO hay usuario, bloquear el acceso con 401 Unauthorized
     if (!user) {
@@ -21,7 +20,6 @@ export const LogUser = async (req, res, next) => {
 export const LogAdmin = async (req, res, next) => {
   try {
     const user = req.token;
-    console.log(user)
     
     // Verificar que el usuario existe
     if (!user) {

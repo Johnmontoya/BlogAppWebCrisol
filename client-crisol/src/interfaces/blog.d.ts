@@ -1,3 +1,5 @@
+import type { IUser } from "./auth";
+
 export interface IBlogResponse {
   valid: string;
   results: number;
@@ -16,7 +18,7 @@ export interface IBlog {
 
 export interface Iblogs {
   _id: string;
-  author: string;
+  author: IUser;
   title: string;
   subTitle: string;
   description: string;
@@ -26,6 +28,7 @@ export interface Iblogs {
   createdAt: string;
   updatedAt: string;
 }
+
 export interface IDashboardResponse {
   Blogs: IDashboard
 }
@@ -34,6 +37,7 @@ export interface IDashboard {
   blogs: number;
   comments: number;
   drafts: number;
+  users: number;
   recentblogs: Iblogs[];
 }
 
@@ -46,4 +50,9 @@ interface IResponse {
   message: string;
   valid: string;
   content: string;
+}
+
+export interface IVerified {
+  userId: string;
+  verified: boolean;
 }

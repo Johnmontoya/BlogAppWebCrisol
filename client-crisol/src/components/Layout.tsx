@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import { UserContext } from "../contexts/UserContextProvider";
 import { BiMenu, BiMoon } from "react-icons/bi";
 import { GiSun } from "react-icons/gi";
@@ -40,9 +40,9 @@ const Layout = () => {
               <span className="font-bold text-xl">CRISOL DE IDEAS</span>
             </div>
             <nav className="hidden md:flex space-x-8">
-              <a href="#" className="hover:text-indigo-600">
+              <Link to={'/verify'} className="hover:text-indigo-600">
                 Home
-              </a>
+              </Link>
               <a href="#" className="hover:text-indigo-600">
                 Features
               </a>

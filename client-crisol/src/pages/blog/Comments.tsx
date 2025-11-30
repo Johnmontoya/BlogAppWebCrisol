@@ -25,19 +25,19 @@ const Comments = () => {
   }, [data.data]);
 
   const filteredComments = comments?.comments.filter((comment) =>
-    filter === "Aprobado" ? comment.isApproved : !comment.isApproved    
+    filter === "Aprobado" ? comment.isApproved : !comment.isApproved
   );
 
   return (
     <div
-      className={`flex-1 pt-5 px-5 mb-6 sm:pt-12 sm:pl-16 ${
+      className={`border-b ${
         darkMode
-          ? "bg-gray-900 text-white border-gray-700"
-          : "bg-white text-gray-900 border-gray-200"
+          ? "border-gray-700 bg-slate-900 text-slate-100"
+          : "border-gray-200 bg-slate-100 text-slate-900"
       }`}
     >
       <Sidebar />
-      <div className="flex justify-between items-center max-w-6xl mb-6">
+      <div className="flex m-auto justify-between items-center max-w-7xl mb-6">
         <div className="flex items-center gap-3 m-4 mt-6 text-gray-500">
           <p>Comentarios</p>
         </div>
@@ -51,7 +51,8 @@ const Comments = () => {
                 : "text-gray-700 border-gray-300 hover:border-gray-400"
             }`}
           >
-            Aprobado ({comments?.comments.filter((c) => c.isApproved).length || 0})
+            Aprobado (
+            {comments?.comments.filter((c) => c.isApproved).length || 0})
           </button>
 
           <button
@@ -62,12 +63,17 @@ const Comments = () => {
                 : "text-gray-700 border-gray-300 hover:border-gray-400"
             }`}
           >
-            No Aprobado ({comments?.comments.filter((c) => !c.isApproved).length || 0})
+            No Aprobado (
+            {comments?.comments.filter((c) => !c.isApproved).length || 0})
           </button>
         </div>
       </div>
 
-      <div className="relative max-w-6xl pb-10 overflow-x-auto shadow rounded-lg cursor-pointer">
+      <div
+        className={`relative max-w-7xl m-auto pb-10 mb-6 overflow-x-auto shadow rounded-lg cursor-pointer ${
+          darkMode ? "bg-gray-800" : "bg-white"
+        }`}
+      >
         {isLoading ? (
           <div className="text-center py-12 text-gray-500">
             <p className="text-lg font-medium">Cargando comentarios...</p>
