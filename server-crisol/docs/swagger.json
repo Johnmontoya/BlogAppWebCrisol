@@ -1017,7 +1017,7 @@
                   "id": {
                     "type": "string",
                     "example": "1234567889"
-                  } 
+                  }
                 }
               }
             }
@@ -1091,7 +1091,7 @@
                   "id": {
                     "type": "string",
                     "example": "1234567889"
-                  } 
+                  }
                 }
               }
             }
@@ -1134,6 +1134,44 @@
           },
           "500": {
             "description": "Ocurrió un error al cambiar el estado del comentario.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/news/all": {
+      "get": {
+        "summary": "Obtiene todos las noticias",
+        "tags": ["Noticias"],
+        "description": "Muestra todas las noticias de la base de datos",
+        "operationId": "allNews",
+        "responses": {
+          "200": {
+            "description": "Todos las noticias",
+            "content": {
+              "application/json": {
+                "properties": {
+                  "valid": {
+                    "type": "string",
+                    "example": "success"
+                  },
+                  "news": {
+                    "items": {
+                      "$ref": "#/components/schemas/NewsAll"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Ocurrió un error en el servidor al obtener las noticias.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1333,6 +1371,57 @@
             "description": "Muestra si se publica o se desactiva ese comentario",
             "nullable": false,
             "example": "True | false"
+          }
+        }
+      },
+      "NewsAll": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Selecciona el modelo del formulario para la noticia",
+            "nullable": false,
+            "example": "hero-image | bullet-list | quote-block"
+          },
+          "category": {
+            "type": "string",
+            "description": "Ingresa la categoria a la cual representa la noticia",
+            "nullable": false,
+            "example": "ACTUALIDAD"
+          },
+          "title": {
+            "type": "string",
+            "description": "Titulo de la noticia",
+            "nullable": false,
+            "example": "Descubrimiento Asombroso en Marte..."
+          },
+          "isPublished": {
+            "type": "boolean",
+            "example": "True | false"
+          },
+          "contentQuote": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContentQuote"
+              }
+            }
+          }
+        }
+      },
+      "ContentQuote": {
+        "type": "object",
+        "properties": {
+          "quoteText": {
+            "type": "string",
+            "description": "Descripcion de la noticia",
+            "nullable": false,
+            "example": "La sostenibilidad no es una opción..."
+          },
+          "context": {
+            "type": "string",
+            "description": "Nombre o entidad quien la escribe",
+            "nullable": false,
+            "example": "CEO de Green Solutions Corp."
           }
         }
       },
