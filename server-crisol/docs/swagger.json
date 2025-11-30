@@ -16,7 +16,7 @@
   },
   "servers": [
     {
-      "url": "https://backendcrisolideas.onrender.com",
+      "url": "http://localhost:8000",
       "description": "Development Server"
     }
   ],
@@ -1172,6 +1172,182 @@
           },
           "500": {
             "description": "Ocurrió un error en el servidor al obtener las noticias.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/news/add": {
+      "post": {
+        "summary": "Agrega una nueva noticia",
+        "tags": ["Noticias"],
+        "description": "Agrega una nueva noticia a la base de datos",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewsAll"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Noticia agregada",
+            "content": {
+              "application/json": {
+                "properties": {
+                  "valid": {
+                    "type": "string",
+                    "example": "success"
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "Noticia agregada"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Ocurrió un error en el servidor al agregar la noticia.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/news/statenews/{newsId}": {
+      "put": {
+        "summary": "cambia el estado de una noticia por ID",
+        "tags": ["Noticias"],
+        "description": "Cambia el estado de una noticia de la base de datos",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "newsId",
+            "in": "path",
+            "description": "ID de la noticia",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Actualiza el estado de la noticia",
+            "content": {
+              "application/json": {
+                "properties": {
+                  "valid": {
+                    "type": "string",
+                    "example": "success"
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "Noticia actualizada"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Ocurrió un error en el servidor al actualizar la noticia.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/news/delete/{newsId}": {
+      "delete": {
+        "summary": "Borrar la noticia por ID",
+        "tags": ["Noticias"],
+        "description": "Borra una noticia de la base de datos",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "newsId": {
+                    "type": "string",
+                    "example": "ID de la noticia"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Eliminacion de la noticia",
+            "content": {
+              "application/json": {
+                "properties": {
+                  "valid": {
+                    "type": "string",
+                    "example": "success"
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "Noticia eliminada"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No hay registros",
+            "content": {
+              "application/json": {
+                "properties": {
+                  "valid": {
+                    "type": "string",
+                    "example": "fail"
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "No hay noticia registrada en la base de datos."
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Ocurrió un error en el servidor al borrar la noticia.",
             "content": {
               "application/json": {
                 "schema": {
