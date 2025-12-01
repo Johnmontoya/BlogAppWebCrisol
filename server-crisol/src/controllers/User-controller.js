@@ -170,6 +170,14 @@ export const forgotPassword = async (req, res) => {
     const secret = process.env.SECRET;
 
     const user = await UserService.getIsEmailExists(email);
+
+    if (!user) {
+      return res.status(404).json({
+        valid: "fail",
+        message: "No hay usuario registrado en la base de datos.",
+      });
+    }
+    
     const token = jwt.sign({ id: user.id }, secret, { expiresIn: "1d" });
     await user.updateOne({
       resetPasswordToken: token,
