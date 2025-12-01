@@ -17,9 +17,9 @@ const Footer = () => {
           <div>
             <div className="flex items-center space-x-2 mb-4">
               <div className="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold">
-                R
+                CI
               </div>
-              <span className="font-bold text-xl">CI</span>
+              <span className="font-bold text-xl">Crisol de Ideas</span>
             </div>
             <p
               className={`text-sm ${

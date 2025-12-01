@@ -24,14 +24,10 @@ export const useGetBlogQueries = () => {
 };
 
 export const useGetBlogIdQueries = (id: string) => {
-  return useQueries({
-    queries: [
-      {
-        queryKey: [BLOG_DATA_ID],
-        queryFn: () => getBlogsId(id).then((response) => response.data),
-        staleTime: 20000,
-      },
-    ],
+  return useQuery({
+    queryKey: [BLOG_DATA_ID, id],
+    queryFn: () => getBlogsId(id).then((response) => response.data),
+    enabled: !!id,
   });
 };
 
@@ -68,10 +64,10 @@ export const useDeleteBlogMutation = () =>
 
 export const useCreateBlogMutation = () =>
   useMutation({
-    mutationFn: addBlog
-  })
+    mutationFn: addBlog,
+  });
 
 export const useGenerateAIMutation = () =>
   useMutation({
-    mutationFn: generateAI
-  })
+    mutationFn: generateAI,
+  });

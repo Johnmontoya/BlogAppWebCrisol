@@ -26,10 +26,10 @@ const BlogCard = ({ blog, author }: BlogCardProps) => {
       <div className="p-6">
         <div className="flex gap-2 mb-2 font-extralight">{category}</div>
         <p className="text-sm text-gray-500 mb-2 font-bold">{author?.username}</p>
-        <h3 className="text-xl font-bold mb-3 uppercase">{title}</h3>
+        <h3 className="text-xl font-bold mb-3 uppercase">{title.slice(0, 30)}...</h3>
         <p
-          className={darkMode ? "text-gray-400" : "text-gray-600"}
-          dangerouslySetInnerHTML={{ __html: description.slice(0, 80) }}
+          className={`${darkMode ? "text-gray-400" : "text-gray-600"}`}
+          dangerouslySetInnerHTML={{ __html: description.slice(0, 120) }}
         ></p>
         <h3 className="w-full flex justify-end text-sm font-light text-gray-600 mt-5">{moment(createdAt).fromNow()}</h3>
       </div>
