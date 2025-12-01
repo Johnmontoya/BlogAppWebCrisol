@@ -1,10 +1,8 @@
 import nodeMailer from "nodemailer";
 import mailGenerator from '../templateMail/index.js';
-import { Resend } from 'resend';
 import 'dotenv/config';
 
 export const sendEmail = async ({ email, subject, templateGenerator}) => {
-    //const resend = new Resend(process.env.RESEND_PASSWORD);
     const body = templateGenerator
 
     const transporter = nodeMailer.createTransport({
