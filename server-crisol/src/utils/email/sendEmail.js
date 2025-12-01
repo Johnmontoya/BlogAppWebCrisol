@@ -1,17 +1,20 @@
 import nodeMailer from "nodemailer";
 import mailGenerator from '../templateMail/index.js';
+import { Resend } from 'resend';
 import 'dotenv/config';
 
 export const sendEmail = async ({ email, subject, templateGenerator}) => {
-    
+    //const resend = new Resend(process.env.RESEND_PASSWORD);
     const body = templateGenerator
 
     const transporter = nodeMailer.createTransport({
-        host: process.env.SMTP_HOST,
-        port: process.env.SMTP_PORT,
+        service: 'gmail',
+        secure: true,
+        //host: process.env.GMAIL_HOST,
+        //port: process.env.GMAIL_PORT,
         auth: {
-            user: process.env.SMTP_USER,
-            pass: process.env.SMTP_PASSWORD
+            user: process.env.GMAIL_USER,
+            pass: process.env.GMAIL_PASSWORD
         },
     });
 
