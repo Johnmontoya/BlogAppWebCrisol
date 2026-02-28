@@ -8,7 +8,7 @@ export default defineConfig({
   plugins: [react(), tailwindcss(),],
   server: {
     allowedHosts: [
-      //"https://backendcrisolideas.onrender.com"
+      "https://backendcrisolideas.onrender.com"
     ]
   }
 })
