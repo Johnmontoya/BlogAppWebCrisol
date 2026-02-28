@@ -30,26 +30,29 @@ const Comments = () => {
 
   return (
     <div
-      className={`border-b ${
-        darkMode
-          ? "border-gray-700 bg-slate-900 text-slate-100"
-          : "border-gray-200 bg-slate-100 text-slate-900"
-      }`}
+      className={`border-b ${darkMode
+        ? "bg-brand-dark text-slate-100"
+        : "bg-brand-light text-slate-900"
+        }`}
     >
       <Sidebar />
       <div className="flex m-auto justify-between items-center max-w-7xl mb-6">
-        <div className="flex items-center gap-3 m-4 mt-6 text-gray-500">
-          <p>Comentarios</p>
+        <div className="mb-12 border-b border-black dark:border-zinc-800 pb-6 mt-10">
+          <h1 className="font-serif text-4xl md:text-6xl font-black tracking-tight mb-2">
+            Todos tus comentarios.
+          </h1>
+          <p className={`font-light tracking-wide ${darkMode ? 'text-slate-400' : 'text-ink-light'}`}>
+            Listado de todos tus comentarios registrados en el sistema.
+          </p>
         </div>
 
         <div className="flex gap-4">
           <button
             onClick={() => setFilter("Aprobado")}
-            className={`shadow-sm border rounded-full px-4 py-1.5 cursor-pointer text-xs transition-colors font-medium ${
-              filter === "Aprobado"
-                ? "text-indigo-600 border-indigo-600 bg-indigo-50"
-                : "text-gray-700 border-gray-300 hover:border-gray-400"
-            }`}
+            className={`shadow-sm border px-4 py-1.5 cursor-pointer text-xs transition-colors font-medium ${filter === "Aprobado"
+              ? "text-indigo-600 border-indigo-600 bg-indigo-50"
+              : "text-gray-700 border-gray-300 hover:border-gray-400"
+              }`}
           >
             Aprobado (
             {comments?.comments.filter((c) => c.isApproved).length || 0})
@@ -57,11 +60,10 @@ const Comments = () => {
 
           <button
             onClick={() => setFilter("No aprobado")}
-            className={`shadow-sm border rounded-full px-4 py-1.5 cursor-pointer text-xs transition-colors font-medium ${
-              filter === "No aprobado"
-                ? "text-indigo-600 border-indigo-600 bg-indigo-50"
-                : "text-gray-700 border-gray-300 hover:border-gray-400"
-            }`}
+            className={`shadow-sm border px-4 py-1.5 cursor-pointer text-xs transition-colors font-medium ${filter === "No aprobado"
+              ? "text-indigo-600 border-indigo-600 bg-indigo-50"
+              : "text-gray-700 border-gray-300 hover:border-gray-400"
+              }`}
           >
             No Aprobado (
             {comments?.comments.filter((c) => !c.isApproved).length || 0})
@@ -70,9 +72,8 @@ const Comments = () => {
       </div>
 
       <div
-        className={`relative max-w-7xl m-auto pb-10 mb-6 overflow-x-auto shadow rounded-lg cursor-pointer ${
-          darkMode ? "bg-gray-800" : "bg-white"
-        }`}
+        className={`relative max-w-7xl mx-auto mb-10 overflow-x-auto shadow scrollbar-hide ${darkMode ? "bg-zinc-900" : "bg-white"
+          }`}
       >
         {isLoading ? (
           <div className="text-center py-12 text-gray-500">
@@ -80,16 +81,16 @@ const Comments = () => {
           </div>
         ) : (
           <>
-            <table className="w-full text-sm text-gray-500">
-              <thead className="text-xs text-gray-700 text-left uppercase border-b">
-                <tr>
-                  <th scope="col" className="px-6 py-3">
+            <table className={`w-full text-sm ${darkMode ? "text-slate-50" : "text-slate-950"}`}>
+              <thead className="text-xs text-gray-500 text-left uppercase">
+                <tr className="font-serif">
+                  <th scope="col" className="p-5 text-left text-sm leading-6 font-semibold capitalize">
                     Titulo del blog y Comentarios
                   </th>
-                  <th scope="col" className="px-6 py-3 max-sm:hidden">
+                  <th scope="col" className="p-5 text-left text-sm leading-6 font-semibold capitalize">
                     Fecha
                   </th>
-                  <th scope="col" className="px-6 py-3">
+                  <th scope="col" className="p-5 text-left text-sm leading-6 font-semibold capitalize">
                     Acciones
                   </th>
                 </tr>

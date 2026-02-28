@@ -16,7 +16,7 @@ const UserVerifyPage = () => {
   const [error, setError] = useState({ errorInfo: "", passwordInfo: "" });
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [otp, setOtp] = useState<string[]>(["", "", "", "", "", ""]);
-  
+
   // Referencias para cada input
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
@@ -51,7 +51,7 @@ const UserVerifyPage = () => {
   const handlePaste = (e: React.ClipboardEvent) => {
     e.preventDefault();
     const pastedData = e.clipboardData.getData("text").slice(0, 6);
-    
+
     // Solo si son números
     if (!/^\d+$/.test(pastedData)) return;
 
@@ -77,9 +77,9 @@ const UserVerifyPage = () => {
 
     // Validar que todos los campos estén llenos
     if (otpCode.length !== 6) {
-      setError({ 
-        errorInfo: "", 
-        passwordInfo: "Por favor ingresa el código completo de 6 dígitos" 
+      setError({
+        errorInfo: "",
+        passwordInfo: "Por favor ingresa el código completo de 6 dígitos"
       });
       setIsLoading(false);
       return;
@@ -97,9 +97,9 @@ const UserVerifyPage = () => {
         navigate('/login')
       },
       onError: (error: any) => {
-        setError({ 
-          errorInfo: "", 
-          passwordInfo: error.response.data.message 
+        setError({
+          errorInfo: "",
+          passwordInfo: error.response.data.message
         });
         setIsLoading(false);
       }
@@ -107,18 +107,18 @@ const UserVerifyPage = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-slate-900">
+    <div className="flex items-center justify-center min-h-screen bg-zinc-900">
       <div className="w-full max-w-sm p-6 max-md:m-6 border border-indigo-600/30 shadow-xl shadow-indigo-600/15 rounded-lg bg-white">
         <div className="flex flex-col items-center justify-center">
           <div className="w-full py-6 text-center flex flex-col justify-center items-center m-auto">
             <div
               onClick={() => navigate("/")}
-              className="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold cursor-pointer hover:bg-indigo-700 transition-colors"
+              className="w-16 h-16 flex items-center justify-center border border-zinc-600 font-serif text-3xl cursor-pointer hover:bg-brand-light hover:text-ink transition-colors"
             >
               CI
             </div>
             <h1 className="text-3xl font-bold text-gray-700">
-              <span className="text-indigo-600">Crisol</span> Verificación
+              <span className="text-orange-600">Crisol</span> Verificación
             </h1>
             <p className="font-light text-gray-600 mt-2">
               Ingresa el código enviado a tu correo electrónico
@@ -146,8 +146,8 @@ const UserVerifyPage = () => {
                   onKeyDown={(e) => handleKeyDown(index, e)}
                   onPaste={handlePaste}
                   disabled={isLoading}
-                  className="w-12 h-16 text-center text-2xl font-bold border-2 border-indigo-500 rounded-xl
-                    focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-600
+                  className="w-12 h-16 text-center text-2xl font-bold border-2 border-zinc-600
+                    focus:outline-none focus:ring-2 focus:ring-zinc-600 focus:border-zinc-600
                     transition-all duration-300 hover:scale-105
                     disabled:opacity-50 disabled:cursor-not-allowed"
                 />
@@ -157,7 +157,7 @@ const UserVerifyPage = () => {
             <button
               onClick={onVerify}
               disabled={isLoading}
-              className="w-full py-3 font-medium bg-indigo-600 text-white rounded cursor-pointer hover:bg-indigo-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full py-4 mt-4 font-bold tracking-widest uppercase bg-ink text-white border border-transparent hover:bg-brand-light hover:text-ink hover:border-ink transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isLoading ? "Verificando cuenta..." : "Verificar"}
             </button>
@@ -169,14 +169,14 @@ const UserVerifyPage = () => {
                 setOtp(["", "", "", "", "", ""]);
                 inputRefs.current[0]?.focus();
               }}
-              className="text-sm text-gray-600 hover:text-indigo-600 transition-colors block w-full"
+              className="text-sm text-gray-600 hover:text-orange-600 transition-colors block w-full"
             >
               Limpiar código
             </button>
             <div>
               <button
                 onClick={() => navigate("/login")}
-                className="text-sm text-indigo-600 hover:underline"
+                className="text-sm font-medium tracking-wide border-b border-black/20 pb-1 w-fit hover:border-accent hover:text-accent transition-colors block"
               >
                 Volver al login
               </button>

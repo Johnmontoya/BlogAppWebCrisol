@@ -12,7 +12,6 @@ import {
   useGetCommentBlogQueries,
 } from "../queries/comment.query";
 import { FaUserTie } from "react-icons/fa6";
-import Footer from "../components/Footer";
 import useInputs from "../hooks/useInputs";
 import { useQueryClient } from "@tanstack/react-query";
 import SweetAlertas from "../components/alerts/SweetAlertas";
@@ -42,14 +41,14 @@ const BlogPage = () => {
 
   useEffect(() => {
     setComments([]);
-    
+
     setCommmentData({
       name: "",
       content: "",
     });
-    
+
     window.scrollTo(0, 0);
-  }, [id]); 
+  }, [id]);
 
   useEffect(() => {
     if (comment.data?.comments) {
@@ -71,7 +70,7 @@ const BlogPage = () => {
           // ✅ Invalidar solo las queries del blog actual
           await queryClient.invalidateQueries({ queryKey: ['comments', id] });
           await queryClient.invalidateQueries({ queryKey: ['blog', id] });
-          
+
           setCommmentData({
             name: "",
             content: "",
@@ -92,133 +91,146 @@ const BlogPage = () => {
   // ✅ Mostrar loading mientras cambia el blog
   if (!id || isLoading) {
     return (
-      <div className="w-full h-screen flex justify-center items-center">
+      <div className="w-full h-screen flex justify-center items-center bg-brand-light dark:bg-brand-dark">
         <LoadingFallback />
       </div>
     );
   }
 
   return (
-    <div
-      className={`${
-        darkMode
-          ? "bg-gray-900 text-slate-100 border-gray-700"
-          : "bg-white text-gray-900 border-gray-200"
-      }`}
-    >
-      <div className="h-auto">
-        <div className="text-center pt-20 text-gray-600">
-          <p className="text-indigo-600 py-4 font-medium">
-            Publicado en {moment(blog?.createdAt).format("MMMM Do YYYY")}
-          </p>
-          <h1 className="text-2xl sm:text-5xl font-semibold max-w-2xl mx-auto">
-            {blog?.title}
-          </h1>
-          <h2 className="my-5 max-w-lg mx-auto">{blog?.subTitle}</h2>
-          <p className="inline-block py-1 px-4 rounded-full mb-6 border text-sm border-indigo-600/35 bg-indigo-600/5 font-medium text-gray-400">
+    <article className="max-w-screen-2xl mx-auto flex flex-col items-center pb-24 border-b border-black dark:border-zinc-800">
+
+      {/* Editorial Header Sequence */}
+      <header className="w-full text-center px-6 pt-24 pb-16 md:pt-32 md:pb-24 max-w-5xl mx-auto">
+        <div className="flex justify-center mb-8">
+          <span className="text-xs font-bold uppercase tracking-widest border border-black dark:border-zinc-800 px-4 py-1">
             {blog?.category}
-          </p>
+          </span>
         </div>
 
-        <div className="mx-5 max-w-5xl md:mx-auto mb-20">
-          <div
-            className="rich-text max-w-3xl mx-auto prose prose-lg text-center"
-            dangerouslySetInnerHTML={{ __html: blog?.description! }}
-          ></div>
+        <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl font-black leading-[1.1] tracking-tighter mb-8">
+          {blog?.title}
+        </h1>
 
-          <div className="mt-14 mb-10 max-w-3xl mx-auto">
-            <p className="font-semibold mb-4 text-xl">
-              Comentarios ({comments.length})
-            </p>
+        <h2 className={`text-xl md:text-2xl font-light leading-relaxed max-w-3xl mx-auto mb-12 ${darkMode ? 'text-slate-300' : 'text-ink-light'}`}>
+          {blog?.subTitle}
+        </h2>
 
+        <div className={`flex items-center justify-center gap-4 text-sm font-medium uppercase tracking-widest ${darkMode ? 'text-zinc-500' : 'text-zinc-400'} pt-8 border-t border-black/10 dark:border-zinc-800/50 w-full max-w-lg mx-auto`}>
+          <time dateTime={blog?.createdAt}>
+            {moment(blog?.createdAt).format("MMMM Do YYYY")}
+          </time>
+          <span>—</span>
+          <span>By Author Identity</span>
+        </div>
+      </header>
+
+      {/* Main Content Area */}
+      <div className="w-full max-w-3xl mx-auto px-6">
+
+        {/* Article Body */}
+        <div
+          className={`prose prose-lg md:prose-xl max-w-none mb-24 font-light leading-relaxed ${darkMode ? 'prose-invert prose-p:text-slate-300 prose-headings:text-slate-100' : 'prose-p:text-ink prose-headings:text-ink'}`}
+          dangerouslySetInnerHTML={{ __html: blog?.description! }}
+        />
+
+        <div className="w-full h-[1px] bg-black dark:bg-zinc-800 mb-20" />
+
+        {/* Share Section */}
+        <div className="mb-24 flex flex-col md:flex-row items-center justify-between border-b border-black dark:border-zinc-800 pb-12">
+          <h3 className="font-serif text-2xl italic tracking-tight mb-6 md:mb-0">Share this dispatch</h3>
+          <div className="flex gap-4">
+            <button className={`w-12 h-12 flex items-center justify-center border rounded-full transition-colors ${darkMode ? 'border-zinc-800 hover:bg-zinc-800 hover:text-white' : 'border-ink hover:bg-ink hover:text-white'}`}>
+              <CiFacebook size={24} />
+            </button>
+            <button className={`w-12 h-12 flex items-center justify-center border rounded-full transition-colors ${darkMode ? 'border-zinc-800 hover:bg-zinc-800 hover:text-white' : 'border-ink hover:bg-ink hover:text-white'}`}>
+              <CiTwitter size={24} />
+            </button>
+            <button className={`w-12 h-12 flex items-center justify-center border rounded-full transition-colors ${darkMode ? 'border-zinc-800 hover:bg-zinc-800 hover:text-white' : 'border-ink hover:bg-ink hover:text-white'}`}>
+              <SlSocialGoogle size={20} />
+            </button>
+          </div>
+        </div>
+
+        {/* Comments Section */}
+        <section className="mb-16">
+          <h3 className="font-serif text-3xl font-bold tracking-tight mb-10 flex items-center gap-4">
+            <span className="w-12 h-[1px] bg-black dark:bg-zinc-800" />
+            Discourse ({comments.length})
+          </h3>
+
+          <div className="space-y-8 mb-16">
             {comments.length > 0 ? (
-              <div className="flex flex-col gap-4">
-                {comments.map((item) => (
-                  <div
-                    key={item._id} // ← Usa _id en lugar de index
-                    className="relative bg-indigo-600/5 border border-indigo-600/10 max-w-xl p-4 rounded-lg"
-                  >
-                    <div className="flex items-center gap-2">
-                      <FaUserTie className="w-6 h-6 text-indigo-600" />
-                      <p className="font-medium">{item.name}</p>
+              comments.map((item) => (
+                <div key={item._id} className="border-l-2 border-black/10 dark:border-zinc-800 pl-6 pb-6">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-8 h-8 rounded-full bg-ink text-white flex items-center justify-center text-xs">
+                      <FaUserTie />
                     </div>
-                    <p className="text-sm max-w-md ml-8 mt-2">
-                      {item.content}
-                    </p>
-                    <div className="absolute right-4 bottom-3 flex items-center gap-2 text-xs text-gray-500">
-                      {moment(item.createdAt).fromNow()}
+                    <div>
+                      <h4 className="font-bold text-sm">{item.name}</h4>
+                      <time className={`text-xs uppercase tracking-widest ${darkMode ? 'text-zinc-500' : 'text-zinc-400'}`}>
+                        {moment(item.createdAt).fromNow()}
+                      </time>
                     </div>
                   </div>
-                ))}
-              </div>
+                  <p className={`text-base font-light leading-relaxed pl-11 ${darkMode ? 'text-slate-300' : 'text-ink-light'}`}>
+                    {item.content}
+                  </p>
+                </div>
+              ))
             ) : (
-              <p className="text-gray-500 text-center py-8">
-                No hay comentarios aún. Sé el primero!
+              <p className="font-serif italic text-xl text-center text-ink-light opacity-60 py-12">
+                The silence is pristine. Be the first to reflect.
               </p>
             )}
           </div>
 
-          <div className="max-w-3xl mx-auto">
-            <p className="font-semibold mb-4 text-xl">Agrega un comentario</p>
-            <form
-              onSubmit={addComment}
-              className="flex flex-col items-start gap-4 max-w-lg"
-            >
-              <input
-                type="text"
-                onChange={onChangeCommentData}
-                value={commmentData.name}
-                name="name"
-                placeholder="Tu nombre"
-                required
-                className={`w-full p-3 border rounded outline-none focus:border-indigo-600 transition-colors ${
-                  darkMode
-                    ? "bg-gray-800 border-gray-600 text-white"
-                    : "bg-white border-gray-300"
-                }`}
-              />
-              <textarea
-                placeholder="Tu comentario"
-                onChange={onChangeCommentData}
-                value={commmentData.content}
-                name="content"
-                className={`w-full p-3 border rounded outline-none h-32 focus:border-indigo-600 transition-colors resize-none ${
-                  darkMode
-                    ? "bg-gray-800 border-gray-600 text-white"
-                    : "bg-white border-gray-300"
-                }`}
-                required
-              ></textarea>
+          <div className="border border-black dark:border-zinc-800 p-8 md:p-12 relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-accent/5 rounded-bl-full" />
+
+            <h4 className="font-serif text-2xl font-bold tracking-tight mb-8">Contribute to the Discourse</h4>
+            <form onSubmit={addComment} className="flex flex-col gap-6 relative z-10">
+              <div className="relative group">
+                <input
+                  type="text"
+                  name="name"
+                  onChange={onChangeCommentData}
+                  value={commmentData.name}
+                  required
+                  placeholder=" "
+                  className="block w-full px-0 py-3 text-base bg-transparent border-0 border-b-2 border-black/20 appearance-none focus:outline-none focus:ring-0 focus:border-accent peer transition-colors"
+                />
+                <label className="absolute text-xs font-semibold tracking-widest uppercase text-black/50 duration-300 transform -translate-y-6 scale-75 top-3 z-10 origin-[0] peer-focus:text-accent peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                  Identifier or Alias
+                </label>
+              </div>
+
+              <div className="relative group mt-6">
+                <textarea
+                  name="content"
+                  onChange={onChangeCommentData}
+                  value={commmentData.content}
+                  required
+                  placeholder=" "
+                  className="block w-full px-0 py-3 text-base bg-transparent border-0 border-b-2 border-black/20 appearance-none focus:outline-none focus:ring-0 focus:border-accent peer transition-colors resize-none h-32"
+                />
+                <label className="absolute text-xs font-semibold tracking-widest uppercase text-black/50 duration-300 transform -translate-y-6 scale-75 top-3 z-10 origin-[0] peer-focus:text-accent peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                  Your Reflection
+                </label>
+              </div>
+
               <button
                 type="submit"
-                className="bg-indigo-600 text-white px-6 py-2.5 rounded hover:bg-indigo-700 transition-colors font-medium"
+                className="self-start mt-4 px-8 py-3 bg-ink text-white font-bold tracking-widest uppercase text-sm border border-transparent hover:bg-brand-light hover:text-ink hover:border-ink transition-colors"
               >
-                Enviar comentario
+                Submit Reflection
               </button>
             </form>
           </div>
-
-          {/* Share Buttons */}
-          <div className="max-w-3xl mx-auto">
-            <p className="font-semibold my-4 text-lg">
-              Comparte este artículo en las redes sociales
-            </p>
-            <div className="flex gap-4">
-              <button className="hover:scale-110 transition-transform">
-                <CiFacebook className="w-8 h-8 cursor-pointer hover:text-indigo-600 transition-colors" />
-              </button>
-              <button className="hover:scale-110 transition-transform">
-                <CiTwitter className="w-8 h-8 cursor-pointer hover:text-indigo-600 transition-colors" />
-              </button>
-              <button className="hover:scale-110 transition-transform">
-                <SlSocialGoogle className="w-8 h-8 cursor-pointer hover:text-indigo-600 transition-colors" />
-              </button>
-            </div>
-          </div>
-        </div>
+        </section>
       </div>
-      <Footer />
-    </div>
+    </article>
   );
 };
 

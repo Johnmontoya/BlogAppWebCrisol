@@ -1,10 +1,12 @@
-import { CiStickyNote } from "react-icons/ci";
+import { CiStickyNote, CiTrash } from "react-icons/ci";
 import {
   useDeleteCommentMutation,
   useStateCommentMutation,
 } from "../../queries/comment.query";
 import { useQueryClient } from "@tanstack/react-query";
 import SweetAlertas from "../alerts/SweetAlertas";
+import { useContext } from "react";
+import { UserContext } from "../../contexts/UserContextProvider";
 
 // Interfaz actualizada según la estructura real de datos
 interface BlogInfo {
@@ -27,6 +29,7 @@ interface CommentTableItemProps {
 }
 
 const CommenTableItem: React.FC<CommentTableItemProps> = ({ comment }) => {
+  const { darkMode } = useContext(UserContext);
   const queryClient = useQueryClient();
   const { createdAt, _id, name, content } = comment;
   const BlogDate = new Date(createdAt);
@@ -81,29 +84,29 @@ const CommenTableItem: React.FC<CommentTableItemProps> = ({ comment }) => {
     });
   }
 
-  const Cancel = () => {};
+  const Cancel = () => { };
 
   return (
-    <tr className="border-b border-gray-200 hover:bg-gray-200 transition-colors">
+    <tr className={`font-light tracking-wide border-y border-gray-300 transition-all duration-500 ${darkMode ? "text-slate-50" : "text-slate-950"}`}>
       <td className="px-6 py-4">
         <div className="space-y-2">
           <p>
-            <span className="font-medium text-gray-600">Blog:</span>{" "}
-            <span className="text-gray-500">
+            <span className="font-medium">Blog:</span>{" "}
+            <span>
               {comment.blog?.title || "Unknown Blog"}
             </span>
           </p>
           <p>
-            <span className="font-medium text-gray-600">Nombre:</span>{" "}
-            <span className="text-gray-500">{name}</span>
+            <span className="font-medium">Nombre:</span>{" "}
+            <span>{name}</span>
           </p>
           <p>
-            <span className="font-medium text-gray-600">Comentario:</span>{" "}
-            <span className="text-gray-500">{content}</span>
+            <span className="font-medium">Comentario:</span>{" "}
+            <span>{content}</span>
           </p>
         </div>
       </td>
-      <td className="px-6 py-4 max-sm:hidden text-gray-600">
+      <td className="px-6 py-4 max-sm:hidden">
         <div className="flex flex-col">
           <span>{BlogDate.toLocaleDateString()}</span>
           <span className="text-xs text-gray-400">
@@ -128,16 +131,14 @@ const CommenTableItem: React.FC<CommentTableItemProps> = ({ comment }) => {
             </button>
           ) : (
             <div className="flex items-center gap-2">
-              <span className="group flex items-center gap-2 px-3 py-1.5 border border-green-600 text-green-600 rounded hover:bg-green-50 transition-colors cursor-pointer">
+              <span className="group flex items-center gap-2 px-3 py-1.5 border border-indigo-400 text-indigo-400 hover:bg-indigo-50/10 rounded transition-colors cursor-pointer">
                 Aprobados
               </span>
-              <button
+              <CiTrash
+                size={26}
                 onClick={deleteOneComment}
-                className="group flex items-center gap-2 px-3 py-1.5 border border-red-600 text-red-600 rounded hover:bg-green-50 transition-colors cursor-pointer"
-                title="Click to unapprove"
-              >
-                ✕
-              </button>
+                className="hover:scale-110 text-red-600 transition-all cursor-pointer"
+              />
             </div>
           )}
         </div>

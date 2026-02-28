@@ -39,6 +39,7 @@ const RegisterPage = () => {
           SweetAlertas.OnDialogSuccess({
             message: response.data.message,
           });
+          navigate('/login');
         },
         onError: async (error: any) => {
           setIsLoading(false);
@@ -52,36 +53,32 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-slate-900">
-      <div className="w-full max-w-sm p-6 max-md:m-6 border border-primary/30 shadow-xl shadow-primary/15 rounded-lg bg-white">
-        <div className="flex flex-col items-center justify-center">
-          <div className="w-full py-6 text-center flex flex-col justify-center items-center m-auto">
-            <div
-              onClick={() => navigate("/")}
-              className="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold cursor-pointer"
-            >
-              CI
-            </div>
-            <h1 className="text-3xl font-bold text-gray-700">
-              <span className="text-indigo-600">Crisol</span> Registro
-            </h1>
-            <p className="font-light text-gray-600 mt-2">
-              Ingresa tus credenciales para crear una cuenta
-            </p>
+    <div className="flex min-h-screen bg-brand-light text-ink selection:bg-accent selection:text-white">
+      {/* Form Left Side */}
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-12 relative">
+        <div className="absolute top-6 left-6 lg:hidden">
+          <div
+            onClick={() => navigate("/")}
+            className="w-12 h-12 flex items-center justify-center border border-ink font-serif text-2xl cursor-pointer hover:bg-ink hover:text-white transition-colors"
+          >
+            CI
+          </div>
+        </div>
+
+        <div className="w-full max-w-md">
+          <div className="mb-12">
+            <h1 className="font-serif text-4xl font-black tracking-tight mb-2">Únete al Gremio.</h1>
+            <p className="font-light text-ink-light">Completa tus datos para establecer tu perfil.</p>
           </div>
 
-          {/* Mensaje de error */}
           {error.passwordInfo && (
-            <div className="w-full mb-4 p-3 bg-indigo-100 border border-indigo-400 text-indigo-700 rounded text-sm">
+            <div className="w-full mb-8 p-4 border border-red-500 bg-red-50 text-red-700 text-sm font-medium">
               {error.passwordInfo}
             </div>
           )}
 
-          <form onSubmit={CreateUser} className="mt-6 w-full text-gray-600">
-            <div className="flex flex-col mb-6">
-              <label htmlFor="username" className="mb-2 font-medium">
-                Nombre de usuario
-              </label>
+          <form onSubmit={CreateUser} className="space-y-8">
+            <div className="relative group">
               <input
                 id="username"
                 type="text"
@@ -89,16 +86,19 @@ const RegisterPage = () => {
                 onChange={onChangeblogData}
                 value={userData.username}
                 required
-                placeholder="ingresa tu nombre de usuario"
-                className="border-b-2 border-gray-300 p-2 outline-none focus:border-indigo-600 transition-colors"
+                placeholder=" "
+                className="block w-full px-0 py-3 text-lg bg-transparent border-0 border-b-2 border-black/20 appearance-none focus:outline-none focus:ring-0 focus:border-accent peer transition-colors"
                 disabled={isLoading}
               />
+              <label
+                htmlFor="username"
+                className="absolute text-sm font-semibold tracking-wide uppercase text-black/50 duration-300 transform -translate-y-6 scale-75 top-3 z-10 origin-[0] peer-focus:text-accent peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              >
+                Username
+              </label>
             </div>
 
-            <div className="flex flex-col mb-6">
-              <label htmlFor="email" className="mb-2 font-medium">
-                Correo Electrónico
-              </label>
+            <div className="relative group">
               <input
                 id="email"
                 type="email"
@@ -106,16 +106,19 @@ const RegisterPage = () => {
                 onChange={onChangeblogData}
                 value={userData.email}
                 required
-                placeholder="ingresa tu email"
-                className="border-b-2 border-gray-300 p-2 outline-none focus:border-indigo-600 transition-colors"
+                placeholder=" "
+                className="block w-full px-0 py-3 text-lg bg-transparent border-0 border-b-2 border-black/20 appearance-none focus:outline-none focus:ring-0 focus:border-accent peer transition-colors"
                 disabled={isLoading}
               />
+              <label
+                htmlFor="email"
+                className="absolute text-sm font-semibold tracking-wide uppercase text-black/50 duration-300 transform -translate-y-6 scale-75 top-3 z-10 origin-[0] peer-focus:text-accent peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              >
+                Dirección de correo electrónico
+              </label>
             </div>
 
-            <div className="flex flex-col mb-6">
-              <label htmlFor="password" className="mb-2 font-medium">
-                Contraseña
-              </label>
+            <div className="relative group">
               <input
                 id="password"
                 type="password"
@@ -123,37 +126,65 @@ const RegisterPage = () => {
                 onChange={onChangeblogData}
                 value={userData.password}
                 required
-                placeholder="ingresa tu contraseña"
-                className="border-b-2 border-gray-300 p-2 outline-none focus:border-indigo-600 transition-colors"
+                placeholder=" "
+                className="block w-full px-0 py-3 text-lg bg-transparent border-0 border-b-2 border-black/20 appearance-none focus:outline-none focus:ring-0 focus:border-accent peer transition-colors"
                 disabled={isLoading}
               />
+              <label
+                htmlFor="password"
+                className="absolute text-sm font-semibold tracking-wide uppercase text-black/50 duration-300 transform -translate-y-6 scale-75 top-3 z-10 origin-[0] peer-focus:text-accent peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              >
+                Contraseña
+              </label>
             </div>
 
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-3 font-medium bg-indigo-600 text-white rounded cursor-pointer hover:bg-indigo-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full py-4 mt-4 font-bold tracking-widest uppercase bg-accent text-white border border-transparent hover:bg-brand-light hover:text-accent hover:border-accent transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isLoading ? "Registrando..." : "Registrar"}
+              {isLoading ? "Registrando..." : "Crear Cuenta"}
             </button>
           </form>
 
-          <div className="mt-4 text-center">
+          <div className="mt-10 flex flex-col space-y-4">
             <a
               href="#"
-              onClick={() => navigate("/login")}
-              className="text-sm text-indigo-600 hover:underline"
+              onClick={(e) => { e.preventDefault(); navigate("/login"); }}
+              className="text-sm font-medium tracking-wide border-b border-black/20 pb-1 w-fit hover:border-black transition-colors block"
             >
-              Loguear usuario
+              ¿Ya tienes una cuenta? Inicia sesión
             </a>
           </div>
+        </div>
+      </div>
 
-          {/* Link opcional para recuperar contraseña */}
-          <div className="w-full mt-4 text-right">
-            <a href="#" onClick={() => navigate('/forgot-password')} className="text-sm text-indigo-600 hover:underline">
-              Olvidaste tu contraseña?
-            </a>
+      {/* Editorial Right Side */}
+      <div className="hidden lg:flex lg:w-1/2 bg-[#f0ede6] text-ink flex-col justify-between p-12 border-l border-black relative overflow-hidden">
+        {/* Background art graphic */}
+        <div className="absolute -bottom-24 -right-24 font-serif text-[30rem] font-black italic opacity-5 leading-none pointer-events-none">
+          R
+        </div>
+
+        <div className="self-end"
+          onClick={() => navigate("/")}
+        >
+          <div className="w-16 h-16 flex items-center justify-center border border-black font-serif text-3xl cursor-pointer hover:bg-black hover:text-white transition-colors">
+            CI
           </div>
+        </div>
+
+        <div className="relative z-10">
+          <h2 className="font-serif text-6xl xl:text-8xl font-black leading-none tracking-tighter mb-8">
+            Dando forma a la <br /> <span className="italic text-accent">Narrativa.</span>
+          </h2>
+          <p className="font-light text-xl max-w-md opacity-80 leading-relaxed border-l-2 border-ink pl-6">
+            Únete a un colectivo de voces exigentes. El registro otorga acceso a materiales seleccionados y permisos de comentario exclusivos.
+          </p>
+        </div>
+
+        <div className="text-xs font-medium tracking-widest uppercase opacity-50 relative z-10">
+          © 2025 Crisol de Ideas // Registro de Lectores
         </div>
       </div>
     </div>

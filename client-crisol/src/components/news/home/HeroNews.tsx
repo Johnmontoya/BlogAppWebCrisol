@@ -14,54 +14,48 @@ const HeroNews = ({ news }: HeroImageNewsProps) => {
   return (
     <>
       {isPublished ? (
-        <div
-          className={`rounded-lg shadow-xl overflow-hidden mb-8 ${
-            darkMode ? "bg-gray-800" : "bg-white"
-          }`}
+        <article
+          className={`group overflow-hidden mb-12 border-b border-black dark:border-zinc-800 pb-8 transition-colors ${darkMode ? "bg-brand-dark" : "bg-brand-light"
+            }`}
         >
-          <img
-            src={contentHero?.imageUrl as string}
-            alt={title}
-            className="w-full h-64 object-cover"
-          />
+          <div className="relative overflow-hidden mb-6 border border-black dark:border-zinc-800">
+            <img
+              src={contentHero?.imageUrl as string}
+              alt={title}
+              className="w-full h-80 object-cover filter grayscale opacity-90 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700 ease-out"
+            />
+          </div>
 
-          <div className="p-6">
+          <div>
             <span
-              className={`text-xs font-semibold uppercase tracking-wide mb-2 block ${
-                darkMode ? "text-red-400" : "text-red-600"
-              }`}
+              className={`text-xs font-bold uppercase tracking-widest mb-3 block text-accent`}
             >
               {category}
             </span>
 
             <h2
-              className={`text-3xl font-bold mb-3 ${
-                darkMode ? "text-slate-100" : "text-gray-900"
-              }`}
+              className={`font-serif text-3xl font-black leading-tight mb-4 group-hover:text-accent transition-colors duration-300 ${darkMode ? "text-slate-100" : "text-ink"
+                }`}
             >
               {title}
             </h2>
 
             <p
-              className={`text-lg mb-4 ${
-                darkMode ? "text-slate-300" : "text-gray-700"
-              }`}
+              className={`font-light mb-6 leading-relaxed ${darkMode ? "text-slate-400" : "text-ink-light"
+                }`}
             >
               {contentHero?.description}
             </p>
 
-            <p
-              className={`text-sm ${
-                darkMode ? "text-slate-400" : "text-gray-500"
-              }`}
+            <time
+              className={`text-xs font-medium tracking-widest uppercase ${darkMode ? "text-zinc-500" : "text-zinc-400"
+                }`}
             >
-              {moment(createdAt).fromNow()}
-            </p>
+              {moment(createdAt).format("MMM DD, YYYY")}
+            </time>
           </div>
-        </div>
-      ) : (
-        <></>
-      )}
+        </article>
+      ) : null}
     </>
   );
 };

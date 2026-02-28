@@ -1,7 +1,7 @@
 interface Props {
   onChange: (name: string, value: string) => void;
-  contentData: any; 
-  darkMode: boolean; 
+  contentData: any;
+  darkMode: boolean;
   isLoading: boolean;
 }
 
@@ -19,12 +19,11 @@ const HeroImageFields = ({
   };
 
   const inputClasses = () => `
-        w-full p-3 border outline-none rounded focus:border-indigo-600 transition-colors 
-        ${
-          darkMode
-            ? "border-gray-600 bg-gray-700 text-white"
-            : "border-gray-300"
-        }
+        w-full p-3 border outline-none focus:border-indigo-600 transition-colors 
+        ${darkMode
+      ? "border-gray-600 bg-gray-700 text-white"
+      : "border-gray-300"
+    }
     `;
 
   return (

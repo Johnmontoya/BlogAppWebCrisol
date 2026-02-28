@@ -5,6 +5,7 @@ import { useGetUserIdQueries } from "../queries/user.query";
 import { useAuthStore } from "../store/auth";
 import { TfiEmail } from "react-icons/tfi";
 import { CiCalendarDate, CiUser } from "react-icons/ci";
+import moment from "moment";
 
 const ProfilePage = () => {
   const userId = useAuthStore((state) => state.userId);
@@ -13,61 +14,85 @@ const ProfilePage = () => {
   const user = data.data?.user;
 
   return (
-    <div
-      className={`border-b ${
-        darkMode
-          ? "border-gray-700 bg-slate-900"
-          : "border-gray-200 bg-slate-100"
-      }`}
-    >
+    <>
       <Sidebar />
-      <div className={`w-full flex-1 p-4 md:p-10`}>
-        <div className="max-w-7xl m-auto gap-4 mb-6">
-          <div className={` ${darkMode ? "bg-gray-800 text-slate-100" : "bg-slate-100 text-slate-900"}rounded-xl shadow-2xl w-full p-8 transition-all duration-300 animate-fade-in`}>
-            <div className="flex flex-col md:flex-row">
-              <div className="text-center mb-8 md:mb-0">                
-                <h1 className="text-2xl font-bold text-indigo-400 mb-2">
-                  {user?.username}
-                </h1>
-                <p className="text-gray-400">
-                  {user?.email}
-                </p>
-                <button className="mt-4 bg-indigo-800 text-white px-4 py-2 rounded-lg hover:bg-blue-900 transition-colors duration-300">
-                  Editar Perfil
-                </button>
+      <div className={`w-full flex-1 p-6 md:p-12 min-h-screen ${darkMode ? 'bg-brand-dark text-slate-100' : 'bg-brand-light'}`}>
+        <div className="max-w-4xl mx-auto">
+
+          <div className="mb-12 border-b border-black dark:border-zinc-800 pb-6">
+            <h1 className="font-serif text-4xl md:text-6xl font-black tracking-tight mb-2">
+              Dossier.
+            </h1>
+            <p className={`font-light tracking-wide ${darkMode ? 'text-slate-400' : 'text-ink-light'}`}>
+              Identity and credentials on record.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-12">
+            {/* Left Column - Identification */}
+            <div className={`md:col-span-4 border border-black dark:border-zinc-800 p-8 flex flex-col items-center text-center relative ${darkMode ? 'bg-zinc-900' : 'bg-white'}`}>
+              <div className="absolute top-0 right-0 w-8 h-8 border-l border-b border-black dark:border-zinc-800" />
+              <div className="absolute bottom-0 left-0 w-8 h-8 border-r border-t border-black dark:border-zinc-800" />
+
+              <div className="w-24 h-24 bg-ink text-white dark:bg-white dark:text-ink rounded-full flex items-center justify-center mb-6">
+                <CiUser size={48} />
               </div>
-              <div className="w-full md:pl-8">
-                <h2 className="text-xl font-semibold text-indigo-400 mb-4">
-                  Sobre mí
-                </h2>
-                <p className="text-gray-400 mb-6">
-                  Passionate software developer with 5 years of experience in
-                  web technologies. I love creating user-friendly applications
-                  and solving complex problems.
-                </p>
-                <h2 className="text-xl font-semibold text-indigo-400 mb-4">
-                  Información de cuenta
-                </h2>
-                <ul className="space-y-2 text-gray-400">
-                  <li className="flex items-center">
-                    <TfiEmail className="mr-2"/>
+
+              <h2 className="font-serif text-2xl font-bold mb-1">
+                {user?.username}
+              </h2>
+              <p className={`text-sm mb-8 ${darkMode ? 'text-zinc-400' : 'text-zinc-500'}`}>
+                {user?.email}
+              </p>
+
+              <button className="w-full font-bold tracking-widest uppercase text-xs border border-ink dark:border-zinc-600 bg-transparent text-ink dark:text-white hover:bg-ink hover:text-white dark:hover:bg-white dark:hover:text-ink transition-colors py-3">
+                Edit Record
+              </button>
+            </div>
+
+            {/* Right Column - Information */}
+            <div className="md:col-span-8 flex flex-col justify-center">
+              <h3 className="font-serif text-2xl italic mb-6">Biography</h3>
+              <p className={`font-light leading-relaxed mb-12 ${darkMode ? 'text-slate-300' : 'text-ink-light'}`}>
+                A discerning contributor to the historical record. Engaged in the critical analysis of emerging thought and established doctrine.
+              </p>
+
+              <h3 className="font-serif text-2xl italic mb-6 border-t border-black/10 dark:border-zinc-800/50 pt-8">Clearance Details</h3>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-12">
+                <div>
+                  <div className="text-xs font-bold uppercase tracking-widest text-accent mb-2 flex items-center gap-2">
+                    <TfiEmail /> Comm Link
+                  </div>
+                  <div className={`font-medium ${darkMode ? 'text-slate-200' : 'text-ink'}`}>
                     {user?.email}
-                  </li>
-                  <li className="flex items-center">
-                    <CiUser className="mr-2" />
+                  </div>
+                </div>
+
+                <div>
+                  <div className="text-xs font-bold uppercase tracking-widest text-accent mb-2 flex items-center gap-2">
+                    <CiUser /> Clearance Level
+                  </div>
+                  <div className={`font-medium ${darkMode ? 'text-slate-200' : 'text-ink'}`}>
                     {user?.role}
-                  </li>
-                  <li className="flex items-center">
-                    <CiCalendarDate className="mr-2" />
-                   {user?.createdAt}
-                  </li>
-                </ul>
+                  </div>
+                </div>
+
+                <div>
+                  <div className="text-xs font-bold uppercase tracking-widest text-accent mb-2 flex items-center gap-2">
+                    <CiCalendarDate /> Established
+                  </div>
+                  <div className={`font-medium ${darkMode ? 'text-slate-200' : 'text-ink'}`}>
+                    {moment(user?.createdAt).format("MMM DD, YYYY")}
+                  </div>
+                </div>
               </div>
+
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

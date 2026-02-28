@@ -46,18 +46,18 @@ const ForgotPage = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-slate-900">
-      <div className="w-full max-w-sm p-6 max-md:m-6 border border-primary/30 shadow-xl shadow-primary/15 rounded-lg bg-white">
+    <div className="flex items-center justify-center min-h-screen bg-zinc-900">
+      <div className="w-full max-w-sm p-6 max-md:m-6 border border-primary/30 shadow-xl shadow-primary/15 bg-white">
         <div className="flex flex-col items-center justify-center">
           <div className="w-full py-6 text-center flex flex-col justify-center items-center m-auto">
             <div
               onClick={() => navigate("/")}
-              className="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold cursor-pointer"
+              className="w-16 h-16 flex items-center justify-center border border-zinc-600 font-serif text-3xl cursor-pointer hover:bg-brand-light hover:text-ink transition-colors"
             >
               CI
             </div>
             <h1 className="text-3xl font-bold text-gray-700">
-              <span className="text-indigo-600">Crisol</span> Recuperar
+              <span className="text-orange-600">Crisol</span> Recuperar
             </h1>
             <p className="font-light text-gray-600 mt-2">
               Ingresa el correo electrónico con el cuál registraste tu cuenta
@@ -72,10 +72,7 @@ const ForgotPage = () => {
           )}
 
           <form onSubmit={onForgot} className="mt-6 w-full text-gray-600">
-            <div className="flex flex-col mb-6">
-              <label htmlFor="email" className="mb-2 font-medium">
-                Correo Electrónico
-              </label>
+            <div className="relative group">
               <input
                 id="email"
                 type="email"
@@ -83,16 +80,22 @@ const ForgotPage = () => {
                 onChange={onChangeSignInData}
                 value={signInData.email}
                 required
-                placeholder="ingresa tu email"
-                className="border-b-2 border-gray-300 p-2 outline-none focus:border-indigo-600 transition-colors"
+                placeholder=""
+                className="block w-full px-0 py-3 text-lg bg-transparent border-0 border-b-2 border-black/20 appearance-none focus:outline-none focus:ring-0 focus:border-accent peer transition-colors"
                 disabled={isLoading}
               />
+              <label
+                htmlFor="email"
+                className="absolute text-sm font-semibold tracking-wide uppercase text-black/50 duration-300 transform -translate-y-6 scale-75 top-3 z-10 origin-[0] peer-focus:text-accent peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              >
+                Dirección de correo electrónico
+              </label>
             </div>
 
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-3 font-medium bg-indigo-600 text-white rounded cursor-pointer hover:bg-indigo-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full py-4 mt-4 font-bold tracking-widest uppercase bg-ink text-white border border-transparent hover:bg-brand-light hover:text-ink hover:border-ink transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isLoading ? "Enviando..." : "Enviar"}
             </button>
@@ -102,7 +105,7 @@ const ForgotPage = () => {
             <a
               href="#"
               onClick={() => navigate("/login")}
-              className="text-sm text-indigo-600 hover:underline"
+              className="text-sm font-medium tracking-wide border-b border-black/20 pb-1 w-fit hover:border-accent hover:text-accent transition-colors block"
             >
               Loguear usuario
             </a>

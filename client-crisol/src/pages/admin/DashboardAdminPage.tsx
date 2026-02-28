@@ -10,86 +10,84 @@ const DashboardAdminPage = () => {
   const [data] = useGetDashboardQueries();
   const dashboardData = data.data?.Blogs;
 
+  const cardClass = `border border-black dark:border-zinc-800 p-8 flex flex-col justify-between group transition-colors hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black ${darkMode ? "bg-brand-dark" : "bg-brand-light"
+    }`;
+
+  const iconClass = "grayscale group-hover:brightness-0 opacity-70 group-hover:invert group-hover:opacity-100 transition-all duration-300";
+
   return (
-    <div
-      className={`border-b ${
-        darkMode
-          ? "border-gray-700 bg-slate-900"
-          : "border-gray-200 bg-slate-100"
-      }`}
-    >
+    <>
       <Sidebar />
-      <div
-        className={`flex-1 p-4 md:p-10`}
-      >
-        <div className="max-w-7xl grid grid-cols-1 md:grid-cols-3 m-auto gap-4 mb-6">
-          <div
-            className={`flex items-center gap-4 ${
-              darkMode ? "bg-gray-700" : "bg-white"
-            } p-4 rounded shadow cursor-pointer hover:scale-105 transition-all`}
-          >
-            <div>
-              <FcAnswers size={52} />
-              <div className="flex flex-row gap-2 items-center">
-                <p className="text-xl font-semibold text-gray-900">
-                  {dashboardData?.blogs}
-                </p>
-                <p className="text-gray-400 font-light">Blogs</p>
-              </div>
-            </div>
+      <div className={`flex-1 p-6 md:p-12 min-h-screen ${darkMode ? "bg-brand-dark text-slate-100" : "bg-brand-light text-ink"}`}>
+        <div className="max-w-7xl mx-auto">
+
+          <div className="mb-12 border-b border-black dark:border-zinc-800 pb-6">
+            <h1 className="font-serif text-4xl md:text-6xl font-black tracking-tight mb-2">
+              Metrics.
+            </h1>
+            <p className={`font-light tracking-wide ${darkMode ? 'text-slate-400' : 'text-ink-light'}`}>
+              System oversight and quantitative reporting.
+            </p>
           </div>
 
-          <div
-            className={`flex items-center gap-4 ${
-              darkMode ? "bg-gray-700" : "bg-white"
-            } p-4 rounded shadow cursor-pointer hover:scale-105 transition-all`}
-          >
-            <div>
-              <FcAbout size={52} />
-              <div className="flex flex-row gap-2 items-center">
-                <p className="text-xl font-semibold text-gray-900">
-                  {dashboardData?.comments}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+            <div className={cardClass}>
+              <div className="flex justify-between items-start mb-12">
+                <div className={iconClass}><FcAnswers size={42} /></div>
+                <span className="text-xs font-bold uppercase tracking-widest opacity-50 group-hover:opacity-100">01</span>
+              </div>
+              <div>
+                <p className="text-5xl font-serif font-bold mb-2">
+                  {dashboardData?.blogs || 0}
                 </p>
-                <p className="text-gray-400 font-light">Comentarios</p>
+                <p className="text-xs font-bold tracking-widest uppercase opacity-70 group-hover:opacity-100">Published Dispatches</p>
               </div>
             </div>
-          </div>
 
-          <div
-            className={`flex items-center gap-4 ${
-              darkMode ? "bg-gray-700" : "bg-white"
-            } p-4 rounded shadow cursor-pointer hover:scale-105 transition-all`}
-          >
-            <div>
-              <FcFullTrash size={52} />
-              <div className="flex flex-row gap-2 items-center">
-                <p className="text-xl font-semibold text-gray-900">
-                  {dashboardData?.drafts}
+            <div className={cardClass}>
+              <div className="flex justify-between items-start mb-12">
+                <div className={iconClass}><FcAbout size={42} /></div>
+                <span className="text-xs font-bold uppercase tracking-widest opacity-50 group-hover:opacity-100">02</span>
+              </div>
+              <div>
+                <p className="text-5xl font-serif font-bold mb-2">
+                  {dashboardData?.comments || 0}
                 </p>
-                <p className="text-gray-400 font-light">Borrador</p>
+                <p className="text-xs font-bold tracking-widest uppercase opacity-70 group-hover:opacity-100">Public Comments</p>
               </div>
             </div>
-          </div>
 
-          <div
-            className={`flex items-center gap-4 ${
-              darkMode ? "bg-gray-700" : "bg-white"
-            } p-4 rounded shadow cursor-pointer hover:scale-105 transition-all`}
-          >
-            <div>
-              <FcBusinessman size={52} />
-              <div className="flex flex-row gap-2 items-center">
-                <p className="text-xl font-semibold text-gray-900">
-                  {dashboardData?.users}
+            <div className={cardClass}>
+              <div className="flex justify-between items-start mb-12">
+                <div className={iconClass}><FcFullTrash size={42} /></div>
+                <span className="text-xs font-bold uppercase tracking-widest opacity-50 group-hover:opacity-100">03</span>
+              </div>
+              <div>
+                <p className="text-5xl font-serif font-bold mb-2">
+                  {dashboardData?.drafts || 0}
                 </p>
-                <p className="text-gray-400 font-light">Usuarios</p>
+                <p className="text-xs font-bold tracking-widest uppercase opacity-70 group-hover:opacity-100">Unpublished Drafts</p>
               </div>
             </div>
-          </div>
 
+            <div className={cardClass}>
+              <div className="flex justify-between items-start mb-12">
+                <div className={iconClass}><FcBusinessman size={42} /></div>
+                <span className="text-xs font-bold uppercase tracking-widest opacity-50 group-hover:opacity-100">04</span>
+              </div>
+              <div>
+                <p className="text-5xl font-serif font-bold mb-2">
+                  {dashboardData?.users || 0}
+                </p>
+                <p className="text-xs font-bold tracking-widest uppercase opacity-70 group-hover:opacity-100">Registered Users</p>
+              </div>
+            </div>
+
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

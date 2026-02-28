@@ -39,62 +39,66 @@ const Blog = () => {
   return (
     <>
       {isLoading ? (
-        <div className="w-full flex justify-center">
+        <div className="w-full flex justify-center py-20">
           <LoadingFallback />
         </div>
       ) : (
-        <>
-          <div>
-            {/* Categories Filter */}
-            <section className="max-w-7xl mx-auto px-4 py-8">
-              <h2 className="text-center text-sm font-semibold text-gray-500 mb-6">
-                EXPLORA DIFERENTES TEMAS
-              </h2>
-              <div className="flex flex-wrap justify-center gap-3">
-                {blogCategories.map((item) => (
-                  <button
-                    key={item.name}
-                    onClick={() => setMenu(item.name)}
-                    className={`px-4 py-2 rounded-lg font-medium transition flex items-center space-x-2 ${
-                      menu === item.name
-                        ? "bg-indigo-600 text-white"
-                        : darkMode
-                        ? "bg-gray-800 hover:bg-gray-700"
-                        : "bg-gray-100 hover:bg-gray-200"
+        <div className="max-w-screen-2xl mx-auto px-6 py-12 md:py-20">
+          {/* Categories Filter */}
+          <section className="mb-16 border-b border-black dark:border-zinc-800 pb-8">
+            <h2 className="text-xs font-medium tracking-widest uppercase mb-6 flex items-center gap-4">
+              <span className="w-8 h-[1px] bg-black dark:bg-zinc-800"></span>
+              The Index
+            </h2>
+            <div className="flex flex-wrap gap-3">
+              {blogCategories.map((item) => (
+                <button
+                  key={item.name}
+                  onClick={() => setMenu(item.name)}
+                  className={`px-5 py-2 text-sm font-medium tracking-wide transition-all border ${menu === item.name
+                    ? "bg-ink text-white border-ink dark:bg-white dark:text-ink dark:border-white"
+                    : darkMode
+                      ? "border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-400"
+                      : "border-black/10 text-ink hover:border-black"
                     }`}
-                  >
-                    <span>{item.icon}</span>
-                    <span>{item.name}</span>
-                  </button>
-                ))}
-              </div>
-            </section>
-            {/* Main Content */}
-            <div className="max-w-7xl mx-auto px-4 py-8">
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                {/* Articles Grid */}
-                <div className="lg:col-span-2">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {blogsToDisplay?.length === 0 ? (
-                      <div className="w-full flex justify-center items-center font-bold">
-                        No hay blogs
-                      </div>
-                    ) : (
-                      <>
-                        {blogsToDisplay?.map((item: Iblogs, index) => (
-                          <BlogCard key={index} blog={item} author={item.author} />
-                        ))}
-                      </>
-                    )}
-                  </div>
-                </div>
+                >
+                  <span className="flex items-center gap-2">
+                    <span className="opacity-70">{item.icon}</span>
+                    <span className="uppercase">{item.name}</span>
+                  </span>
+                </button>
+              ))}
+            </div>
+          </section>
 
-                {/**Noticias */}
-                <NewsPages />
+          {/* Main Content */}
+          <div className="grid grid-cols-1 xl:grid-cols-12 gap-12 lg:gap-16">
+            {/* Articles Grid */}
+            <div className="xl:col-span-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 relative">
+                {blogsToDisplay?.length === 0 ? (
+                  <div className="w-full h-64 flex justify-center items-center col-span-2 border border-dashed border-black dark:border-zinc-800 text-xl font-serif italic text-ink-light">
+                    No se encontraron articulos en esta edicion.
+                  </div>
+                ) : (
+                  <>
+                    {blogsToDisplay?.map((item: Iblogs, index) => (
+                      <BlogCard key={index} blog={item} author={item.author} />
+                    ))}
+                  </>
+                )}
               </div>
             </div>
+
+            {/* Sidebar / Noticias */}
+            <div className="xl:col-span-4 border-t xl:border-t-0 xl:border-l border-black dark:border-zinc-800 pt-12 xl:pt-0 xl:pl-12">
+              <h3 className="font-serif text-3xl font-bold mb-8 italic tracking-tight">
+                Ultimas Noticias
+              </h3>
+              <NewsPages />
+            </div>
           </div>
-        </>
+        </div>
       )}
     </>
   );

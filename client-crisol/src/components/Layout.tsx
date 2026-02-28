@@ -11,7 +11,7 @@ const Layout = () => {
   const logout = useAuthStore((state) => state.logout);
   const queryClient = useQueryClient();  
 
-  const handleLOgout = () => {
+  const handleLogout = () => {
     logout();
     localStorage.removeItem("token");
     localStorage.removeItem("auth");
@@ -20,75 +20,82 @@ const Layout = () => {
   };
 
   return (
-    <div className="">
+    <div className="min-h-screen flex flex-col font-sans transition-colors duration-500">
       <header
-        className={`border-b ${
-          darkMode
-            ? "border-gray-700 bg-slate-900 text-slate-100"
-            : "border-gray-200 bg-slate-100 text-slate-900"
+        className={`sticky top-0 z-50 border-b border-black dark:border-zinc-800 ${
+          darkMode ? "bg-brand-dark text-white" : "bg-brand-light text-ink"
         }`}
       >
-        <div className="max-w-7xl mx-auto px-4 py-4">
+        <div className="max-w-screen-2xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-4">
               <div
                 onClick={() => navigate("/")}
-                className="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold cursor-pointer"
+                className={`w-12 h-12 flex items-center justify-center font-serif text-2xl cursor-pointer border ${darkMode ? 'border-zinc-800 bg-brand-dark' : 'border-ink bg-brand-light'} hover:bg-accent hover:text-white hover:border-accent transition-all duration-300`}
               >
                 CI
               </div>
-              <span className="font-bold text-xl">CRISOL DE IDEAS</span>
+              <span className="font-serif font-black text-2xl tracking-tight hidden sm:block">CRISOL DE IDEAS</span>
             </div>
-            <nav className="hidden md:flex space-x-8">
-              <a href="#" className="hover:text-indigo-600">
-                Home
+            
+            <nav className="hidden md:flex items-center space-x-10 text-sm font-medium tracking-wide uppercase">
+              <a href="#" className="relative group overflow-hidden">
+                <span className="block transition-transform duration-300 group-hover:-translate-y-full">Home</span>
+                <span className="absolute top-0 left-0 block transition-transform duration-300 translate-y-full group-hover:translate-y-0 text-accent">Home</span>
               </a>
-              <a href="#" className="hover:text-indigo-600">
-                Features
+              <a href="#" className="relative group overflow-hidden">
+                <span className="block transition-transform duration-300 group-hover:-translate-y-full">Features</span>
+                <span className="absolute top-0 left-0 block transition-transform duration-300 translate-y-full group-hover:translate-y-0 text-accent">Features</span>
               </a>
-              <a href="#" className="hover:text-indigo-600">
-                Nosotros
+              <a href="#" className="relative group overflow-hidden">
+                <span className="block transition-transform duration-300 group-hover:-translate-y-full">Nosotros</span>
+                <span className="absolute top-0 left-0 block transition-transform duration-300 translate-y-full group-hover:translate-y-0 text-accent">Nosotros</span>
               </a>
-              <a href="#" className="hover:text-indigo-600">
-                Contactos
+              <a href="#" className="relative group overflow-hidden">
+                <span className="block transition-transform duration-300 group-hover:-translate-y-full">Contactos</span>
+                <span className="absolute top-0 left-0 block transition-transform duration-300 translate-y-full group-hover:translate-y-0 text-accent">Contactos</span>
               </a>
             </nav>
 
             <div className="flex items-center space-x-4">
-              <button onClick={() => setDarkMode(!darkMode)} className="p-2">
-                {darkMode ? <GiSun size={20} /> : <BiMoon size={20} />}
+              <button 
+                onClick={() => setDarkMode(!darkMode)} 
+                className={`p-2 border rounded-full transition-colors duration-300 ${darkMode ? 'border-zinc-700 hover:bg-zinc-800' : 'border-gray-200 hover:bg-gray-100'}`}
+              >
+                {darkMode ? <GiSun size={18} /> : <BiMoon size={18} />}
               </button>
+              
               {hasValidToken ? (
-                <>
+                <div className="flex space-x-2">
                   <button
                     onClick={() => navigate("/user")}
-                    className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700"
+                    className={`px-5 py-2 text-sm font-semibold uppercase tracking-wider border transition-all duration-300 ${darkMode ? 'border-zinc-800 hover:border-accent hover:text-accent' : 'border-ink hover:text-white hover:bg-ink'}`}
                   >
-                    {"Dashboard"}
+                    Dashboard
                   </button>
                   <button
-                    onClick={handleLOgout}
-                    className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700"
+                    onClick={handleLogout}
+                    className={`px-5 py-2 text-sm font-semibold uppercase tracking-wider border transition-all duration-300 ${darkMode ? 'border-zinc-800 hover:border-red-500 hover:text-red-500' : 'border-ink hover:text-white hover:bg-red-600 hover:border-red-600'}`}
                   >
-                    {"Logout"}
+                    Logout
                   </button>
-                </>
+                </div>
               ) : (
                 <button
                   onClick={() => navigate("/login")}
-                  className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700"
+                  className={`px-6 py-2 text-sm font-semibold uppercase tracking-wider border ${darkMode ? 'border-zinc-800 bg-zinc-900 hover:bg-white hover:text-black' : 'border-ink bg-ink text-white hover:bg-brand-light hover:text-ink'} transition-all duration-300`}
                 >
-                  {"Login"}
+                  Login
                 </button>
               )}
               <button className="md:hidden p-2">
-                <BiMenu size={20} />
+                <BiMenu size={24} />
               </button>
             </div>
           </div>
         </div>
       </header>
-      <main>
+      <main className="flex-1">
         <Outlet />
       </main>
     </div>

@@ -13,138 +13,101 @@ import { NavLink, Outlet } from "react-router-dom";
 import { UserContext } from "../contexts/UserContextProvider";
 
 const Sidebar = () => {
-  const { role } = useContext(UserContext);
+  const { role, darkMode } = useContext(UserContext);
+
+  const linkClass = ({ isActive }: { isActive: boolean }) =>
+    `flex items-center justify-center py-3 px-4 md:px-6 transition-colors border-r border-black/10 dark:border-zinc-800/50 last:border-r-0 ${isActive
+      ? "bg-black text-white dark:bg-white dark:text-black font-bold"
+      : `hover:bg-black/5 dark:hover:bg-white/5 ${darkMode ? 'text-slate-300' : 'text-ink'}`
+    }`;
+
+  const iconClass = ({ isActive }: { isActive: boolean }) =>
+    `grayscale ${isActive ? "opacity-100 brightness-0 invert" : "opacity-70 group-hover:opacity-100"}`
 
   return (
     <>
-      <div className="m-auto max-w-7xl justify-center grid grid-cols-4 pt-4 gap-2 text-gray-900 px-4">
-        {role === "Admin" ? (
-          <>
-            <NavLink
-              end={true}
-              to={"/admin"}
-              className={(isActive) =>
-                `flex justify-center items-center py-1 rounded-2xl gap-3 px-3 md:px-9 md:min-w-48 cursor-pointer ${
-                  isActive && "bg-slate-300 hover:bg-slate-200"
-                }`
-              }
-            >
-              <div className="flex flex-row gap-1 justify-center items-center">
-                <FcTemplate size={28} />
-                <p className="hidden md:inline-block">Dashboard</p>
+      <div className={`w-full border-b border-black dark:border-zinc-800 ${darkMode ? 'bg-brand-dark' : 'bg-brand-light'}`}>
+        <nav className="max-w-7xl mx-auto flex flex-wrap justify-center text-xs tracking-widest uppercase font-medium">
+          {role === "Admin" && (
+            <>
+              <NavLink end={true} to={"/admin"} className={linkClass}>
+                {({ isActive }) => (
+                  <div className="flex flex-row gap-2 justify-center items-center group">
+                    <div className={iconClass({ isActive })}><FcTemplate size={18} /></div>
+                    <p className="hidden md:inline-block">Dashboard</p>
+                  </div>
+                )}
+              </NavLink>
+
+              <NavLink end={true} to={"/admin/userlist"} className={linkClass}>
+                {({ isActive }) => (
+                  <div className="flex flex-row gap-2 justify-center items-center group">
+                    <div className={iconClass({ isActive })}><FcTodoList size={18} /></div>
+                    <p className="hidden md:inline-block">Users</p>
+                  </div>
+                )}
+              </NavLink>
+
+              <NavLink end={true} to={"/news/add"} className={linkClass}>
+                {({ isActive }) => (
+                  <div className="flex flex-row gap-2 justify-center items-center group">
+                    <div className={iconClass({ isActive })}><FcInspection size={18} /></div>
+                    <p className="hidden md:inline-block">Add News</p>
+                  </div>
+                )}
+              </NavLink>
+
+              <NavLink end={true} to={"/news/list"} className={linkClass}>
+                {({ isActive }) => (
+                  <div className="flex flex-row gap-2 justify-center items-center group">
+                    <div className={iconClass({ isActive })}><FcViewDetails size={18} /></div>
+                    <p className="hidden md:inline-block">News List</p>
+                  </div>
+                )}
+              </NavLink>
+            </>
+          )}
+
+          <NavLink end={true} to={"/profile"} className={linkClass}>
+            {({ isActive }) => (
+              <div className="flex flex-row gap-2 justify-center items-center group">
+                <div className={iconClass({ isActive })}><FcPortraitMode size={18} /></div>
+                <p className="hidden md:inline-block">Profile</p>
               </div>
-            </NavLink>
+            )}
+          </NavLink>
 
-            <NavLink
-              end={true}
-              to={"/admin/userlist"}
-              className={(isActive) =>
-                `flex justify-center items-center py-1 rounded-2xl gap-3 px-3 md:px-9 md:min-w-48 cursor-pointer ${
-                  isActive && "bg-slate-300 hover:bg-slate-200"
-                }`
-              }
-            >
-              <div className="flex flex-row gap-1 justify-center items-center">
-                <FcTodoList size={28} />
-                <p className="hidden md:inline-block">Lista de usuarios</p>
+          <NavLink end={true} to={"/blog/addblog"} className={linkClass}>
+            {({ isActive }) => (
+              <div className="flex flex-row gap-2 justify-center items-center group">
+                <div className={iconClass({ isActive })}><FcDocument size={18} /></div>
+                <p className="hidden md:inline-block">Add Blog</p>
               </div>
-            </NavLink>
+            )}
+          </NavLink>
 
-            <NavLink
-              end={true}
-              to={"/news/add"}
-              className={(isActive) =>
-                `flex justify-center items-center py-1 rounded-2xl gap-3 px-3 md:px-9 md:min-w-48 cursor-pointer ${
-                  isActive && "bg-slate-300 hover:bg-slate-200"
-                }`
-              }
-            >
-              <div className="flex flex-row gap-1 justify-center items-center">
-                <FcInspection size={28} />
-                <p className="hidden md:inline-block"> Agregar Noticias</p>
+          <NavLink end={true} to={"/blog/listblog"} className={linkClass}>
+            {({ isActive }) => (
+              <div className="flex flex-row gap-2 justify-center items-center group">
+                <div className={iconClass({ isActive })}><FcList size={18} /></div>
+                <p className="hidden md:inline-block">Blog List</p>
               </div>
-            </NavLink>
+            )}
+          </NavLink>
 
-            <NavLink
-              end={true}
-              to={"/news/list"}
-              className={(isActive) =>
-                `flex justify-center items-center py-1 rounded-2xl gap-3 px-3 md:px-9 md:min-w-48 cursor-pointer ${
-                  isActive && "bg-slate-300 hover:bg-slate-200"
-                }`
-              }
-            >
-              <div className="flex flex-row gap-1 justify-center items-center">
-                <FcViewDetails size={28} />
-                <p className="hidden md:inline-block">Lista de Noticias</p>
+          <NavLink end={true} to={"/blog/comments"} className={linkClass}>
+            {({ isActive }) => (
+              <div className="flex flex-row gap-2 justify-center items-center group">
+                <div className={iconClass({ isActive })}><FcSms size={18} /></div>
+                <p className="hidden md:inline-block">Comments</p>
               </div>
-            </NavLink>
-          </>
-        ) : (
-          <></>
-        )}
-
-        <NavLink
-          end={true}
-          to={"/profile"}
-          className={(isActive) =>
-            `flex justify-center items-center py-1 rounded-2xl  gap-3 px-3 md:px-9 md:min-w-48 cursor-pointer ${
-              isActive && "bg-slate-300 hover:bg-slate-200"
-            }`
-          }
-        >
-          <div className="flex flex-row gap-1 justify-center items-center">
-            <FcPortraitMode size={28} />
-            <p className="hidden md:inline-block">Perfil</p>
-          </div>
-        </NavLink>
-
-        <NavLink
-          end={true}
-          to={"/blog/addblog"}
-          className={(isActive) =>
-            `flex justify-center items-center py-1 rounded-2xl  gap-3 px-3 md:px-9 md:min-w-48 cursor-pointer ${
-              isActive && "bg-slate-300 hover:bg-slate-200"
-            }`
-          }
-        >
-          <div className="flex flex-row gap-1 justify-center items-center">
-            <FcDocument size={28} />
-            <p className="hidden md:inline-block">Agregar Blogs</p>
-          </div>
-        </NavLink>
-
-        <NavLink
-          end={true}
-          to={"/blog/listblog"}
-          className={(isActive) =>
-            `flex justify-center items-center py-1 rounded-2xl  gap-3 px-3 md:px-9 md:min-w-48 cursor-pointer ${
-              isActive && "bg-slate-300 hover:bg-slate-200"
-            }`
-          }
-        >
-          <div className="flex flex-row gap-1 justify-center items-center">
-            <FcList size={28} />
-            <p className="hidden md:inline-block">Lista de Blogs</p>
-          </div>
-        </NavLink>
-
-        <NavLink
-          end={true}
-          to={"/blog/comments"}
-          className={(isActive) =>
-            `flex justify-center items-center py-1 rounded-2xl  gap-3 px-3 md:px-9 md:min-w-48 cursor-pointer ${
-              isActive && "bg-slate-300 hover:bg-slate-200"
-            }`
-          }
-        >
-          <div className="flex flex-row gap-1 justify-center items-center">
-            <FcSms size={28} />
-            <p className="hidden md:inline-block">Comentarios</p>
-          </div>
-        </NavLink>
+            )}
+          </NavLink>
+        </nav>
       </div>
-      <Outlet />
+      <div className={`${darkMode ? "bg-brand-dark" : "bg-brand-light"}`}>
+        <Outlet />
+      </div>
     </>
   );
 };

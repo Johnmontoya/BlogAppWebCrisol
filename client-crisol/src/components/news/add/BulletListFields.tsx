@@ -27,11 +27,10 @@ const BulletListFields = ({ onChange, darkMode, isLoading, contentData }: Props)
           required
           placeholder="Punto 1, Punto 2, Punto 3..."
           rows={4}
-          className={`w-full p-3 border outline-none rounded focus:border-indigo-600 transition-colors ${
-            darkMode
+          className={`w-full p-3 border outline-none focus:border-indigo-600 transition-colors ${darkMode
               ? "border-gray-600 bg-gray-700 text-white"
               : "border-gray-300"
-          }`}
+            }`}
           disabled={isLoading}
         />
       </div>
@@ -47,11 +46,10 @@ const BulletListFields = ({ onChange, darkMode, isLoading, contentData }: Props)
           value={contentData.author}
           required
           placeholder="Nombre del autor"
-          className={`w-full p-3 border outline-none rounded focus:border-indigo-600 transition-colors ${
-            darkMode
+          className={`w-full p-3 border outline-none focus:border-indigo-600 transition-colors ${darkMode
               ? "border-gray-600 bg-gray-700 text-white"
               : "border-gray-300"
-          }`}
+            }`}
           disabled={isLoading}
         />
       </div>

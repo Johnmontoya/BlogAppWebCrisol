@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import type { IUserItemProps } from "../../interfaces/auth";
-import { AiOutlineDelete } from "react-icons/ai";
 import { useDeleteMutation, useVerifiedMutation } from "../../queries/user.query";
 import SweetAlertas from "../alerts/SweetAlertas";
 import { useQueryClient } from "@tanstack/react-query";
+import { CiTrash } from "react-icons/ci";
+import { UserContext } from "../../contexts/UserContextProvider";
 
 const UserListItem: React.FC<IUserItemProps> = ({ users, index }) => {
+  const { darkMode } = useContext(UserContext);
   const queryClient = useQueryClient();
   const { _id, email, username, role, accountVerified } = users;
   const userDelete = useDeleteMutation();
@@ -19,7 +21,7 @@ const UserListItem: React.FC<IUserItemProps> = ({ users, index }) => {
     });
   }
 
-  const Cancel = () => {};
+  const Cancel = () => { };
 
   const DeleteAccount = () => {
     userDelete.mutateAsync(_id, {
@@ -39,7 +41,7 @@ const UserListItem: React.FC<IUserItemProps> = ({ users, index }) => {
 
   const VerifyAccount = () => {
     verifiedMutation.mutateAsync(
-      {userId: _id, verified: !accountVerified},
+      { userId: _id, verified: !accountVerified },
       {
         onSuccess: async (response: any) => {
           await queryClient.invalidateQueries();
@@ -57,33 +59,34 @@ const UserListItem: React.FC<IUserItemProps> = ({ users, index }) => {
   };
 
   return (
-    <tr className="border-y border-gray-300 hover:bg-gray-300 transition-colors">
-      <th scope="row" className="px-2 py-4 font-medium text-gray-900">
+    <tr className={`font-light tracking-wide border-y border-gray-300 transition-all duration-500 ${darkMode ? "text-slate-50" : "text-slate-950"}`}>
+      <th scope="row" className="px-2 py-4 font-light">
         {index}
       </th>
-      <td className="px-2 py-4">{username}</td>
-      <td className="px-2 py-4">{email}</td>
-      <td className="px-2 py-4">{role}</td>
+      <td className="p-5 whitespace-nowrap text-sm leading-6 font-light">{username}</td>
+      <td className="p-5 whitespace-nowrap text-sm leading-6 font-light">{email}</td>
+      <td className="p-5 whitespace-nowrap text-sm leading-6 font-light">{role}</td>
       <td className="px-4 py-4">
         <div className="flex justify-between text-xs gap-3">
           {
             <button
               onClick={VerifyAccount}
-              className={`border px-3 py-1.5 rounded cursor-pointer transition-colors hover:shadow-md ${
-                accountVerified
-                  ? "border-green-600 text-green-700 hover:bg-green-50"
-                  : "border-red-600 text-red-700 hover:bg-red-50"
-              }`}
+              className={`border px-3 py-1.5 rounded cursor-pointer transition-colors hover:shadow-md ${accountVerified
+                ? "border-indigo-400 text-indigo-400 hover:bg-indigo-50/10"
+                : "border-red-600 text-red-700 hover:bg-red-50"
+                }`}
             >
               {accountVerified ? "Verificada" : "No verificada"}
             </button>
           }
-          <AiOutlineDelete
-            size={28}
-            onClick={deleteOneBlog}
-            className="hover:scale-110 text-red-600 transition-all cursor-pointer"
-          />
         </div>
+      </td>
+      <td className="px-4 py-4">
+        <CiTrash
+          size={26}
+          onClick={deleteOneBlog}
+          className="hover:scale-110 text-red-600 transition-all cursor-pointer"
+        />
       </td>
     </tr>
   );

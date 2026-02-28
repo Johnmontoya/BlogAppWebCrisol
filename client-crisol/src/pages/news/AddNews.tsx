@@ -166,19 +166,23 @@ const AddNews = () => {
 
   return (
     <div
-      className={`border-b ${
-        darkMode
-          ? "border-gray-700 bg-slate-900 text-slate-100"
-          : "border-gray-200 bg-slate-100 text-slate-900"
-      }`}
+      className={`border-b ${darkMode
+        ? "bg-brand-dark text-slate-100"
+        : "bg-brand-light text-slate-900"
+        }`}
     >
       <Sidebar />
       <div className="max-w-7xl flex flex-col m-auto my-10 px-10">
-        <h1 className="w-full justify-center text-center text-2xl font-bold mb-4">
-          Agregar Nueva Noticia
-        </h1>
+        <div className="mb-12 border-b border-black dark:border-zinc-800 pb-6">
+          <h1 className="font-serif text-4xl md:text-6xl font-black tracking-tight mb-2">
+            Agregar Nueva Noticia
+          </h1>
+          <p className={`font-light tracking-wide ${darkMode ? 'text-slate-400' : 'text-ink-light'}`}>
+            Agrega una nueva noticia al sistema.
+          </p>
+        </div>
 
-        <form onSubmit={createNews} className="flex flex-col gap-1">
+        <form onSubmit={createNews} className="flex flex-col gap-1 font-light tracking-wide">
           {/* 1. Selector de Plantilla (Type) */}
           <div className="flex flex-col mb-6">
             <label htmlFor="type" className="mb-2 font-medium">
@@ -189,11 +193,10 @@ const AddNews = () => {
               name="type"
               onChange={onChangeNewsData}
               value={newsData.type}
-              className={`w-full max-w-lg p-3 border outline-none rounded focus:border-indigo-600 transition-colors ${
-                darkMode
-                  ? "border-gray-600 bg-gray-700 text-white"
-                  : "border-gray-300"
-              }`}
+              className={`w-full max-w-lg p-3 border outline-none focus:border-orange-600 transition-colors ${darkMode
+                ? "border-gray-600 bg-gray-700 text-white"
+                : "border-gray-300"
+                }`}
               disabled={isLoading}
             >
               {newsTypes.map((item, index) => (
@@ -218,11 +221,10 @@ const AddNews = () => {
                 value={newsData.title}
                 required
                 placeholder="Ingresar el título"
-                className={`w-full p-3 border outline-none rounded focus:border-indigo-600 transition-colors ${
-                  darkMode
-                    ? "border-gray-600 bg-gray-700 text-white"
-                    : "border-gray-300"
-                }`}
+                className={`w-full p-3 border outline-none focus:border-orange-600 transition-colors ${darkMode
+                  ? "border-gray-600 bg-gray-700 text-white"
+                  : "border-gray-300"
+                  }`}
                 disabled={isLoading}
               />
             </div>
@@ -240,19 +242,18 @@ const AddNews = () => {
                 value={newsData.category}
                 required
                 placeholder="Ej. Tecnología, Política, Deportes"
-                className={`w-full p-3 border outline-none rounded focus:border-indigo-600 transition-colors ${
-                  darkMode
-                    ? "border-gray-600 bg-gray-700 text-white"
-                    : "border-gray-300"
-                }`}
+                className={`w-full p-3 border outline-none focus:border-orange-600 transition-colors ${darkMode
+                  ? "border-gray-600 bg-gray-700 text-white"
+                  : "border-gray-300"
+                  }`}
                 disabled={isLoading}
               />
             </div>
           </div>
 
           {/* 4. Campos Específicos Dinámicos */}
-          <div className="mb-6 p-4 border border-dashed border-indigo-300 rounded">
-            <h3 className="font-semibold mb-3 text-indigo-600">
+          <div className="mb-6 p-4 border border-dashed border-orange-300">
+            <h3 className={`font-semibold mb-3 ${darkMode ? "text-slate-100" : "text-slate-900"}`}>
               Datos Específicos para Plantilla:{" "}
               {newsTypes.find((t) => t.value === newsData.type)?.label}
             </h3>
@@ -266,7 +267,7 @@ const AddNews = () => {
               id="isPublished"
               checked={newsData.isPublished}
               onChange={handleCheckboxChange}
-              className="w-5 h-5 cursor-pointer accent-indigo-600"
+              className="w-5 h-5 cursor-pointer accent-slate-800"
               disabled={isLoading}
             />
             <label htmlFor="isPublished" className="font-medium cursor-pointer">
@@ -278,7 +279,9 @@ const AddNews = () => {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-40 py-3 font-medium bg-indigo-600 text-white rounded cursor-pointer hover:bg-indigo-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            className={`w-40 py-3 font-medium cursor-pointer hover:bg-transparent transition-all disabled:opacity-50 disabled:cursor-not-allowed 
+              ${darkMode ? "text-slate-100 border border-slate-100 hover:bg-zinc-100 hover:text-slate-900" : "text-slate-900 border border-slate-900 hover:bg-zinc-900 hover:text-slate-100"
+              }`}
           >
             {isLoading ? "Agregando..." : "Agregar Noticia"}
           </button>

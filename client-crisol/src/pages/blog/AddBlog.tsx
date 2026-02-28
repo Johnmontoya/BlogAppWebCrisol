@@ -141,28 +141,32 @@ const AddBlog = () => {
 
   return (
     <div
-      className={`border-b ${
-        darkMode
-          ? "border-gray-700 bg-slate-900"
-          : "border-gray-200 bg-slate-100"
-      }`}
+      className={`border-b ${darkMode
+        ? "bg-brand-dark text-slate-100"
+        : "bg-brand-light text-slate-900"
+        }`}
     >
       <Sidebar />
 
       <div className="max-w-7xl flex flex-col m-auto my-10 px-10">
-        <h1 className="w-full justify-center text-center text-2xl font-bold mb-4">
-          Agregar nuevo blog
-        </h1>
+        <div className="mb-12 border-b border-black dark:border-zinc-800 pb-6">
+          <h1 className="font-serif text-4xl md:text-6xl font-black tracking-tight mb-2">
+            Agregar nuevo blog
+          </h1>
+          <p className={`font-light tracking-wide ${darkMode ? 'text-slate-400' : 'text-ink-light'}`}>
+            Agrega un nuevo blog al sistema.
+          </p>
+        </div>
         <form
           onSubmit={CreateBlog}
-          className="flex flex-col gap-1"
+          className="font-light tracking-wide flex flex-col gap-1"
         >
           <p className="font-medium mb-2">Subir imagen</p>
           <label htmlFor="image" className="cursor-pointer">
             <img
               src={!image ? assets.Upload_area : URL.createObjectURL(image)}
               alt="Upload preview"
-              className="mt-2 h-18 w-18 object-cover rounded border-2 border-dashed border-gray-300 hover:border-indigo-600 transition-colors"
+              className="mt-2 h-18 w-18 object-cover border-2 border-dashed border-gray-300 hover:border-indigo-600 transition-colors"
             />
           </label>
           <input
@@ -181,7 +185,10 @@ const AddBlog = () => {
                 type="text"
                 placeholder="Ingresar el titulo"
                 required
-                className="w-full mt-1 p-3 border border-gray-300 outline-none rounded focus:border-indigo-600 transition-colors"
+                className={`w-full max-w-lg p-3 border outline-none focus:border-orange-600 transition-colors ${darkMode
+                  ? "border-gray-600 bg-gray-700 text-white"
+                  : "border-gray-300"
+                  }`}
                 onChange={onChangeblogData}
                 value={blogData.title}
                 name="title"
@@ -194,7 +201,10 @@ const AddBlog = () => {
                 type="text"
                 placeholder="Ingresa el subtitulo del blog"
                 required
-                className="w-full mt-1 p-3 border border-gray-300 outline-none rounded focus:border-indigo-600 transition-colors"
+                className={`w-full max-w-lg p-3 border outline-none focus:border-orange-600 transition-colors ${darkMode
+                  ? "border-gray-600 bg-gray-700 text-white"
+                  : "border-gray-300"
+                  }`}
                 onChange={onChangeblogData}
                 value={blogData.subTitle}
                 name="subTitle"
@@ -207,12 +217,15 @@ const AddBlog = () => {
             {/* Contenedor del editor - Quill agregará su propia estructura */}
             <div
               ref={editorRef}
-              className="min-h-[250px] border border-gray-300 rounded overflow-hidden"
+              className={`min-h-[250px] border border-gray-300 overflow-hidden ${darkMode
+                ? "border-gray-600 bg-gray-700 text-white"
+                : "border-gray-300"
+                }`}
             />
 
             {isAdding && (
-              <div className="absolute inset-0 flex items-center justify-center bg-black/10 rounded">
-                <div className="w-8 h-8 rounded-full border-2 border-t-white animate-spin"></div>
+              <div className="absolute inset-0 flex items-center justify-center bg-black/10">
+                <div className="w-8 h-8-full border-2 border-t-white animate-spin"></div>
               </div>
             )}
 
@@ -220,7 +233,7 @@ const AddBlog = () => {
               type="button"
               onClick={generateContent}
               disabled={isAdding || !blogData.title}
-              className="absolute bottom-2 right-2 text-xs text-white bg-black/70 px-4 py-2 rounded hover:bg-black transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 z-10"
+              className="absolute bottom-2 right-2 text-xs text-white bg-black/70 px-4 py-2 hover:bg-black transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 z-10"
             >
               {isAdding ? (
                 <>
@@ -244,7 +257,7 @@ const AddBlog = () => {
             onChange={onChangeblogData}
             value={blogData.category}
             name="category"
-            className="mt-2 px-4 py-2.5 text-gray-700 border border-gray-300 outline-none rounded focus:border-rose-600 transition-colors cursor-pointer"
+            className="mt-2 px-4 py-2.5 text-gray-700 border border-gray-300 outline-none focus:border-orange-600 transition-colors cursor-pointer"
           >
             {blogCategories.map((item, index) => (
               <option key={index} value={item.name}>
@@ -258,11 +271,11 @@ const AddBlog = () => {
               type="checkbox"
               id="publish"
               checked={blogData.isPublished}
-              className="w-5 h-5 cursor-pointer accent-rose-600"
               onChange={onChangeblogData}
               name="isPublished"
+              className="w-5 h-5 cursor-pointer accent-slate-800"
             />
-            <label htmlFor="publish" className="font-medium cursor-pointer">
+            <label htmlFor="isPublished" className="font-medium cursor-pointer">
               Publicar Ahora
             </label>
           </div>
@@ -270,7 +283,9 @@ const AddBlog = () => {
           <button
             type="submit"
             disabled={isAdding}
-            className="mt-8 w-40 h-11 bg-indigo-600 text-white rounded cursor-pointer text-sm font-medium hover:bg-indigo-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className={`w-40 py-3 font-medium cursor-pointer hover:bg-transparent transition-all disabled:opacity-50 disabled:cursor-not-allowed 
+              ${darkMode ? "text-slate-100 border border-slate-100 hover:bg-zinc-100 hover:text-slate-900" : "text-slate-900 border border-slate-900 hover:bg-zinc-900 hover:text-slate-100"
+              }`}
           >
             {isAdding ? "Agregando..." : "Agregar blog"}
           </button>

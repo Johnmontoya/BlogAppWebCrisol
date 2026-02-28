@@ -19,25 +19,28 @@ const ListNewsPage = () => {
 
   return (
     <div
-      className={`min-h-screen border-b ${
-        darkMode
-          ? "border-gray-700 bg-slate-900 text-slate-100"
-          : "border-gray-200 bg-slate-100 text-slate-900"
-      }`}
+      className={`border-b ${darkMode
+        ? "bg-brand-dark text-slate-100"
+        : "bg-brand-light text-slate-900"
+        }`}
     >
       <Sidebar />
       <div className="max-w-7xl flex-1 p-4 md:p-10 m-auto">
-        <div>
-          <div className="flex items-center gap-3 m-4 mt-6 text-gray-500">
-            <p>Todas las noticias</p>
+        <div className="max-w-7xl mx-auto">
+
+          <div className="mb-12 border-b border-black dark:border-zinc-800 pb-6">
+            <h1 className="font-serif text-4xl md:text-6xl font-black tracking-tight mb-2">
+              Todas las noticias.
+            </h1>
+            <p className={`font-light tracking-wide ${darkMode ? 'text-slate-400' : 'text-ink-light'}`}>
+              Listado de todas las noticias registradas en el sistema.
+            </p>
           </div>
 
           <div className="w-full flex justify-between gap-4">
             {/* Columna 1: Hero News */}
             <div
-              className={`relative w-full h-full rounded-lg ${
-                darkMode ? "bg-gray-800" : "bg-white"
-              }`}
+              className={`relative w-full h-full`}
             >
               {isLoading ? (
                 <p className="p-4">Cargando noticias...</p>
@@ -52,9 +55,7 @@ const ListNewsPage = () => {
 
             {/* Columna 2: Quote News */}
             <div
-              className={`relative w-full h-full rounded-lg ${
-                darkMode ? "bg-gray-800" : "bg-white"
-              }`}
+              className={`relative w-full h-full`}
             >
               {isLoading ? (
                 <p className="p-4">Cargando noticias...</p>
@@ -69,9 +70,7 @@ const ListNewsPage = () => {
 
             {/* Columna 3: Bullet News */}
             <div
-              className={`relative w-full h-full rounded-lg ${
-                darkMode ? "bg-gray-800" : "bg-white"
-              }`}
+              className={`relative w-full h-full`}
             >
               {isLoading ? (
                 <p className="p-4">Cargando noticias...</p>

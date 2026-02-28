@@ -32,11 +32,10 @@ const QuoteBlockFields = ({
           required
           placeholder="El texto de la cita..."
           rows={4}
-          className={`w-full p-3 border outline-none rounded focus:border-indigo-600 transition-colors ${
-            darkMode
+          className={`w-full p-3 border outline-none focus:border-indigo-600 transition-colors ${darkMode
               ? "border-gray-600 bg-gray-700 text-white"
               : "border-gray-300"
-          }`}
+            }`}
           disabled={isLoading}
         />
       </div>
@@ -52,11 +51,10 @@ const QuoteBlockFields = ({
           value={newsData.context}
           required
           placeholder="Contexto o fuente de la cita"
-          className={`w-full p-3 border outline-none rounded focus:border-indigo-600 transition-colors ${
-            darkMode
+          className={`w-full p-3 border outline-none focus:border-indigo-600 transition-colors ${darkMode
               ? "border-gray-600 bg-gray-700 text-white"
               : "border-gray-300"
-          }`}
+            }`}
           disabled={isLoading}
         />
       </div>

@@ -1,5 +1,4 @@
 import React from "react";
-import { AiOutlineDelete } from "react-icons/ai";
 import { useQueryClient } from "@tanstack/react-query";
 import type { IBlogTableItemProps } from "../../interfaces/blog";
 import {
@@ -7,8 +6,12 @@ import {
   useToggleBlogMutation,
 } from "../../queries/blog.query";
 import SweetAlertas from "../alerts/SweetAlertas";
+import { CiTrash } from "react-icons/ci";
+import { useContext } from "react";
+import { UserContext } from "../../contexts/UserContextProvider";
 
 const BlogTableItem: React.FC<IBlogTableItemProps> = ({ blog, index }) => {
+  const { darkMode } = useContext(UserContext);
   const queryClient = useQueryClient();
   const togglePublish = useToggleBlogMutation();
   const deleteBlog = useDeleteBlogMutation();
@@ -24,7 +27,7 @@ const BlogTableItem: React.FC<IBlogTableItemProps> = ({ blog, index }) => {
     });
   }
 
-  const Cancel = () => {};
+  const Cancel = () => { };
 
   const ChangeTogglePublish = () => {
     togglePublish.mutateAsync(
@@ -69,39 +72,31 @@ const BlogTableItem: React.FC<IBlogTableItemProps> = ({ blog, index }) => {
   };
 
   return (
-    <tr className="border-y border-gray-300 hover:bg-gray-300 transition-colors">
-      <th scope="row" className="px-2 py-4 font-medium text-gray-900">
+    <tr className={`font-light tracking-wide border-y border-gray-300 transition-all duration-500 ${darkMode ? "text-slate-50" : "text-slate-950"}`}>
+      <th scope="row" className="px-2 py-4 font-medium">
         {index}
       </th>
-      <td className="px-2 py-4">{title}</td>
-      <td className="px-2 py-4 max-sm:hidden">{BlogDate.toDateString()}</td>
-      <td className="px-2 py-4 max-sm:hidden">
-        <p
-          className={`font-medium ${
-            isPublished ? "text-green-600" : "text-red-700"
-          }`}
-        >
-          {isPublished ? "Publicado" : "No Publicado"}
-        </p>
-      </td>
+      <td className="p-5 whitespace-nowrap text-sm leading-6 font-light">{title}</td>
+      <td className="p-5 whitespace-nowrap text-sm leading-6 font-light">{BlogDate.toDateString()}</td>
       <td className="px-4 py-4">
         <div className="flex justify-between text-xs gap-3">
           <button
             onClick={ChangeTogglePublish}
-            className={`border px-3 py-1.5 rounded cursor-pointer transition-colors hover:shadow-md ${
-              blog.isPublished
-                ? "border-green-600 text-green-700 hover:bg-green-50"
-                : "border-red-600 text-red-700 hover:bg-red-50"
-            }`}
+            className={`border px-3 py-1.5 rounded cursor-pointer transition-colors hover:shadow-md ${blog.isPublished
+              ? "border-indigo-400 text-indigo-400 hover:bg-indigo-50/10"
+              : "border-red-600 text-red-700 hover:bg-red-50"
+              }`}
           >
             {isPublished ? "Publicado" : "No Publicado"}
           </button>
-          <AiOutlineDelete
-            size={28}
-            onClick={deleteOneBlog}
-            className="hover:scale-110 text-red-600 transition-all cursor-pointer"
-          />
         </div>
+      </td>
+      <td className="p-5 whitespace-nowrap text-sm leading-6 font-light text-gray-900">
+        <CiTrash
+          size={26}
+          onClick={deleteOneBlog}
+          className="hover:scale-110 text-red-600 transition-all cursor-pointer"
+        />
       </td>
     </tr>
   );

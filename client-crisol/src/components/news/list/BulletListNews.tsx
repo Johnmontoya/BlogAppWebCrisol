@@ -28,7 +28,7 @@ const BulletListNews = ({ news }: IBulletNewsProps) => {
     });
   }
 
-  const Cancel = () => {};
+  const Cancel = () => { };
 
   const ConfirmDeleteNews = () => {
     deleteNews.mutateAsync(
@@ -78,43 +78,45 @@ const BulletListNews = ({ news }: IBulletNewsProps) => {
         <button
           type="button"
           onClick={ChangeState}
-          className="flex items-center cursor-pointer gap-2.5 border border-gray-500/30 px-4 py-2 text-sm text-gray-800 rounded bg-white hover:text-blue-400 hover:bg-blue-400/10 hover:border-blue-400/30 active:scale-95 transition"
+          className="flex items-center cursor-pointer gap-2.5 border border-gray-300/30 px-4 py-1 text-sm text-indigo-400 hover:bg-indigo-500/10 border-indigo-500 hover:text-indigo-500 active:scale-95 transition"
         >
-          <MdPublishedWithChanges size={22} className="text-blue-700" />
+          <MdPublishedWithChanges size={22} className="text-indigo-500" />
           {isPublished ? "Publicado" : "No publicado"}
         </button>
 
         <button
           type="button"
           onClick={deleteOneNews}
-          className="flex items-center cursor-pointer gap-2.5 border border-gray-500/30 px-4 py-2 text-sm text-gray-800 rounded bg-white hover:text-blue-400 hover:bg-blue-400/10 hover:border-blue-400/30 active:scale-95 transition"
+          className="flex items-center cursor-pointer gap-2.5 border border-gray-500/30 px-4 py-1 text-sm text-red-400 hover:bg-red-500/10 border-red-500 hover:text-orange-500 active:scale-95 transition"
         >
-          <SlClose size={22} className="text-red-700" />
+          <SlClose size={22} className="text-red-500" />
           Eliminar
         </button>
       </div>
-      <div className="bg-gray-800 text-white p-6 rounded-lg shadow-lg mb-8">
-        <span className="text-xs font-semibold text-teal-400 uppercase tracking-wide mb-2 block">
-          {category}
-        </span>
-        <h2 className="text-2xl font-bold mb-4">{title}</h2>
+      <div>
+        <div className="border-b border-gray-500 text-white p-6 mb-8">
+          <span className="text-xs font-semibold text-orange-500 uppercase tracking-wide mb-2 block">
+            {category}
+          </span>
+          <h2 className="font-serif text-slate-800 text-2xl font-bold mb-4">{title}</h2>
 
-        <ul>
-          {listBull?.map((item, index) => (
-            <li key={index} className="flex items-start lg:col-span-1">
-              <div className="shrink-0">
-                <FaCheckCircle size={18} className="text-teal-400" />
-              </div>
-              <p className="ml-3 leading-5 text-gray-400">{item}</p>
-            </li>
-          ))}
-        </ul>
+          <ul>
+            {listBull?.map((item, index) => (
+              <li key={index} className="flex items-start lg:col-span-1">
+                <div className="shrink-0">
+                  <FaCheckCircle size={18} className="text-indigo-400" />
+                </div>
+                <p className="font-light tracking-wide ml-3 leading-5 text-gray-400">{item}</p>
+              </li>
+            ))}
+          </ul>
 
-        {contentBullet?.author && (
-          <p className="text-sm text-gray-500 mt-4">
-            Por: {contentBullet.author}
-          </p>
-        )}
+          {contentBullet?.author && (
+            <p className="text-sm text-gray-500 mt-4">
+              Por: {contentBullet.author}
+            </p>
+          )}
+        </div>
       </div>
     </>
   );
