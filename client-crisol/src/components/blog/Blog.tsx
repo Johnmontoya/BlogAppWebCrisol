@@ -16,20 +16,25 @@ const Blog = () => {
   const blogs: any = data.data;
 
   const filteredBlogs = () => {
-    let filtered = blogs;
+    const rawBlogs = blogs?.blogs || [];
+
+    let filtered = rawBlogs;
 
     // Filtrar por búsqueda
     if (input !== "") {
-      filtered = filtered?.filter(
+      const searchLower = input.toLowerCase();
+      filtered = filtered.filter(
         (blog: any) =>
-          blog.title.toLowerCase().includes(input.toLowerCase()) ||
-          blog.category.toLowerCase().includes(input.toLowerCase())
+          blog.title?.toLowerCase().includes(searchLower) ||
+          blog.category?.toLowerCase().includes(searchLower)
       );
     }
 
     // Filtrar por categoría
     if (menu !== "Todo") {
-      filtered = filtered?.filter((blog: any) => blog.category === menu);
+      filtered = filtered.filter(
+        (blog: any) => blog.category?.toLowerCase() === menu.toLowerCase()
+      );
     }
 
     return filtered;
@@ -78,13 +83,13 @@ const Blog = () => {
                     <BlogCardSkeleton key={i} />
                   ))}
                 </>
-              ) : blogsToDisplay?.blogs?.length === 0 ? (
+              ) : blogsToDisplay?.length === 0 ? (
                 <div className="w-full h-64 flex justify-center items-center col-span-2 border border-dashed border-black dark:border-zinc-800 text-xl font-serif italic text-ink-light">
                   No se encontraron articulos en esta edicion.
                 </div>
               ) : (
                 <>
-                  {blogsToDisplay?.blogs?.map((item: Iblogs, index: number) => (
+                  {blogsToDisplay?.map((item: Iblogs, index: number) => (
                     <BlogCard key={index} blog={item} author={item.author} />
                   ))}
                 </>
