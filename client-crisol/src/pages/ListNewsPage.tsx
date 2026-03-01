@@ -5,6 +5,7 @@ import HeroImageNews from "../components/news/list/HeroImageNews";
 import { useGetNewsQueries } from "../queries/news.query";
 import QuoteBlockNews from "../components/news/list/QuoteBlockNews";
 import BulletListNews from "../components/news/list/BulletListNews";
+import { HeroNewsSkeleton, BulletNewsSkeleton } from "../components/news/NewsSkeleton";
 
 const ListNewsPage = () => {
   const { darkMode } = useContext(UserContext);
@@ -43,7 +44,7 @@ const ListNewsPage = () => {
               className={`relative w-full h-full`}
             >
               {isLoading ? (
-                <p className="p-4">Cargando noticias...</p>
+                <HeroNewsSkeleton />
               ) : heroNews.length === 0 ? (
                 <p className="p-4">No hay noticias hero disponibles</p>
               ) : (
@@ -58,7 +59,7 @@ const ListNewsPage = () => {
               className={`relative w-full h-full`}
             >
               {isLoading ? (
-                <p className="p-4">Cargando noticias...</p>
+                <BulletNewsSkeleton />
               ) : quoteNews.length === 0 ? (
                 <p className="p-4">No hay noticias quote disponibles</p>
               ) : (
@@ -73,7 +74,7 @@ const ListNewsPage = () => {
               className={`relative w-full h-full`}
             >
               {isLoading ? (
-                <p className="p-4">Cargando noticias...</p>
+                <BulletNewsSkeleton />
               ) : bulletNews.length === 0 ? (
                 <p className="p-4">No hay noticias bullet disponibles</p>
               ) : (

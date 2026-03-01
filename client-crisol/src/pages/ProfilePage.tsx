@@ -5,6 +5,7 @@ import { useGetUserIdQueries } from "../queries/user.query";
 import { useAuthStore } from "../store/auth";
 import { TfiEmail } from "react-icons/tfi";
 import { CiCalendarDate, CiUser } from "react-icons/ci";
+import ProfileSkeleton from "../components/user/ProfileSkeleton";
 import moment from "moment";
 
 const ProfilePage = () => {
@@ -12,6 +13,18 @@ const ProfilePage = () => {
   const { darkMode } = useContext(UserContext);
   const [data] = useGetUserIdQueries(userId);
   const user = data.data?.user;
+  const isLoading = data.isLoading;
+
+  if (isLoading) {
+    return (
+      <>
+        <Sidebar />
+        <div className={`w-full flex-1 p-6 md:p-12 min-h-screen ${darkMode ? 'bg-brand-dark' : 'bg-brand-light'}`}>
+          <ProfileSkeleton />
+        </div>
+      </>
+    );
+  }
 
   return (
     <>

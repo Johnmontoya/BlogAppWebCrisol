@@ -1,6 +1,6 @@
 import { useLocation } from "react-router-dom";
 import { useGetBlogIdQueries } from "../queries/blog.query";
-import LoadingFallback from "../components/fallbacks/LoadingFallback";
+import ArticleSkeleton from "../components/blog/ArticleSkeleton";
 import moment from "moment";
 import { SlSocialGoogle } from "react-icons/sl";
 import { useContext, useEffect, useState } from "react";
@@ -91,8 +91,8 @@ const BlogPage = () => {
   // ✅ Mostrar loading mientras cambia el blog
   if (!id || isLoading) {
     return (
-      <div className="w-full h-screen flex justify-center items-center bg-brand-light dark:bg-brand-dark">
-        <LoadingFallback />
+      <div className={`w-full min-h-screen ${darkMode ? "bg-brand-dark" : "bg-brand-light"}`}>
+        <ArticleSkeleton />
       </div>
     );
   }
