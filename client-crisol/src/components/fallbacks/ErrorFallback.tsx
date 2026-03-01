@@ -8,7 +8,8 @@ const ErrorFallback = ({ resetErrorBoundary }: IErrorFallbackProps) => {
   const navigate = useNavigate();
 
   return (
-    <div className="w-full mx-auto flex justify-center" style={{ textAlign: "center" }}>
+    <div style={{ textAlign: "center" }}>
+      <h2>Hubo un problema en la solicitud!</h2>
       <div className="flex flex-col items-center justify-around border border-gray-200 rounded-2xl m-2 py-20 max-w-5xl w-full bg-white">
         <h2 className="md:text-4xl/14 text-2xl font-bold bg-linear-to-r from-pink-500 to-yellow-500 text-transparent bg-clip-text">Opps!...</h2>
         <p className="mt-4 text-slate-500 max-w-xl text-center">Hubo un problema en la solicitud!</p>
