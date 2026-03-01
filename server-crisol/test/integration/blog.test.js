@@ -17,7 +17,7 @@ beforeEach(async () => {
   });
 
   // Crear un blog
-  blog = await factory.create("blog");
+  blog = await factory.create("blog", { author: user._id, isPublished: true });
 
   // Hacer login
   login = await request(app)
@@ -56,6 +56,7 @@ describe("Blog controllers", () => {
   it(`Deberia poder cambiar el estado del blog para su publicacion`, async () => {
     const response = await request(app)
       .put(`${url}/blog/toggle-publish`)
+      .set("Authorization", `Bearer ${login.body.token}`)
       .set("content-type", "application/json")
       .send({
         id: blog._id,

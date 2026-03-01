@@ -125,6 +125,13 @@ export const login = async (req, res) => {
     const user = await UserService.getIsEmailExists(email);
     const secret = process.env.SECRET;
 
+    if (!user) {
+      return res.status(401).json({
+        valid: "error",
+        message: "Correo o contraseña incorrecta",
+      });
+    }
+
     if(user.accountVerified === false) {
       return res.status(400).json({
         valid: "fail",
@@ -259,6 +266,17 @@ export const changePassword = async(req, res) => {
 export const deleteUser = async(req, res) => {
   try {
     const userId = req.params.id;
+    const requester = req.token;
+
+    // Security Gate: Protect against IDOR (Insecure Direct Object Reference)
+    // Check if the user is deleting their own account OR if they are an Admin
+    if (requester.userId !== userId && requester.role !== 'Admin') {
+      return res.status(403).json({
+        valid: "error",
+        message: "No tienes permisos para eliminar este usuario"
+      });
+    }
+
     await UserService.deleteUser(userId);
 
     return res.status(200).json({

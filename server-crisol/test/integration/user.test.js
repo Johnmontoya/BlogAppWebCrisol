@@ -76,7 +76,7 @@ describe("User controllers", () => {
       });
 
     expect(login.status).toBe(200);
-    expect(login.headers).toHaveProperty("authtoken");
+    expect(login.headers).toHaveProperty("token");
     expect(login.body.token).toBeTruthy();
   });
 

@@ -11,7 +11,7 @@ factory.define("user", User, {
   ),
   password: () => faker.internet.password(), // Agregar password por defecto
   role: "User",
-  accountVerified: false,
+  accountVerified: true,
   otp: 0
 });
 

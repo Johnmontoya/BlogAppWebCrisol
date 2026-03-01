@@ -9,6 +9,7 @@ import blogRouter from './routes/Blog-route.js';
 import commentRouter from './routes/Comment-route.js';
 import newsRouter from './routes/News-route.js';
 import Authenticate from './middlewares/authentication-middleware.js';
+import { apiLimiter, authLimiter } from './middlewares/rate-limit-middleware.js';
 import 'dotenv/config';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -31,6 +32,10 @@ app.use(cors(corsOptions));
 //Middleware
 app.use(express.json());
 app.use(Authenticate);
+if (process.env.NODE_ENV !== 'test' || process.env.ENABLE_RATE_LIMIT_TEST === 'true') {
+    app.use(`${api}`, apiLimiter);
+    app.use(`${api}/user/login`, authLimiter);
+}
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 
 app.get(`/`, (req, res) => {

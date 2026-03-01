@@ -18,7 +18,7 @@ beforeEach(async () => {
   });
 
   // Crear un blog
-  blog = await factory.create("blog");
+  blog = await factory.create("blog", { author: user._id, isPublished: true });
 
   comment = await factory.create("comment", {
     blog: blog._id,
@@ -69,7 +69,7 @@ describe("Comment controllers", () => {
 
   it(`Deberia obtener todos los comentarios de la base de datos`, async () => {
     const response = await request(app)
-      .get(`${url}/comment/comments/all`)
+      .get(`${url}/comment/comments/all/${user._id}`)
       .set("content-type", "application/json");
 
     expect(response.statusCode).toBe(200);
@@ -82,6 +82,7 @@ describe("Comment controllers", () => {
   it(`Deberia poder cambiar el estado del comentario`, async () => {
     const response = await request(app)
       .put(`${url}/comment/approve-comment`)
+      .set("Authorization", `Bearer ${login.body.token}`)
       .set("content-type", "application/json")
       .send({
         id: comment._id,
@@ -93,12 +94,9 @@ describe("Comment controllers", () => {
 
   it(`Deberia eliminar un comentario guardado en la base de datos por su ID`, async () => {
     const response = await request(app)
-      .delete(`${url}/comment/delete-comment`)
+      .delete(`${url}/comment/delete-comment/${comment._id}`)
       .set("Authorization", `Bearer ${login.body.token}`)
-      .set("content-type", "application/json")
-      .send({
-        id: comment._id,
-      });
+      .set("content-type", "application/json");
 
     expect(response.statusCode).toBe(200);
     expect(response.body.valid).toBe("success");

@@ -36,7 +36,11 @@ const Authenticate = async (req, res, next) => {
       });
     }
   } catch (error) {
-    next(error);
+    // Si el token es inválido o está mal formado, retornar 403 en lugar de 500
+    return res.status(403).json({
+      error: true,
+      message: "Token inválido o expirado"
+    });
   }
 };
 

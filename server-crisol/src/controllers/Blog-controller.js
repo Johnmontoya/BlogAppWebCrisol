@@ -73,7 +73,10 @@ export const getAllBlogs = async (req, res) => {
       });
     }
 
-    return res.status(200).json(blogs);
+    return res.status(200).json({
+      valid: "success",
+      blogs
+    });
   } catch (error) {
     console.error("Error al obtener los blogs", error);
     return res.status(500).json({

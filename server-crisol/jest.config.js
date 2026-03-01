@@ -23,6 +23,12 @@ export default {
       testMatch: ['<rootDir>/test/integration/**/*.test.js'],
       setupFilesAfterEnv: ['<rootDir>/test/testServer.js'],
       testEnvironment: 'node'
+    },
+    {
+      displayName: 'security',
+      testMatch: ['<rootDir>/test/security/**/*.test.js'],
+      setupFilesAfterEnv: ['<rootDir>/test/testServer.js'],
+      testEnvironment: 'node'
     }
   ]
 };
