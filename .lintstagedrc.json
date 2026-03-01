@@ -1,0 +1,9 @@
+{
+  "client-crisol/**/*.{js,jsx,ts,tsx}": [
+    "npm run lint --prefix client-crisol",
+    "npm run test:run --prefix client-crisol -- --related --findRelatedTests"
+  ],
+  "server-crisol/**/*.js": [
+    "npm run test --prefix server-crisol -- --findRelatedTests"
+  ]
+}
