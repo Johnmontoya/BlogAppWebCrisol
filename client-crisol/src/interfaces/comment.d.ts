@@ -29,5 +29,5 @@ export interface ICommentResponse {
 export interface ICommentAdd {
   blog: string;
   name: string;
-  content: strin;
+  content: string;
 }

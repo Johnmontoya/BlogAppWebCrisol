@@ -7,6 +7,7 @@ export const addBlog = async (req, res) => {
   try {
     const { userId, title, subTitle, description, category, isPublished } = JSON.parse(req.body.blog);
     const imageFile = req.file;
+    console.log(req.body)
 
     if (!title || !description || !category || !imageFile) {
       return res.json({
