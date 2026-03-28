@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, Link } from "react-router-dom";
 import { UserContext } from "../contexts/UserContextProvider";
 import { BiMenu, BiMoon } from "react-icons/bi";
 import { GiSun } from "react-icons/gi";
@@ -39,22 +39,22 @@ const Layout = () => {
             </div>
             
             <nav className="hidden md:flex items-center space-x-10 text-sm font-medium tracking-wide uppercase">
-              <a href="#" className="relative group overflow-hidden">
+              <Link to="/" className="relative group overflow-hidden">
                 <span className="block transition-transform duration-300 group-hover:-translate-y-full">Home</span>
                 <span className="absolute top-0 left-0 block transition-transform duration-300 translate-y-full group-hover:translate-y-0 text-accent">Home</span>
-              </a>
-              <a href="#" className="relative group overflow-hidden">
+              </Link>
+              <Link to="/features" className="relative group overflow-hidden">
                 <span className="block transition-transform duration-300 group-hover:-translate-y-full">Features</span>
                 <span className="absolute top-0 left-0 block transition-transform duration-300 translate-y-full group-hover:translate-y-0 text-accent">Features</span>
-              </a>
-              <a href="#" className="relative group overflow-hidden">
+              </Link>
+              <Link to="/nosotros" className="relative group overflow-hidden">
                 <span className="block transition-transform duration-300 group-hover:-translate-y-full">Nosotros</span>
                 <span className="absolute top-0 left-0 block transition-transform duration-300 translate-y-full group-hover:translate-y-0 text-accent">Nosotros</span>
-              </a>
-              <a href="#" className="relative group overflow-hidden">
+              </Link>
+              <Link to="/contactos" className="relative group overflow-hidden">
                 <span className="block transition-transform duration-300 group-hover:-translate-y-full">Contactos</span>
                 <span className="absolute top-0 left-0 block transition-transform duration-300 translate-y-full group-hover:translate-y-0 text-accent">Contactos</span>
-              </a>
+              </Link>
             </nav>
 
             <div className="flex items-center space-x-4">

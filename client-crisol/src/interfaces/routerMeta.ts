@@ -21,6 +21,30 @@ const routerMeta: RouterMetaType = {
     file: 'HomePage',
     requiresLayout: true
   },
+  FeaturePage: {
+    name: "Feature",
+    path: "/features",
+    isShow: true,
+    isCommon: true,
+    file: "FeaturePage",
+    requiresLayout: true
+  },
+  NosotrosPage: {
+    name: "Nosotros",
+    path: "/nosotros",
+    isShow: true,
+    isCommon: true,
+    file: "NosotrosPage",
+    requiresLayout: true
+  },
+  ContactPage: {
+    name: "Contact",
+    path: "/contactos",
+    isShow: true,
+    isCommon: true,
+    file: "ContactPage",
+    requiresLayout: true
+  },
   LoginPage: {
     name: "Login",
     path: "/login",
