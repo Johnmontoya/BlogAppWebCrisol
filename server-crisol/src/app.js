@@ -20,7 +20,7 @@ const api = process.env.API_URL;
 
 const corsOptions = {
     //origin: 'https://blog-app-web-crisol.vercel.app', // Reemplaza con el origen de tu frontend
-    origin: ['http://localhost:8081','http://localhost:5173'],
+    origin: ['http://localhost:8081','https://blog-app-web-crisol.vercel.app'],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true, // Si necesitas manejar cookies o cabeceras de autorización
     optionsSuccessStatus: 204 // Código de estado para respuestas OPTIONS exitosas

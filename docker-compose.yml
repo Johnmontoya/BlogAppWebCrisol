@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  # Base de datos MongoDB
+  db:
+    image: mongo:latest
+    container_name: crisol_db
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - crisol_network
+
+  # Backend Node.js
+  api:
+    build:
+      context: ./server-crisol
+      dockerfile: Dockerfile
+    container_name: crisol_api
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - "8081:8081" # Ajustar según el puerto que tienes definido en el .env de tu backend (por defecto supongo 8081 según tus CORS)
+    # Se leen las variables de entorno de tu archivo local
+    env_file:
+      - ./server-crisol/.env
+    environment:
+      - PORT=8081
+      # Es vital configurar el de MongoDB para que apunte al contenedor 'db' reemplazando 'localhost'
+      - MONGODB_URI=mongodb://db:27017/crisol_blog_db
+    networks:
+      - crisol_network
+
+  # Frontend Vite/React/Nginx
+  web:
+    build:
+      context: ./client-crisol
+      dockerfile: Dockerfile
+    container_name: crisol_web
+    restart: always
+    depends_on:
+      - api
+    ports:
+      - "5173:80" # Mapea el puerto local 5173 (que tienes configurado en el backend o por defecto en vite) al 80 del Nginx interno
+    networks:
+      - crisol_network
+
+volumes:
+  mongo_data:
+
+networks:
+  crisol_network:
+    driver: bridge
