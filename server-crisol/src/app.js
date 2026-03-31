@@ -26,15 +26,10 @@ const whitelist = [
 
 const corsOptions = {
   origin: function (origin, callback) {
-    // Sin origen (Postman, Curl, apps nativas Android)
-    if (!origin || origin === 'null') {
-      return callback(null, true);
-    }
-
-    if (whitelist.includes(origin)) {
+    // Permitir si el origen está en la lista o si no hay origen (Postman/Curl)
+    if (!origin || whitelist.includes(origin)) {
       callback(null, true);
     } else {
-      console.log('CORS bloqueado para origen:', origin); // 👈 Agrega esto para debuggear
       callback(new Error('Bloqueado por políticas de CORS'));
     }
   },
