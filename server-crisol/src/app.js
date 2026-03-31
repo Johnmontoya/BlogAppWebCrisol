@@ -26,10 +26,15 @@ const whitelist = [
 
 const corsOptions = {
   origin: function (origin, callback) {
-    // Permitir si el origen está en la lista o si no hay origen (Postman/Curl)
-    if (!origin || whitelist.includes(origin)) {
+    // Sin origen (Postman, Curl, apps nativas Android)
+    if (!origin || origin === 'null') {
+      return callback(null, true);
+    }
+
+    if (whitelist.includes(origin)) {
       callback(null, true);
     } else {
+      console.log('CORS bloqueado para origen:', origin); // 👈 Agrega esto para debuggear
       callback(new Error('Bloqueado por políticas de CORS'));
     }
   },
@@ -37,6 +42,12 @@ const corsOptions = {
   credentials: true,
   optionsSuccessStatus: 204
 };
+
+app.use((req, res, next) => {
+  console.log('Origin recibido:', req.headers.origin);
+  console.log('User-Agent:', req.headers['user-agent']);
+  next();
+});
 
 // IMPORTANTE: Solo una vez y ANTES de tus rutas
 app.use(cors(corsOptions));
