@@ -27,7 +27,7 @@ const whitelist = [
 const corsOptions = {
   origin: function (origin, callback) {
     // Permitir si el origen está en la lista o si no hay origen (Postman/Curl)
-    if (!origin || whitelist.includes(origin)) {
+    if (!origin || origin === "null" || whitelist.includes(origin)) {
       callback(null, true);
     } else {
       callback(new Error('Bloqueado por políticas de CORS'));
